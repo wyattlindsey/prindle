@@ -5,6 +5,10 @@ angular.module('prindleApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    },
+    {
+      'title': 'Listy',
+      'link': '/listy'
     }];
 
     $scope.isCollapsed = true;
