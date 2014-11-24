@@ -1,0 +1,9 @@
+extends ../_default
+
+block content
+  div.container-fluid#listApp(ng-controller='listMainCtrl')
+    div.row-fluid
+      div.col-md-4#listCatalog(ng-controller='listCatalogCtrl')
+        .listCatalogStyle(ui-grid='listCatalog', ui-grid-selection, ui-grid-edit)
+      div.col-md-8#listGrid(ng-controller='listGridCtrl')
+        .listGridStyle(ui-grid='listGrid', ui-grid-selection, ui-grid-edit)
