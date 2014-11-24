@@ -11,12 +11,19 @@ var User = require('../api/user/user.model');
 
 Item.find({}).remove(function() {
   Item.create({
-    name : 'Item 1',
-    info : 'It\'s item 1, y\'all'
+    name : 'Backpack',
+    weight : '4lb 4oz',
+    category: 'Big 3'
   }, {
-    name : 'Item 2',
-    info : 'It\'s item 2, now!'
-  })
+    name : 'Tent',
+    weight : '2lb 6oz',
+    category: 'Big 3'
+  },
+  {
+    name : 'Food',
+    weight : '5lb',
+    category: 'Consumables'
+  });
 });
 
 Thing.find({}).remove(function() {
