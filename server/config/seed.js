@@ -6,7 +6,18 @@
 'use strict';
 
 var Thing = require('../api/thing/thing.model');
+var Item = require('../api/item/item.model');
 var User = require('../api/user/user.model');
+
+Item.find({}).remove(function() {
+  Item.create({
+    name : 'Item 1',
+    info : 'It\'s item 1, y\'all'
+  }, {
+    name : 'Item 2',
+    info : 'It\'s item 2, now!'
+  })
+});
 
 Thing.find({}).remove(function() {
   Thing.create({
@@ -29,6 +40,8 @@ Thing.find({}).remove(function() {
     info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
   });
 });
+
+
 
 User.find({}).remove(function() {
   User.create({
