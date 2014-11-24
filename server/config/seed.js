@@ -7,6 +7,7 @@
 
 var Thing = require('../api/thing/thing.model');
 var Item = require('../api/item/item.model');
+var Collection = require('../api/collection/collection.model');
 var User = require('../api/user/user.model');
 
 Item.find({}).remove(function() {
@@ -23,6 +24,15 @@ Item.find({}).remove(function() {
     name : 'Food',
     weight : '5lb',
     category: 'Consumables'
+  });
+});
+
+Collection.find({}).remove(function() {
+  Collection.create({
+    name: 'Lightweight'
+  },
+  {
+    name: 'Long Distance'
   });
 });
 
