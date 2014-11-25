@@ -22,5 +22,10 @@ angular.module('prindleApp')
         $scope.listCatalog.columnDefs = [
           {field: 'name', displayName: 'List'}
         ];
+
+        $scope.listCatalogApi.selection.on.rowSelectionChanged($scope, function(row) {
+          $scope.$parent.$broadcast('listCatalogSelectionChanged', row);
+        });
+
       };
   });

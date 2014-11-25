@@ -29,10 +29,37 @@ Item.find({}).remove(function() {
 
 Collection.find({}).remove(function() {
   Collection.create({
-    name: 'Lightweight'
+    name: 'Lightweight',
+    items: [{
+      name : 'Backpack',
+      weight : '4lb 4oz',
+      category: 'Big 3'
+    },
+    {
+      name : 'Tent',
+      weight : '2lb 6oz',
+      category: 'Big 3'
+    }]
   },
   {
-    name: 'Long Distance'
+    name: 'Long Distance',
+    items: [
+      {
+        name : 'Backpack',
+        weight : '4lb 4oz',
+        category: 'Big 3'
+      },
+      {
+        name : 'Tent',
+        weight : '2lb 6oz',
+        category: 'Big 3'
+      },
+      {
+        name: 'Food',
+        weight: '5lb',
+        category: 'Consumables'
+      }
+    ]
   });
 });
 
