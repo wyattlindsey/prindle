@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var CollectionSchema = new Schema({
   name: String,
-  items: [String]
+  items: [Number]   // id's of Item objects
 });
 
 module.exports = mongoose.model('Collection', CollectionSchema);

@@ -19,8 +19,9 @@ angular.module('prindleApp')
     };
 
     $scope.$on('listCatalogSelectionChanged', function(event, row) {
-
-      $scope.getItemsForCollection(row.entity);
+      $scope.items = [];
+      $scope.items = row.entity.items;
+      console.log(row.entity.items[0]);
     });
 
     // initialize ui-grid
