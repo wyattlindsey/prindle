@@ -8,7 +8,7 @@ angular.module('prindleApp')
   .controller('listCatalogCtrl', function ($scope) {
 
       $scope.listCatalog = {
-        data: 'collections',
+        data: 'data.collections',
         enableFiltering: true,
         enableRowSelection: true,
         multiSelect: false,

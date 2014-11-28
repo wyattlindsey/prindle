@@ -11,7 +11,7 @@ angular.module('prindleApp')
     // set up ui-grid
 
     $scope.listGrid = {
-      data: 'items',
+      data: 'data.items',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
