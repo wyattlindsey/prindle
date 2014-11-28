@@ -10,58 +10,58 @@ var Item = require('../api/item/item.model');
 var Collection = require('../api/collection/collection.model');
 var User = require('../api/user/user.model');
 
-Item.find({}).remove(function() {
-  Item.create({
-    name : 'Backpack',
-    weight : '4lb 4oz',
-    category: 'Big 3'
-  }, {
-    name : 'Tent',
-    weight : '2lb 6oz',
-    category: 'Big 3'
-  },
-  {
-    name : 'Food',
-    weight : '5lb',
-    category: 'Consumables'
-  });
-});
-
-Collection.find({}).remove(function() {
-  Collection.create({
-    name: 'Lightweight',
-    items: [{
-      name : 'Backpack',
-      weight : '4lb 4oz',
-      category: 'Big 3'
-    },
-    {
-      name : 'Tent',
-      weight : '2lb 6oz',
-      category: 'Big 3'
-    }]
-  },
-  {
-    name: 'Long Distance',
-    items: [
-      {
-        name : 'Backpack',
-        weight : '4lb 4oz',
-        category: 'Big 3'
-      },
-      {
-        name : 'Tent',
-        weight : '2lb 6oz',
-        category: 'Big 3'
-      },
-      {
-        name: 'Food',
-        weight: '5lb',
-        category: 'Consumables'
-      }
-    ]
-  });
-});
+//Item.find({}).remove(function() {
+//  Item.create({
+//    name : 'Backpack',
+//    weight : '4lb 4oz',
+//    category: 'Big 3'
+//  }, {
+//    name : 'Tent',
+//    weight : '2lb 6oz',
+//    category: 'Big 3'
+//  },
+//  {
+//    name : 'Food',
+//    weight : '5lb',
+//    category: 'Consumables'
+//  });
+//});
+//
+//Collection.find({}).remove(function() {
+//  Collection.create({
+//    name: 'Lightweight',
+//    items: [{
+//      name : 'Backpack',
+//      weight : '4lb 4oz',
+//      category: 'Big 3'
+//    },
+//    {
+//      name : 'Tent',
+//      weight : '2lb 6oz',
+//      category: 'Big 3'
+//    }]
+//  },
+//  {
+//    name: 'Long Distance',
+//    items: [
+//      {
+//        name : 'Backpack',
+//        weight : '4lb 4oz',
+//        category: 'Big 3'
+//      },
+//      {
+//        name : 'Tent',
+//        weight : '2lb 6oz',
+//        category: 'Big 3'
+//      },
+//      {
+//        name: 'Food',
+//        weight: '5lb',
+//        category: 'Consumables'
+//      }
+//    ]
+//  });
+//});
 
 Thing.find({}).remove(function() {
   Thing.create({

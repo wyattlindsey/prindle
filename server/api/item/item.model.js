@@ -6,8 +6,7 @@ var mongoose = require('mongoose'),
 var ItemSchema = new Schema({
   name: String,
   weight: String,
-  category: String,
-  belongsTo: [String]
+  category: String
 });
 
 module.exports = mongoose.model('Item', ItemSchema);

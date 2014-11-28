@@ -11,7 +11,7 @@ angular.module('prindleApp')
     // set up ui-grid
 
     $scope.listGrid = {
-      data: 'itemsForSelectedCollection',
+      data: 'items',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
@@ -20,12 +20,7 @@ angular.module('prindleApp')
 
     $scope.$on('listCatalogSelectionChanged', function(event, row) {
 
-      $scope.getItemsForCollection(row.entity._id);
-    });
-
-    $(function() {
-      $('.ui-grid-row').addClass('.ui-widget-content').addClass('.drag');
-      $('.drag').draggable();
+      $scope.getItemsForCollection(row.entity);
     });
 
     // initialize ui-grid
