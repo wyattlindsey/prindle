@@ -7,21 +7,48 @@
 angular.module('prindleApp')
   .controller('listMainCtrl', function ($scope, $http, $q, crud) {
 
-      $scope.items = [];
+
       $scope.itemsForSelectedCollection = [];
-      $scope.collections = [];
       $scope.selectedCollection = {};
       $scope.data = {};
       $scope.data.collections = [];
       $scope.data.items = [];
 
+//      for (var i = 0; i < 100; i++) {
+//        crud.add($scope.data, 'items', {
+//          name: 'Harry',
+//          weight: '1000',
+//          category: 'Hendersons'
+//        });
+//      }
+//      for (var i = 0; i < $scope.data.items.length; i++) {
+//        crud.remove($scope.data, 'items', $scope.data.items[i]._id);
+//      }
 
       crud.get($scope.data, 'collections').then(function() {
       });
 
       crud.get($scope.data, 'items').then(function() {
-        console.log($scope.data.items);
+//        crud.remove($scope.data, 'items', $scope.data.items[0]._id);
+//        for (var i = 0; i < $scope.data.items.length; i++) {
+//          crud.remove($scope.data, 'items', $scope.data.items[i]._id);
+//        }
       });
+
+//      console.log($scope.data.items);
+
+//      crud.delete($scope.data, 'items', $scope.data.items[0]._id);
+
+//      var newItem = {
+//        name: 'Barney',
+//        weight: '000',
+//        category: 'lost'
+//      };
+//
+//      crud.add($scope.data, 'items', newItem).then(function() {
+//
+//      });
+
 
 
 
@@ -68,56 +95,56 @@ angular.module('prindleApp')
 //            });
       };
 
-      $scope.updateCollection = function(id, data) {
-        var deferred = $q.defer();
-
-        if (data === '' || id === '') {
-          deferred.reject('Invalid data');
-        } else {
-          $http.put('/api/collections/' + id, JSON.stringify(data)).success(function (data) {
-            $scope.collections = data;
-            deferred.resolve();
-          }).
-              error(function (data) {
-                deferred.reject('Update failed: ' + data);
-              });
-        }
-        return deferred.promise;
-      };
-
-
-      $scope.updateItem = function(id, data) {
-        var deferred = $q.defer();
-
-        if (data === '' || id === '') {
-          deferred.reject('Invalid data');
-        } else {
-          $http.put('/api/items/' + id, JSON.stringify(data)).success(function () {
-            deferred.resolve();
-          }).
-              error(function (data) {
-                deferred.reject('Update failed: ' + data);
-              });
-        }
-        return deferred.promise;
-      };
-
-
-      $scope.deleteItem = function(id) {
-        var deferred = $q.defer();
-
-        if (id === '') {
-          deferred.reject('no ID provided')
-        } else {
-          $http.delete('/api/items/' + id).success(function(data) {
-            deferred.resolve();
-          }).
-              error(function(err) {
-                console.log(err);
-              });
-        }
-        return deferred.promise;
-      };
+//      $scope.updateCollection = function(id, data) {
+//        var deferred = $q.defer();
+//
+//        if (data === '' || id === '') {
+//          deferred.reject('Invalid data');
+//        } else {
+//          $http.put('/api/collections/' + id, JSON.stringify(data)).success(function (data) {
+//            $scope.collections = data;
+//            deferred.resolve();
+//          }).
+//              error(function (data) {
+//                deferred.reject('Update failed: ' + data);
+//              });
+//        }
+//        return deferred.promise;
+//      };
+//
+//
+//      $scope.updateItem = function(id, data) {
+//        var deferred = $q.defer();
+//
+//        if (data === '' || id === '') {
+//          deferred.reject('Invalid data');
+//        } else {
+//          $http.put('/api/items/' + id, JSON.stringify(data)).success(function () {
+//            deferred.resolve();
+//          }).
+//              error(function (data) {
+//                deferred.reject('Update failed: ' + data);
+//              });
+//        }
+//        return deferred.promise;
+//      };
+//
+//
+//      $scope.deleteItem = function(id) {
+//        var deferred = $q.defer();
+//
+//        if (id === '') {
+//          deferred.reject('no ID provided')
+//        } else {
+//          $http.delete('/api/items/' + id).success(function(data) {
+//            deferred.resolve();
+//          }).
+//              error(function(err) {
+//                console.log(err);
+//              });
+//        }
+//        return deferred.promise;
+//      };
 
       $scope.generateTestData = function() {
 
