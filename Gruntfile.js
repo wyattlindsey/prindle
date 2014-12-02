@@ -57,9 +57,9 @@ module.exports = function (grunt) {
     watch: {
       injectJS: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          '<%= yeoman.client %>/{app,components,services}/**/*.js',
+          '!<%= yeoman.client %>/{app,components,services}/**/*.spec.js',
+          '!<%= yeoman.client %>/{app,components,services}/**/*.mock.js',
           '!<%= yeoman.client %>/app/app.js'],
         tasks: ['injector:scripts']
       },
@@ -70,7 +70,10 @@ module.exports = function (grunt) {
         tasks: ['injector:css']
       },
       mochaTest: {
-        files: ['server/**/*.spec.js'],
+        files: [
+          'server/**/*.spec.js',
+          '<%= yeoman.client %>/{app,components,services}/**/*.spec.js'
+        ],
         tasks: ['env:test', 'mochaTest']
       },
       jsTest: {

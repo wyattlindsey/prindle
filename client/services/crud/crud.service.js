@@ -1,12 +1,22 @@
 'use strict';
 
 /**
- * Abstraction for talking to the database and handling async with promises
+ * Abstraction for talking to the database and handling async with promises.  localData points
+ * to $scope.data in the main controller.  endpoint is a string that specifies which API
+ * entity (list, item) we're dealing with
  */
 
 angular.module('prindleApp')
   .service('crud', function ($http, $q) {
 
+      /**
+       *
+       * get() - pull all records from API endpoint
+       *
+       * @param localData
+       * @param endpoint
+       * @returns {*}
+       */
 
       // to-do: add optional functionality for getting just one item
     this.get = function(localData, endpoint) {
@@ -24,21 +34,43 @@ angular.module('prindleApp')
       return deferred.promise;
     };
 
+      /**
+       *
+       * add() - creates new single record
+       *
+       * @param localData
+       * @param endpoint
+       * @param newItemData
+       * @returns {*}
+       */
+
     this.add = function(localData, endpoint, newItemData) {
       var deferred = $q.defer();
 
       if (newItemData === '') {
           deferred.reject('no data');
         } else {
-          $http.post(('/api/' + endpoint), JSON.stringify(newItemData)).success(function(data) {
-            localData[endpoint].push(data);
-            deferred.resolve(data);
-          }).error(function(err) {
-            deferred.reject(err);
-          });
+          $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
+            .success(function(data) {
+              localData[endpoint].push(data);
+              deferred.resolve(data);
+            }).error(function(err) {
+              deferred.reject(err);
+            });
         }
         return deferred.promise;
     };
+
+      /**
+       *
+       * update() - modify one record
+       *
+       * @param localData
+       * @param endpoint
+       * @param id
+       * @param updatedItemData
+       * @returns {*}
+       */
 
     this.update = function(localData, endpoint, id, updatedItemData) {
       var deferred = $q.defer();
@@ -55,6 +87,16 @@ angular.module('prindleApp')
       }
       return deferred.promise;
     };
+
+      /**
+       *
+       * delete() - remove one record
+       *
+       * @param localData
+       * @param endpoint
+       * @param id
+       * @returns {*}
+       */
 
     this.remove = function(localData, endpoint, id) {
       var deferred = $q.defer();
