@@ -21,6 +21,12 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
+  it('should return -1 when the value is not present', function(){
+    chai.assert.equal(-1, [1,2,3].indexOf(5));
+    chai.assert.equal(-1, [1,2,3].indexOf(0));
+  });
+
+
 //  it('should attach a list of things to the scope', function () {
 //    $httpBackend.flush();
 //    expect(scope.awesomeThings.length).toBe(4);

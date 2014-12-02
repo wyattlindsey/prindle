@@ -12,11 +12,11 @@ describe('Service: crud', function () {
   }));
 
 //  it('should do something', function () {
-//    expect(!!crud).toBe(true);
+//    expect(!!crud).to.be(true);
 //  });
-//
+
 //  it('should be a good boy', function() {
-//    expect(true).toBe(true);
+//    expect(true).to.be(true);
 //  });
 
 });

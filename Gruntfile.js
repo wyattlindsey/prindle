@@ -71,8 +71,7 @@ module.exports = function (grunt) {
       },
       mochaTest: {
         files: [
-          'server/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components,services}/**/*.spec.js'
+          'server/**/*.spec.js'
         ],
         tasks: ['env:test', 'mochaTest']
       },
@@ -449,7 +448,9 @@ module.exports = function (grunt) {
       options: {
         reporter: 'spec'
       },
-      src: ['server/**/*.spec.js']
+      src: [
+        'server/**/*.spec.js'
+      ]
     },
 
     protractor: {
