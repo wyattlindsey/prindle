@@ -24,10 +24,13 @@ module.exports = function(config) {
       'client/bower_components/angular-xeditable/dist/js/xeditable.js',
       'client/app/app.js',
       'client/app/**/*.js',
+      'client/app/**/**/*.js',
+      'client/app/**/**/*.jade',
       'client/components/**/*.js',
       'client/app/**/*.jade',
       'client/components/**/*.jade',
-      'client/services/**/*.js'
+      'client/services/**/*.js',
+      'client/index.html'
     ],
 
     preprocessors: {
