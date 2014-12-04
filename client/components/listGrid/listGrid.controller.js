@@ -8,6 +8,9 @@
 angular.module('prindleApp')
   .controller('listGridCtrl', function ($scope) {
 
+    $scope.selectedItems = [];
+    $scope.singleSelectedItem = null;
+
     // set up ui-grid
 
     $scope.listGrid = {
@@ -42,30 +45,6 @@ angular.module('prindleApp')
           field: 'category', displayName: 'Category'
         }
       ];
-    };
-
-      /**
-       * copyItemAction() -
-       */
-
-    $scope.copyItemAction = function() {
-
-    };
-
-      /**
-       * removeItemAction() -
-       */
-
-    $scope.removeItemAction = function() {
-
-    };
-
-      /**
-       * addItemAction() -
-       */
-
-    $scope.addItemAction = function() {
-
     };
 
   });

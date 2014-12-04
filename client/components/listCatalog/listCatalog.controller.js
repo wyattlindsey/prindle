@@ -30,7 +30,7 @@ angular.module('prindleApp')
       };
 
       /**
-       * copyCatalogAction() -
+       * copyCatalogAction() - copy selected collections
        */
 
       $scope.copyCatalogAction = function() {
@@ -38,7 +38,7 @@ angular.module('prindleApp')
       };
 
       /**
-       * removeCatalogAction() -
+       * removeCatalogAction() - confirm, then delete collections
        */
 
       $scope.removeCatalogAction = function() {
@@ -46,7 +46,7 @@ angular.module('prindleApp')
       };
 
       /**
-       * addCatalogAction() -
+       * addCatalogAction() - ideally create new collection with edit action enabled
        */
 
       $scope.addCatalogAction = function() {
