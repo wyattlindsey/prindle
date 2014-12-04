@@ -28,4 +28,28 @@ angular.module('prindleApp')
         });
 
       };
+
+      /**
+       * copyCatalogAction() -
+       */
+
+      $scope.copyCatalogAction = function() {
+
+      };
+
+      /**
+       * removeCatalogAction() -
+       */
+
+      $scope.removeCatalogAction = function() {
+
+      };
+
+      /**
+       * addCatalogAction() -
+       */
+
+      $scope.addCatalogAction = function() {
+
+      };
   });

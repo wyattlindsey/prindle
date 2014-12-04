@@ -38,7 +38,6 @@ describe('Service: crud', function () {
 
     $rootScope.$apply();
 
-    expect(promise).to.be.an('object');
 
 
 //    crud.add(scopeData, 'items', newItem).should

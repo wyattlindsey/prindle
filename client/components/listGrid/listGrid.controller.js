@@ -44,4 +44,28 @@ angular.module('prindleApp')
       ];
     };
 
+      /**
+       * copyItemAction() -
+       */
+
+    $scope.copyItemAction = function() {
+
+    };
+
+      /**
+       * removeItemAction() -
+       */
+
+    $scope.removeItemAction = function() {
+
+    };
+
+      /**
+       * addItemAction() -
+       */
+
+    $scope.addItemAction = function() {
+
+    };
+
   });

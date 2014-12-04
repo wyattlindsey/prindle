@@ -1,9 +1,25 @@
 extends ../_default
 
 block content
-  div.container-fluid#listApp(ng-controller='listMainCtrl')
-    div.row-fluid
-      div.col-md-4#listCatalog(ng-controller='listCatalogCtrl')
-        .listCatalogStyle(ui-grid='listCatalog', ui-grid-selection, ui-grid-edit)
-      div.col-md-8#listGrid(ng-controller='listGridCtrl')
-        .listGridStyle(ui-grid='listGrid', ui-grid-selection, ui-grid-edit)
+  .container-fluid#listApp(ng-controller='listMainCtrl')
+    .row-fluid
+      .col-md-3#listCatalog(ng-controller='listCatalogCtrl')
+        .row.list-toolbar
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyCatalogAction()')
+            i.fa.fa-copy
+          button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeCatalogAction()')
+            i.fa.fa-minus
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCatalogAction()')
+            i.fa.fa-plus
+        .row
+          .listCatalogStyle(ui-grid='listCatalog', ui-grid-selection, ui-grid-edit)
+      .col-md-8.col-md-offset-1#listGrid(ng-controller='listGridCtrl')
+        .row.list-toolbar
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemAction()')
+            i.fa.fa-copy
+          button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemAction()')
+            i.fa.fa-minus
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
+            i.fa.fa-plus
+        .row
+          .listGridStyle(ui-grid='listGrid', ui-grid-selection, ui-grid-edit)
