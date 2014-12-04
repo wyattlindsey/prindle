@@ -29,7 +29,7 @@ angular.module('prindleApp')
        */
 
       $scope.addCatalogAction = function() {
-        $scope.crud.add($scope.data, 'collections', {
+        $scope.crud.add($scope.data, 'catalogs', {
           name: 'totally brand new'
         });
       };

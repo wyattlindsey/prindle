@@ -12,11 +12,11 @@ angular.module('prindleApp')
       $scope.catalogs = {};
       $scope.items = {};
       $scope.data = {};
-      $scope.data.collections = [];
+      $scope.data.catalogs = [];
       $scope.data.items = [];
       $scope.crud = crud;
 
-      crud.get($scope.data, 'collections');
+      crud.get($scope.data, 'catalogs');
 
       crud.get($scope.data, 'items');
 

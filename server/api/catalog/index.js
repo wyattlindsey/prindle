@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./collection.controller');
+var controller = require('./catalog.controller');
 
 var router = express.Router();
 

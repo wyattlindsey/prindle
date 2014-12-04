@@ -13,7 +13,7 @@ angular.module('prindleApp')
       $scope.catalogs.editInProgress = false;
 
       $scope.catalogList = {
-        data: 'data.collections',
+        data: 'data.catalogs',
         enableFiltering: true,
         enableRowSelection: true,
         multiSelect: false,
