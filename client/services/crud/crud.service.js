@@ -52,7 +52,6 @@ angular.module('prindleApp')
         } else {
           $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
             .success(function(data) {
-              localData[endpoint].push(data);
               deferred.resolve(data);
             }).error(function(err) {
               deferred.reject(err);
@@ -75,7 +74,7 @@ angular.module('prindleApp')
     this.update = function(localData, endpoint, id, updatedItemData) {
       var deferred = $q.defer();
 
-      if (data === '' || id === '') {
+      if (updatedItemData === '' || id === '') {
         deferred.reject('Invalid data');
       } else {
         $http.put('/api/' + endpoint + '/' + id, JSON.stringify(updatedItemData))

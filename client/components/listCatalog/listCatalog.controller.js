@@ -29,27 +29,4 @@ angular.module('prindleApp')
 
       };
 
-      /**
-       * copyCatalogAction() - copy selected collections
-       */
-
-      $scope.copyCatalogAction = function() {
-
-      };
-
-      /**
-       * removeCatalogAction() - confirm, then delete collections
-       */
-
-      $scope.removeCatalogAction = function() {
-
-      };
-
-      /**
-       * addCatalogAction() - ideally create new collection with edit action enabled
-       */
-
-      $scope.addCatalogAction = function() {
-
-      };
   });
