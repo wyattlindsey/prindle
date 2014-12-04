@@ -11,6 +11,7 @@ angular.module('prindleApp')
       $scope.catalogs.singleSelected = null;
       $scope.catalogs.allowCellEdit = true;
       $scope.catalogs.editInProgress = false;
+      $scope.catalogs.multiSelect = false;
 
       $scope.catalogList = {
         data: 'data.catalogs',
@@ -24,9 +25,13 @@ angular.module('prindleApp')
 
         $scope.catalogs.api = catalogListApi;
 
+        // define
         $scope.catalogList.columnDefs = [
           {field: 'name', displayName: 'List'}
         ];
+
+        // set up keyboard events for this particular list
+        $scope.listUtil.registerKeyEvents('catalogs', $scope);
 
         catalogListApi.selection.on.rowSelectionChanged($scope, function(row) {
           $scope.$parent.$broadcast('catalogListSelectionChanged', row);

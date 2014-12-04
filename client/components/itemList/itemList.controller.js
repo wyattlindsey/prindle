@@ -12,6 +12,7 @@ angular.module('prindleApp')
     $scope.items.singleSelected = null;
     $scope.items.allowCellEdit = true;
     $scope.items.editInProgress = false;
+    $scope.items.multiSelect = false;
 
     // set up ui-grid
 
@@ -46,6 +47,10 @@ angular.module('prindleApp')
         }
       ];
 
+      // set up keyboard binding for this particular list
+
+      $scope.listUtil.registerKeyEvents('items', $scope);
+
       /**
        *  rowSelectionChanged() - logic for any selection event in the item list
        */
@@ -64,7 +69,7 @@ angular.module('prindleApp')
           $scope.items.singleSelected = null;
         }
 
-        if ($scope.editInProgress) {
+        if ($scope.items.editInProgress) {
           $scope.selectSingleRow(row.entity);
         }
 
@@ -90,7 +95,7 @@ angular.module('prindleApp')
 
       api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
 
-        $scope.editInProgress = false;
+        $scope.items.editInProgress = false;
         var editedItem = rowEntity;
 
         if (newValue != oldValue) {
@@ -109,7 +114,7 @@ angular.module('prindleApp')
     };
 
       $scope.selectSingleRow = function(rowEntity) {
-        if (!$scope.editInProgress) {
+        if (!$scope.items.editInProgress) {
           $scope.items.api.selection.clearSelectedRows();
         }
 
@@ -118,45 +123,7 @@ angular.module('prindleApp')
       };
 
 
-      /**
-       * The below is jQuery to deal with the shift and delete keys.
-       * To do: use ui-grid as much as possible for this and move out into a controller-
-       * independent service.
-       */
 
-      // keydown/keyup to enable/disable multi-select
-      $('body').keydown(function (e) {
-        if ((e.keyCode === 16 || e.keyCode === 17 || e.metaKey || e.keyCode === 224 || e.keyCode === 91 || e.keyCode === 93) && !$scope.multiSelect) {
-          $scope.items.api.selection.setMultiSelect(true);
-          $scope.itemList.multiSelect = true;
-          $scope.items.allowCellEdit = false;
-        }
-      }).keyup(function (e) {
-        if (e.keyCode === 16 || e.keyCode === 17 || e.metaKey || e.keyCode === 224 || e.keyCode === 91 || e.keyCode === 93) {
-          $scope.items.api.selection.setMultiSelect(false);
-          $scope.itemList.multiSelect = false;
-          $scope.items.allowCellEdit = true;
-        }
-      });
-
-      //handle case of meta-tab to other application
-      //where keyup never happens and multi-select stays true
-      $(window).blur(function() {
-        $scope.items.api.selection.setMultiSelect(false);
-        $scope.itemList.multiSelect = false;
-        $scope.items.allowCellEdit = true;
-      });
-
-      //delete key brings up the delete confirm modal
-      $('body').keydown(function (e) {
-        if (e.keyCode === 8 || e.keyCode === 46) {
-          if (event.target.nodeName !== 'INPUT') {
-            e.preventDefault();
-//            $scope.deleteAction();
-            $scope.$apply();  // seems to be necessary to update the view with any alerts
-          }
-        }
-      });
 
   });
 

@@ -6,7 +6,7 @@
  */
 
 angular.module('prindleApp')
-  .controller('listManagerCtrl', function ($scope, $http, $q, crud) {
+  .controller('listManagerCtrl', function ($scope, $http, $q, crud, listUtil) {
 
 
       $scope.catalogs = {};
@@ -15,6 +15,7 @@ angular.module('prindleApp')
       $scope.data.catalogs = [];
       $scope.data.items = [];
       $scope.crud = crud;
+      $scope.listUtil = listUtil;
 
       crud.get($scope.data, 'catalogs');
 
