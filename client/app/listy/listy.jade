@@ -1,7 +1,7 @@
 extends ../_default
 
 block content
-  .container-fluid#listApp(ng-controller='listMainCtrl')
+  .container-fluid#listApp(ng-controller='listManagerCtrl')
     .row-fluid
       .col-md-3#listCatalog
         .row.list-toolbar(ng-controller='catalogToolbarCtrl')
@@ -11,8 +11,8 @@ block content
             i.fa.fa-minus
           button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCatalogAction()')
             i.fa.fa-plus
-        .row(ng-controller='listCatalogCtrl')
-          .listCatalogStyle(ui-grid='listCatalog', ui-grid-selection, ui-grid-edit)
+        .row(ng-controller='catalogListCtrl')
+          .listCatalogStyle(ui-grid='catalogList', ui-grid-selection, ui-grid-edit)
       .col-md-8.col-md-offset-1#listGrid
         .row.list-toolbar(ng-controller='itemToolbarCtrl')
           button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemAction()')
@@ -21,5 +21,5 @@ block content
             i.fa.fa-minus
           button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
             i.fa.fa-plus
-        .row(ng-controller='listGridCtrl')
-          .listGridStyle(ui-grid='listGrid', ui-grid-selection, ui-grid-edit)
+        .row(ng-controller='itemListCtrl')
+          .listGridStyle(ui-grid='itemList', ui-grid-selection, ui-grid-edit)
