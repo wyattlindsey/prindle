@@ -24,5 +24,8 @@
     "angular-mocks": ">=1.2.*",
     "angular-scenario": ">=1.2.*",
     "angular-ui-grid": "~3.0.0-rc.16"
+  },
+  "resolutions": {
+    "angular": "~1.2.16"
   }
 }

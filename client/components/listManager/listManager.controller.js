@@ -8,18 +8,21 @@
 angular.module('prindleApp')
   .controller('listManagerCtrl', function ($scope, $http, $q, crud, listUtil) {
 
+    $scope.data = {
+      catalogs : {
+        list : []
+      }
+    };
 
-      $scope.catalogs = {};
-      $scope.items = {};
-      $scope.data = {};
-      $scope.data.catalogs = [];
-      $scope.data.items = [];
-      $scope.crud = crud;
-      $scope.listUtil = listUtil;
 
-      crud.get($scope.data, 'catalogs');
+    $scope.crud = crud;
+    $scope.listUtil = listUtil;
+    crud.get('catalogs')
+      .then(function(data) {
+        $scope.data.catalogs.list = data;
+      });
 
-      crud.get($scope.data, 'items');
+//    crud.get($scope, 'items');
 
 
   });

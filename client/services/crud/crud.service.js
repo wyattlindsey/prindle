@@ -19,12 +19,11 @@ angular.module('prindleApp')
        */
 
       // to-do: add optional functionality for getting just one item
-    this.get = function(localData, endpoint) {
+    this.get = function(endpoint) {
       var deferred = $q.defer();
 
       $http.get('/api/' + endpoint).success(function(data) {
-        localData[endpoint] = data;
-        deferred.resolve(localData);
+        deferred.resolve(data);
       }).
           error(function(err) {
             console.log(err);
@@ -44,19 +43,19 @@ angular.module('prindleApp')
        * @returns {*}
        */
 
-    this.add = function(localData, endpoint, newItemData) {
+    this.add = function(endpoint, newItemData) {
       var deferred = $q.defer();
 
       if (newItemData === '') {
           deferred.reject('no data');
-        } else {
-          $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
-            .success(function(data) {
-              deferred.resolve(data);
-            }).error(function(err) {
-              deferred.reject(err);
-            });
-        }
+      } else {
+        $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
+        .success(function(data) {
+          deferred.resolve(data);
+        }).error(function(err) {
+          deferred.reject(err);
+        });
+      }
         return deferred.promise;
     };
 
@@ -97,17 +96,17 @@ angular.module('prindleApp')
        * @returns {*}
        */
 
-    this.remove = function(localData, endpoint, id) {
+    this.remove = function(endpoint, id) {
       var deferred = $q.defer();
       if (id === '') {
-        deferred.reject('no ID provided')
+        deferred.reject('no ID provided');
       } else {
         $http.delete('/api/' + endpoint + '/' + id).success(function(data) {
           deferred.resolve();
         }).
-            error(function(err) {
-              console.log(err);
-            });
+        error(function(err) {
+          console.log(err);
+        });
       }
       return deferred.promise;
     };
