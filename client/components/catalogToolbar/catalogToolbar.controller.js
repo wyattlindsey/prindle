@@ -8,6 +8,7 @@
 angular.module('prindleApp')
   .controller('catalogToolbarCtrl', function ($scope) {
 
+    var catalogs = $scope.data.catalogs;
 
     /**
      * addCatalogAction() - ideally create new collection with edit action enabled
@@ -23,13 +24,13 @@ angular.module('prindleApp')
           {
             name: 'Wyatt'
           }
-        ]);
+        ]
+      );
     };
+
     /**
      * copyCatalogAction() - copy selected collections
      */
-
-    var catalogs = $scope.data.catalogs;
 
     $scope.copyCatalogAction = function() {
 

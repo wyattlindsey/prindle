@@ -70,9 +70,9 @@ angular.module('prindleApp')
        * @returns {*}
        */
 
-    this.update = function(localData, endpoint, id, updatedItemData) {
-      var deferred = $q.defer();
+    this.update = function(endpoint, id, updatedItemData) {
 
+      var deferred = $q.defer();
       if (updatedItemData === '' || id === '') {
         deferred.reject('Invalid data');
       } else {

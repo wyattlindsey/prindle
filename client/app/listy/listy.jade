@@ -13,13 +13,13 @@ block content
             i.fa.fa-plus
         .row(ng-controller='catalogListCtrl')
           .listCatalogStyle(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
-      //.col-md-8.col-md-offset-1#listGrid
-      //  .row.list-toolbar(ng-controller='itemToolbarCtrl')
-      //    button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemAction()')
-      //      i.fa.fa-copy
-      //    button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemAction()')
-      //      i.fa.fa-minus
-      //    button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
-      //      i.fa.fa-plus
-      //  .row(ng-controller='itemListCtrl')
-      //    .listGridStyle(ui-grid='itemView', ui-grid-selection, ui-grid-edit)
+      .col-md-8.col-md-offset-1#listGrid
+        .row.list-toolbar(ng-controller='itemToolbarCtrl')
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemAction()')
+            i.fa.fa-copy
+          button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemAction()')
+            i.fa.fa-minus
+          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
+            i.fa.fa-plus
+        .row(ng-controller='itemListCtrl')
+          .listGridStyle(ui-grid='itemView', ui-grid-selection, ui-grid-edit)

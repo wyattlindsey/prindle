@@ -7,43 +7,58 @@
 
 angular.module('prindleApp')
   .controller('itemToolbarCtrl', function ($scope) {
-//
-//      /**
-//       * copyItemAction() - copy selected items
-//       */
-//
-//      $scope.copyItemAction = function() {
-//
-//      };
-//
-//      /**
-//       * removeItemAction() - confirm and then delete selected items
-//       */
-//
-//      $scope.removeItemAction = function() {
-//        console.log($scope.data.items);
-////        if ($scope.data.items) {
-////          $scope.data.items.selected.forEach(function(item) {
-////
-////            $scope.crud.remove($scope.data, 'items', item._id)
-////              .then(function() {
-////                $scope.crud.get($scope.data, 'items');
-////              });
-////          });
-////        }
-//      };
-//
-//      /**
-//       * addItemAction() - present dialog, take input and create new item
-//       */
-//
-//      $scope.addItemAction = function() {
-//        $scope.crud.add($scope, 'items', {
-//          name: 'Coile',
-//          weight: '200',
-//          category: 'Home'
-//        }).then(function() {
-//          $scope.crud.get($scope, 'items');
-//        });
-//      };
+
+    var items = $scope.data.items;
+    var displayItems = $scope.data.displayItems;
+
+    /**
+     * addItemAction() - present dialog, take input and create new item
+     */
+    var i = 0;
+
+    $scope.addItemAction = function() {
+      $scope.listUtil.add('items',
+        [{
+          name : 'my new thing',
+          weight : i++,
+          category : 'stuff'
+        }]
+      );
+    };
+
+      /**
+       * copyItemAction() - copy selected items
+       */
+
+      $scope.copyItemAction = function() {
+
+        if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
+          displayItems.selected.length === 0) {
+          return;
+        } else {
+
+          $scope.listUtil.copy('items', displayItems.selected);
+
+        }
+      };
+
+      /**
+       * removeItemAction() - confirm and then delete selected items
+       */
+
+      $scope.removeItemAction = function() {
+
+        if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
+          displayItems.selected.length === 0) {
+
+          return;
+
+        } else {
+
+          $scope.listUtil.delete('items', displayItems.selected);
+
+        }
+      };
+
+
   });

@@ -7,22 +7,83 @@
 
 angular.module('prindleApp')
   .controller('itemListCtrl', function ($scope) {
-//    var selected = $scope.$parent.items.selected = [];
-//
-//    $scope.data.items.singleSelected = null;
-//    $scope.data.items.allowCellEdit = true;
-//    $scope.data.items.editInProgress = false;
-//    $scope.data.items.multiSelect = false;
-//
-////    set up ui-grid
-//
-//    $scope.display.itemList = {
-//      data: 'data.items.list',
-//      enableFiltering: true,
-//      enableRowSelection: true,
-//      multiSelect: false,
-//      enableRowHeaderSelection: false
-//    };
+
+    var items = $scope.data.items;
+    var displayItems = $scope.data.displayItems;
+
+
+    // set up shallow reference from real data to display data
+    $scope.$parent.$on('itemsLoaded', function() {
+      angular.extend($scope.data.displayItems, $scope.data.items);
+    });
+
+    displayItems.selected = [];
+    displayItems.singleSelected = null;
+    displayItems.allowCellEdit = true;
+    displayItems.editInProgress = false;
+    displayItems.multiSelect = false;
+
+
+
+//    set up ui-grid
+
+    $scope.itemView = {
+      data: 'data.displayItems',
+      enableFiltering: true,
+      enableRowSelection: true,
+      multiSelect: false,
+      enableRowHeaderSelection: false
+    };
+
+    var itemView = $scope.itemView;
+
+    itemView.onRegisterApi = function(itemViewApi) {
+      itemView.api = itemViewApi;
+
+      // set up columns
+
+      itemView.columnDefs = [
+        {
+          field: 'name', displayName: 'Name'
+        },
+        {
+          field: 'weight', displayName: 'Weight'
+        },
+        {
+          field: 'category', displayName: 'Category'
+        }
+      ];
+
+      // selection
+
+      itemView.api.selection.on.rowSelectionChanged($scope, function(row) {
+        displayItems.selected = itemView.api.selection.getSelectedRows();
+        $scope.$parent.$broadcast('catalogListSelectionChanged', row);
+      });
+
+      itemView.api.selection.on.rowSelectionChangedBatch($scope, function(rows) {
+        displayItems.selected = itemView.api.selection.getSelectedRows();
+        $scope.$parent.$broadcast('catalogListMultipleCatalogsSelected', rows);
+      });
+
+      // cell editing
+
+      itemView.api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+
+        if (newValue != oldValue) {
+          $scope.listUtil.update('items', [rowEntity]);
+        }
+      });
+    };
+
+    // listen for display refreshes
+    $scope.$on('redrawitems', function(event, data) {
+      $scope.data.displayItems = data;
+      displayItems.selected = [];
+    });
+
+    $scope.listUtil.registerKeyEvents($scope.itemView);
+
 //
 //    $scope.$on('catalogListSelectionChanged', function(event, row) {
 //

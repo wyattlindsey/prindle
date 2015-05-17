@@ -28,10 +28,8 @@ angular.module('prindleApp')
 
     this.copy = function(listName, entries) {
       async.each(entries, function(entry, callback) {
-        var newEntry = {
-          name : entry.name
-        };
-        crud.add(listName, newEntry).then(function() {
+        delete entry['_id'];
+        crud.add(listName, entry).then(function() {
           callback();
         });
       }, function(err) {
@@ -43,6 +41,22 @@ angular.module('prindleApp')
             var broadcastString = 'redraw' + listName;
             $rootScope.$broadcast(broadcastString, data);
           });
+        }
+      });
+    };
+
+    this.update = function(listName, editedEntries) {
+      async.each(editedEntries, function(entry, callback) {
+        crud.update(listName, entry._id, entry);
+      }, function(err) {
+        if (err) {
+          console.log('error editing entry');
+        } else {
+          crud.get(listName)
+            .then(function(data) {
+              var broadcastString = 'redraw' + listName;
+              $rootScope.$broadcast(broadcastString, data);
+            });
         }
       });
     };
