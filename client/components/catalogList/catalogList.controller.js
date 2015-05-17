@@ -7,17 +7,20 @@
 angular.module('prindleApp')
   .controller('catalogListCtrl', function ($scope) {
 
+    var catalogs = $scope.data.catalogs;
 
-    $scope.data.catalogs.selected = [];
-    $scope.data.catalogs.singleSelected = null;
-    $scope.data.catalogs.allowCellEdit = true;
-    $scope.data.catalogs.editInProgress = false;
-    $scope.data.catalogs.multiSelect = false;
+    catalogs.selected = [];
+    catalogs.singleSelected = null;
+    catalogs.allowCellEdit = true;
+    catalogs.editInProgress = false;
+    catalogs.multiSelect = false;
+
+
 
 
     // set up ui-grid instance
 
-    $scope.catalogList = {
+    $scope.catalogView = {
       data: 'data.catalogs.list',
       enableFiltering: true,
       enableRowSelection: true,
@@ -25,28 +28,36 @@ angular.module('prindleApp')
       enableRowHeaderSelection: false
     };
 
+    var catalogView = $scope.catalogView;
 
-    $scope.catalogList.onRegisterApi = function(catalogListApi) {
 
-      $scope.catalogList.api = catalogListApi;
+    catalogView.onRegisterApi = function(catalogViewApi) {
 
-      $scope.catalogList.columnDefs = [
-        {field: 'name', displayName: 'List'}
+      $scope.catalogView.api = catalogViewApi;
+
+      catalogView.columnDefs = [
+        {field: 'name', displayName: 'Catalogs'}
       ];
 
       // set up keyboard events for this particular list
-      $scope.listUtil.registerKeyEvents($scope.catalogList);
+      $scope.listUtil.registerKeyEvents($scope.catalogView);
 
-      catalogListApi.selection.on.rowSelectionChanged($scope, function(row) {
-        $scope.data.catalogs.selected = catalogListApi.selection.getSelectedRows();
+      catalogView.api.selection.on.rowSelectionChanged($scope, function(row) {
+        catalogs.selected = catalogView.api.selection.getSelectedRows();
         $scope.$parent.$broadcast('catalogListSelectionChanged', row);
       });
 
-      catalogListApi.selection.on.rowSelectionChangedBatch($scope, function(rows) {
-        $scope.data.catalogs.selected = catalogListApi.selection.getSelectedRows();
+      catalogView.api.selection.on.rowSelectionChangedBatch($scope, function(rows) {
+        catalogs.selected = catalogView.api.selection.getSelectedRows();
         $scope.$parent.$broadcast('catalogListMultipleCatalogsSelected', rows);
       });
 
     };
+
+    // listen for display refreshes
+    $scope.$on('redrawcatalogs', function(event, data) {
+      catalogs.list = data;
+      catalogs.selected = [];
+    });
 
   });

@@ -7,67 +7,57 @@
 
 angular.module('prindleApp')
   .controller('catalogToolbarCtrl', function ($scope) {
-      /**
-       * copyCatalogAction() - copy selected collections
-       */
 
-      $scope.copyCatalogAction = function() {
 
-      };
+    /**
+     * addCatalogAction() - ideally create new collection with edit action enabled
+     */
 
-      /**
-       * removeCatalogAction() - confirm, then delete collections
-       */
 
-      $scope.removeCatalogAction = function() {
+    $scope.addCatalogAction = function() {
 
-        if (typeof $scope.data.catalogs  === 'undefined') {
+      $scope.listUtil.add('catalogs',
+        [{
+            name : 'my new thing'
+          },
+          {
+            name: 'Wyatt'
+          }
+        ]);
+    };
+    /**
+     * copyCatalogAction() - copy selected collections
+     */
 
-          return;
+    var catalogs = $scope.data.catalogs;
 
-        } else {
+    $scope.copyCatalogAction = function() {
 
-          var qtyItemsToDelete = $scope.data.catalogs.selected.length;
+      if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
+        catalogs.selected.length === 0) {
+        return;
+      } else {
 
-          var removeCatalogItem = function(index) {
-            (function(index) {
-              if (index >= 0) {
-                $scope.crud.remove('catalogs', $scope.data.catalogs.list[index]._id)
-                  .then(function() {
-                    // only do a GET after the last item deleted
-                    if (index === 0) {
-                      $scope.crud.get('catalogs')
-                        .then(function(data) {
-                          $scope.data.catalogs.list = data;
-                        });
-                    }
-                  });
-                // recursively call removal function
-                removeCatalogItem(--index);
-              }
-            })(index);
+        $scope.listUtil.copy('catalogs', catalogs.selected);
 
-          };
-          // first call to recursive function
-          removeCatalogItem(qtyItemsToDelete - 1);
-        }
-      };
+      }
+    };
 
-      /**
-       * addCatalogAction() - ideally create new collection with edit action enabled
-       */
+    /**
+     * removeCatalogAction() - confirm, then delete collections
+     */
 
-      var i = 0;
+    $scope.removeCatalogAction = function() {
 
-      $scope.addCatalogAction = function() {
-        $scope.crud.add('catalogs', {
-          name: 'totally brand new ' + i++
-        })
-        .then(function() {
-          $scope.crud.get('catalogs')
-            .then(function(data) {
-              $scope.data.catalogs.list = data;
-            });
-        });
-      };
+      if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
+        catalogs.selected.length === 0) {
+
+        return;
+
+      } else {
+
+        $scope.listUtil.delete('catalogs', catalogs.selected);
+
+      }
+    };
   });
