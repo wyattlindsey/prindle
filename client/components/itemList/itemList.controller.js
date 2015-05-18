@@ -10,6 +10,7 @@ angular.module('prindleApp')
 
     var items = $scope.data.items;
     var displayItems = $scope.data.displayItems;
+    var state = $scope.state.items;
 
 
     // set up shallow reference from real data to display data
@@ -48,47 +49,11 @@ angular.module('prindleApp')
         }
       ];
 
-
-
-      /**
-       * The following event handlers ensure that clicks registered by a row during edits
-       * don't trigger a select/deselect action for that row.
-       */
-
-//      itemView.api.edit.on.beginCellEdit($scope, function(rowEntity, colDef) {
-//        displayItems.editInProgress = true;
-//        displayItems.singleSelected = rowEntity;
-//        $scope.selectSingleRow(rowEntity);
-//        $scope.$apply();
-//      });
-
-//      itemView.api.edit.on.cancelCellEdit($scope, function(rowEntity, colDef) {
-//        displayItems.editInProgress = false;
-//        $scope.selectSingleRow(rowEntity);
-//        $scope.$apply();
-//      });
-
-//      // cell editing
-//
-//      itemView.api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-//        $scope.data.items.editInProgress = false;
-//        if (newValue != oldValue) {
-//          $scope.listUtil.update('items', [rowEntity]);
-//          $scope.selectSingleRow(rowEntity);
-//        }
-//      });
-
       // set up event handlers for editing and selection
       $scope.gridService.registerSelectionEditEvents($scope, itemView, $scope.state.items, 'items');
 
       // set up keyboard events for this particular list
       $scope.gridService.registerKeyEvents(itemView);
-    };
-
-    $scope.selectSingleRow = function(rowEntity) {
-      if (itemView.editInProgress) {
-        itemView.api.selection.selectRow(rowEntity);
-      }
     };
 
     // listen for display refreshes

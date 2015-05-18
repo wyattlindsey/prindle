@@ -17,19 +17,17 @@ angular.module('prindleApp')
 
       listView.api.selection.on.rowSelectionChanged(scope, function(row) {
         state.selected = listView.api.selection.getSelectedRows();
-
-        var broadcastMessage = listName + 'ViewSelectionChanged';
+        var broadcastMessage = listName + 'SelectionChanged';
         scope.$parent.$broadcast(broadcastMessage, row);
 
-        if (listView.editInProgress) {
-          scope.selectSingleRow(row.entity);
+        if (state.editInProgress) {
+          selectSingleRow(row.entity, listView, state);
         }
       });
 
       listView.api.selection.on.rowSelectionChangedBatch(scope, function(rows) {
         state.selected = listView.api.selection.getSelectedRows();
-
-        var broadcastMessage = listName + 'ViewMultipleSelected';
+        var broadcastMessage = listName + 'MultipleSelected';
         scope.$parent.$broadcast(broadcastMessage, rows);
       });
 
@@ -37,13 +35,13 @@ angular.module('prindleApp')
 
       listView.api.edit.on.beginCellEdit(scope, function(rowEntity, colDef) {
         state.editInProgress = true;
-        scope.selectSingleRow(rowEntity);
+        selectSingleRow(rowEntity, listView, state);
         scope.$apply();
       });
 
       listView.api.edit.on.cancelCellEdit(scope, function(rowEntity, colDef) {
         state.editInProgress = false;
-        scope.selectSingleRow(rowEntity);
+        selectSingleRow(rowEntity, listView, state);
         scope.$apply();
       });
 
@@ -51,9 +49,15 @@ angular.module('prindleApp')
         state.editInProgress = false;
         if (newValue != oldValue) {
           scope.listUtil.update(listName, [rowEntity]);
-          scope.selectSingleRow(rowEntity);
+          selectSingleRow(rowEntity, listView, state);
         }
       });
+    };
+
+    var selectSingleRow = function(rowEntity, listView, state) {
+      if (state.editInProgress) {
+        listView.api.selection.selectRow(rowEntity);
+      }
     };
 
 

@@ -9,6 +9,7 @@ angular.module('prindleApp')
   .controller('catalogToolbarCtrl', function ($scope) {
 
     var catalogs = $scope.data.catalogs;
+    var state = $scope.state.catalogs;
 
     /**
      * addCatalogAction() - ideally create new collection with edit action enabled
@@ -35,11 +36,11 @@ angular.module('prindleApp')
     $scope.copyCatalogAction = function() {
 
       if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
-        catalogs.selected.length === 0) {
+        state.selected.length === 0) {
         return;
       } else {
 
-        $scope.listUtil.copy('catalogs', catalogs.selected);
+        $scope.listUtil.copy('catalogs', state.selected);
 
       }
     };
@@ -51,13 +52,13 @@ angular.module('prindleApp')
     $scope.removeCatalogAction = function() {
 
       if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
-        catalogs.selected.length === 0) {
+        state.selected.length === 0) {
 
         return;
 
       } else {
 
-        $scope.listUtil.delete('catalogs', catalogs.selected);
+        $scope.listUtil.delete('catalogs', state.selected);
 
       }
     };
