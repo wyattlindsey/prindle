@@ -6,22 +6,36 @@
  */
 
 angular.module('prindleApp')
-  .controller('listManagerCtrl', function ($scope, $http, $q, crud, listUtil) {
+  .controller('listManagerCtrl', function ($scope, $http, $q, crud, gridService, listUtil) {
 
     // set up data structures for catalogs, all items, and displayed items
 
     $scope.data = {
-      catalogs : {
-        list : [] // declare master list here?
+      catalogs: {
+        list: [] // declare master list here?
       },
-      items : [],
-      displayItems : []
+      items: [],
+      displayItems: []
+    };
+
+    // initialize list state
+
+    $scope.state = {
+      catalogs: {
+        selected: [],
+        editInProgress: false
+      },
+      items: {
+        selected: [],
+        editInProgress: false
+      }
     };
 
     // instantiate services
 
     $scope.crud = crud;
     $scope.listUtil = listUtil;
+    $scope.gridService = gridService;
 
     // initialize views
 

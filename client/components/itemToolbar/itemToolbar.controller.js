@@ -10,6 +10,8 @@ angular.module('prindleApp')
 
     var items = $scope.data.items;
     var displayItems = $scope.data.displayItems;
+    var itemView = $scope.itemView;
+    var state = $scope.state.items;
 
     /**
      * addItemAction() - present dialog, take input and create new item
@@ -32,12 +34,13 @@ angular.module('prindleApp')
 
       $scope.copyItemAction = function() {
 
+
         if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
-          displayItems.selected.length === 0) {
+          state.selected.length === 0) {
           return;
         } else {
 
-          $scope.listUtil.copy('items', displayItems.selected);
+          $scope.listUtil.copy('items', state.selected);
 
         }
       };
@@ -49,13 +52,13 @@ angular.module('prindleApp')
       $scope.removeItemAction = function() {
 
         if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
-          displayItems.selected.length === 0) {
+          state.selected.length === 0) {
 
           return;
 
         } else {
 
-          $scope.listUtil.delete('items', displayItems.selected);
+          $scope.listUtil.delete('items', state.selected);
 
         }
       };

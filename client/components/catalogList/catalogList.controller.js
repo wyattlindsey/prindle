@@ -9,12 +9,6 @@ angular.module('prindleApp')
 
     var catalogs = $scope.data.catalogs;
 
-    catalogs.selected = [];
-    catalogs.singleSelected = null;
-    catalogs.allowCellEdit = true;
-    catalogs.editInProgress = false;
-    catalogs.multiSelect = false;
-
     // set up ui-grid instance
 
     $scope.catalogView = {
@@ -26,6 +20,9 @@ angular.module('prindleApp')
     };
 
     var catalogView = $scope.catalogView;
+
+    catalogView.selected = [];
+    catalogView.editInProgress = false;
 
     catalogView.onRegisterApi = function(catalogViewApi) {
 
@@ -46,18 +43,21 @@ angular.module('prindleApp')
         }
       });
 
+      // set up event handlers for editing and selection
+      $scope.gridService.registerSelectionEditEvents($scope, catalogView, catalogs.list, 'catalogs');
+
       // set up keyboard events for this particular list
-      $scope.listUtil.registerKeyEvents($scope.catalogView);
+      $scope.gridService.registerKeyEvents($scope.catalogView);
 
       // selection
 
       catalogView.api.selection.on.rowSelectionChanged($scope, function(row) {
-        catalogs.selected = catalogView.api.selection.getSelectedRows();
+        catalogView.selected = catalogView.api.selection.getSelectedRows();
         $scope.$parent.$broadcast('catalogListSelectionChanged', row);
       });
 
       catalogView.api.selection.on.rowSelectionChangedBatch($scope, function(rows) {
-        catalogs.selected = catalogView.api.selection.getSelectedRows();
+        catalogView.selected = catalogView.api.selection.getSelectedRows();
         $scope.$parent.$broadcast('catalogListMultipleCatalogsSelected', rows);
       });
 
@@ -65,12 +65,18 @@ angular.module('prindleApp')
 
     };
 
+    $scope.selectSingleRow = function(rowEntity) {
+      if (catalogView.editInProgress) {
+        catalogView.api.selection.selectRow(rowEntity);
+      }
+    };
+
 
 
     // listen for display refreshes
     $scope.$on('redrawcatalogs', function(event, data) {
       catalogs.list = data;
-      catalogs.selected = [];
+      catalogView.selected = [];
     });
 
   });

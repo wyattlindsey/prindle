@@ -17,15 +17,8 @@ angular.module('prindleApp')
       angular.extend($scope.data.displayItems, $scope.data.items);
     });
 
-    displayItems.selected = [];
-    displayItems.singleSelected = null;
-    displayItems.allowCellEdit = true;
-    displayItems.editInProgress = false;
-    displayItems.multiSelect = false;
 
-
-
-//    set up ui-grid
+    // set up ui-grid
 
     $scope.itemView = {
       data: 'data.displayItems',
@@ -36,6 +29,7 @@ angular.module('prindleApp')
     };
 
     var itemView = $scope.itemView;
+
 
     itemView.onRegisterApi = function(itemViewApi) {
       itemView.api = itemViewApi;
@@ -54,138 +48,54 @@ angular.module('prindleApp')
         }
       ];
 
-      // selection
 
-      itemView.api.selection.on.rowSelectionChanged($scope, function(row) {
-        displayItems.selected = itemView.api.selection.getSelectedRows();
-        $scope.$parent.$broadcast('catalogListSelectionChanged', row);
-      });
 
-      itemView.api.selection.on.rowSelectionChangedBatch($scope, function(rows) {
-        displayItems.selected = itemView.api.selection.getSelectedRows();
-        $scope.$parent.$broadcast('catalogListMultipleCatalogsSelected', rows);
-      });
+      /**
+       * The following event handlers ensure that clicks registered by a row during edits
+       * don't trigger a select/deselect action for that row.
+       */
 
-      // cell editing
+//      itemView.api.edit.on.beginCellEdit($scope, function(rowEntity, colDef) {
+//        displayItems.editInProgress = true;
+//        displayItems.singleSelected = rowEntity;
+//        $scope.selectSingleRow(rowEntity);
+//        $scope.$apply();
+//      });
 
-      itemView.api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+//      itemView.api.edit.on.cancelCellEdit($scope, function(rowEntity, colDef) {
+//        displayItems.editInProgress = false;
+//        $scope.selectSingleRow(rowEntity);
+//        $scope.$apply();
+//      });
 
-        if (newValue != oldValue) {
-          $scope.listUtil.update('items', [rowEntity]);
-        }
-      });
+//      // cell editing
+//
+//      itemView.api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
+//        $scope.data.items.editInProgress = false;
+//        if (newValue != oldValue) {
+//          $scope.listUtil.update('items', [rowEntity]);
+//          $scope.selectSingleRow(rowEntity);
+//        }
+//      });
+
+      // set up event handlers for editing and selection
+      $scope.gridService.registerSelectionEditEvents($scope, itemView, $scope.state.items, 'items');
+
+      // set up keyboard events for this particular list
+      $scope.gridService.registerKeyEvents(itemView);
+    };
+
+    $scope.selectSingleRow = function(rowEntity) {
+      if (itemView.editInProgress) {
+        itemView.api.selection.selectRow(rowEntity);
+      }
     };
 
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {
       $scope.data.displayItems = data;
-      displayItems.selected = [];
+      itemView.selected = [];
     });
-
-    $scope.listUtil.registerKeyEvents($scope.itemView);
-
-//
-//    $scope.$on('catalogListSelectionChanged', function(event, row) {
-//
-//    });
-//
-//    // initialize ui-grid
-//
-//    $scope.display.itemList.onRegisterApi = function(api) {
-//      $scope.display.items.api = api;
-//
-//      // set up columns
-//
-//      $scope.display.itemList.columnDefs = [
-//        {
-//          field: 'name', displayName: 'Name'
-//        },
-//        {
-//          field: 'weight', displayName: 'Weight'
-//        },
-//        {
-//          field: 'category', displayName: 'Category'
-//        }
-//      ];
-//
-//      // set up keyboard binding for this particular list
-//
-//      $scope.listUtil.registerKeyEvents('items', $scope);
-//
-//      /**
-//       *  rowSelectionChanged() - logic for any selection event in the item list
-//       */
-//
-//      api.selection.on.rowSelectionChanged($scope, function(row) {
-//
-//        // get current state of selected items
-//        selected = api.selection.getSelectedRows();
-//
-//        // logic for updating data in contact details view
-//        if (selected.length === 1) {
-//          //just one item selected
-//          $scope.data.items.singleSelected = row.entity;
-//        } else {
-//          //clear out data and pull in defaults when more than one row is selected
-//          $scope.data.items.singleSelected = null;
-//        }
-//
-//        if ($scope.data.items.editInProgress) {
-//          $scope.selectSingleRow(row.entity);
-//        }
-//
-//      });
-//
-//      /**
-//       * The following three event handlers ensure that clicks registered by a row during edits
-//       * don't trigger a select/deselect action for that row.
-//       */
-//
-//      api.edit.on.beginCellEdit($scope, function(rowEntity, colDef) {
-//        $scope.data.items.editInProgress = true;
-//        $scope.data.items.singleSelected = rowEntity;
-//        $scope.selectSingleRow(rowEntity);
-//        $scope.$apply();
-//      });
-//
-//      api.edit.on.cancelCellEdit($scope, function(rowEntity, colDef) {
-//        $scope.data.items.editInProgress = false;
-//        $scope.selectSingleRow(rowEntity);
-//        $scope.$apply();
-//      });
-//
-//      api.edit.on.afterCellEdit($scope, function(rowEntity, colDef, newValue, oldValue) {
-//
-//        $scope.data.items.editInProgress = false;
-//        var editedItem = rowEntity;
-//
-//        //the below is probaby fucked
-//        if (newValue != oldValue) {
-//          $scope.crud.update($scope.list, 'data.items', editedItem._id, editedItem)
-//              .then(function() {
-//                $scope.crud.get($scope.data.list, 'items').then(function() {
-//                  // not sure why selectSingleRow doesn't work here
-//                  $scope.selectSingleRow(editedItem);
-//
-//                });
-//              });
-//        }
-//      });
-//
-//
-//    };
-//
-//      $scope.selectSingleRow = function(rowEntity) {
-//        if (!$scope.items.editInProgress) {
-//          api.selection.clearSelectedRows();
-//        }
-//
-//        // To do: why doesn't the below make the row look selected in the grid?
-//        api.selection.selectRow(rowEntity);
-//      };
-//
-//
-//
 
   });
 
