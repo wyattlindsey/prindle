@@ -14,22 +14,29 @@ angular.module('prindleApp')
 
       // selection
 
-
       listView.api.selection.on.rowSelectionChanged(scope, function(row) {
-        state.selected = listView.api.selection.getSelectedRows();
-        var broadcastMessage = listName + 'SelectionChanged';
-        scope.$parent.$broadcast(broadcastMessage, row);
-
-        if (state.editInProgress) {
-          selectSingleRow(row.entity, listView, state);
-        }
+        var rows = [row];
+        processSelectionChange(rows);
       });
 
       listView.api.selection.on.rowSelectionChangedBatch(scope, function(rows) {
-        state.selected = listView.api.selection.getSelectedRows();
-        var broadcastMessage = listName + 'MultipleSelected';
-        scope.$parent.$broadcast(broadcastMessage, rows);
+        processSelectionChange(rows);
       });
+
+      var processSelectionChange = function(rows) {
+        state.selected = listView.api.selection.getSelectedRows();
+        if (state.selected.length > 1) {
+          state.multipleItemsSelected = true;
+        } else {
+          state.multipleItemsSelected = false;
+        }
+        var broadcastMessage = listName + 'SelectionChanged';
+        scope.$parent.$broadcast(broadcastMessage, rows);
+
+        if (state.editInProgress && !state.multipleItemsSelected) {
+          selectSingleRow(rows[0].entity, listView, state);
+        }
+      };
 
       // cell editing
 
@@ -63,7 +70,7 @@ angular.module('prindleApp')
 
     /**
      * The below is jQuery to deal with the shift and delete keys.
-     * To do: use ui-grid as much as possible for this and move out into a controller-
+     * To do: use ui-grid as much as possible for this and move out into a `controller-
      * independent service. << that's in progress now
      */
 

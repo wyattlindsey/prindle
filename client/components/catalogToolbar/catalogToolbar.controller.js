@@ -18,15 +18,16 @@ angular.module('prindleApp')
 
     $scope.addCatalogAction = function() {
 
+      var itemList = [$scope.$parent.data.items[0]._id, $scope.$parent.data.items[1]._id, $scope.$parent.data.items[2]._id];
+
       $scope.listUtil.add('catalogs',
         [{
-            name : 'my new thing'
-          },
-          {
-            name: 'Wyatt'
+            name : 'my new list of things',
+            items : itemList
           }
         ]
       );
+
     };
 
     /**

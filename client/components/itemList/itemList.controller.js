@@ -8,21 +8,21 @@
 angular.module('prindleApp')
   .controller('itemListCtrl', function ($scope) {
 
-    var items = $scope.data.items;
-    var displayItems = $scope.data.displayItems;
+    var items = $scope.$parent.data.items;
+    var displayItems = $scope.$parent.data.displayItems; // unneeded?
     var state = $scope.state.items;
 
 
     // set up shallow reference from real data to display data
     $scope.$parent.$on('itemsLoaded', function() {
-      angular.extend($scope.data.displayItems, $scope.data.items);
+      angular.extend($scope.$parent.data.displayItems, $scope.$parent.data.items);
     });
 
 
     // set up ui-grid
 
     $scope.itemView = {
-      data: 'data.displayItems',
+      data: '$parent.data.displayItems',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
@@ -56,9 +56,35 @@ angular.module('prindleApp')
       $scope.gridService.registerKeyEvents(itemView);
     };
 
+    var updateItemsDisplay = function(IDList) {
+      $scope.$parent.data.displayItems = [];
+      var tempList = [];
+      _.each(IDList, function(id) {
+
+        tempList.push(_.findWhere($scope.$parent.data.items, { _id : id }));
+
+      });
+
+      $scope.$parent.$broadcast('redrawitems', tempList);
+
+    };
+
+    $scope.$on('updateCatalogSubView', function (event, parentViewRow) {
+      updateItemsDisplay(parentViewRow.items);
+    });
+
+    // listen for selection changes
+    $scope.$on('itemsSelectionChanged', function(event, data) {
+      if (state.multipleItemsSelected) {
+//        console.log('multiple');
+      } else {
+//        console.log('single');
+      }
+    });
+
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {
-      $scope.data.displayItems = data;
+      $scope.$parent.data.displayItems = data;
       itemView.selected = [];
     });
 

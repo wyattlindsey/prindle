@@ -11,9 +11,7 @@ angular.module('prindleApp')
     // set up data structures for catalogs, all items, and displayed items
 
     $scope.data = {
-      catalogs: {
-        list: [] // declare master list here?
-      },
+      catalogs: {},
       items: [],
       displayItems: []
     };
@@ -23,11 +21,13 @@ angular.module('prindleApp')
     $scope.state = {
       catalogs: {
         selected: [],
-        editInProgress: false
+        editInProgress: false,
+        multipleItemsSelected: false
       },
       items: {
         selected: [],
-        editInProgress: false
+        editInProgress: false,
+        multipleItemsSelected: false
       }
     };
 

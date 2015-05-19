@@ -7,13 +7,13 @@
 angular.module('prindleApp')
   .controller('catalogListCtrl', function ($scope) {
 
-    var catalogs = $scope.data.catalogs;
+    var catalogs = $scope.$parent.data.catalogs;
     var state = $scope.state.catalogs;
 
     // set up ui-grid instance
 
     $scope.catalogView = {
-      data: 'data.catalogs.list',
+      data: '$parent.data.catalogs.list',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
@@ -40,6 +40,16 @@ angular.module('prindleApp')
       $scope.gridService.registerKeyEvents($scope.catalogView);
 
     };
+
+    // listen for selection changes
+    $scope.$on('catalogsSelectionChanged', function(event, row) {
+      if (state.multipleItemsSelected) {
+        console.log('multiple');
+      } else {
+        // single catalog selection
+        $scope.$parent.$broadcast('updateCatalogSubView', row[0].entity);
+      }
+    });
 
     // listen for display refreshes
     $scope.$on('redrawcatalogs', function(event, data) {
