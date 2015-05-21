@@ -22,9 +22,6 @@ angular.module('prindleApp')
 
     var catalogView = $scope.catalogView;
 
-    catalogView.selected = [];
-    catalogView.editInProgress = false;
-
     catalogView.onRegisterApi = function(catalogViewApi) {
 
       catalogView.api = catalogViewApi;
@@ -43,8 +40,11 @@ angular.module('prindleApp')
 
     // listen for selection changes
     $scope.$on('catalogsSelectionChanged', function(event, row) {
-      if (state.multipleItemsSelected) {
-        console.log('multiple');
+      if (catalogView.api.grid.selection.selectedCount === 0) {
+        // doesn't work???
+        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
+      } else if (state.multipleItemsSelected) {
+        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
       } else {
         // single catalog selection
         $scope.$parent.$broadcast('updateCatalogSubView', row[0].entity);
@@ -53,6 +53,7 @@ angular.module('prindleApp')
 
     // listen for display refreshes
     $scope.$on('redrawcatalogs', function(event, data) {
+      console.log('hello');
       catalogs.list = data;
       catalogView.selected = [];
     });

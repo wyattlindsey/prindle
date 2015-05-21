@@ -15,6 +15,7 @@ angular.module('prindleApp')
 
     // set up shallow reference from real data to display data
     $scope.$parent.$on('itemsLoaded', function() {
+      $scope.$parent.$broadcast('redrawitems', []);
       angular.extend($scope.$parent.data.displayItems, $scope.$parent.data.items);
     });
 
