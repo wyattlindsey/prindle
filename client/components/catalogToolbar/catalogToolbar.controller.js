@@ -18,7 +18,7 @@ angular.module('prindleApp')
 
     $scope.addCatalogAction = function() {
 
-      var itemList = [$scope.$parent.data.items[2]._id, $scope.$parent.data.items[3]._id, $scope.$parent.data.items[1]._id];
+      var itemList = [$scope.$parent.data.items[0]._id];
 
       $scope.listUtil.add('catalogs',
         [{
@@ -36,7 +36,7 @@ angular.module('prindleApp')
 
     $scope.copyCatalogAction = function() {
 
-      if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
+      if (typeof catalogs  === 'undefined' || catalogs.length === 0 ||
         state.selected.length === 0) {
         return;
       } else {
@@ -52,7 +52,7 @@ angular.module('prindleApp')
 
     $scope.removeCatalogAction = function() {
 
-      if (typeof catalogs  === 'undefined' || catalogs.list.length === 0 ||
+      if (typeof catalogs  === 'undefined' || catalogs.length === 0 ||
         state.selected.length === 0) {
 
         return;

@@ -35,8 +35,7 @@ angular.module('prindleApp')
       $scope.copyItemAction = function() {
 
 
-        if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
-          state.selected.length === 0) {
+        if (displayItems.length === 0 || state.selected.length === 0) {
           return;
         } else {
 
@@ -51,8 +50,8 @@ angular.module('prindleApp')
 
       $scope.removeItemAction = function() {
 
-        if (typeof displayItems  === 'undefined' || displayItems.length === 0 ||
-          state.selected.length === 0) {
+        if (displayItems.length === 0 || state.selected.length === 0) {
+          console.log('no');
 
           return;
 

@@ -11,7 +11,7 @@ angular.module('prindleApp')
     // set up data structures for catalogs, all items, and displayed items
 
     $scope.data = {
-      catalogs: {},
+      catalogs: [],
       items: [],
       displayItems: []
     };
@@ -41,13 +41,13 @@ angular.module('prindleApp')
 
     crud.get('catalogs')
       .then(function(data) {
-        $scope.data.catalogs.list = data;
+        $scope.data.catalogs = data;
       });
 
     crud.get('items')
       .then(function(data) {
         $scope.data.items = data;
-        $scope.$parent.$broadcast('itemsLoaded');
+        $scope.$parent.$broadcast('startupItemsLoaded', $scope.data.items);
       });
 
 

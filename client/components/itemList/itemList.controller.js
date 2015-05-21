@@ -8,15 +8,16 @@
 angular.module('prindleApp')
   .controller('itemListCtrl', function ($scope) {
 
-    var items = $scope.$parent.data.items;
-    var displayItems = $scope.$parent.data.displayItems; // unneeded?
+    var items = $scope.data.items;
+    var displayItems = $scope.data.displayItems; // unneeded?
     var state = $scope.state.items;
 
 
     // set up shallow reference from real data to display data
-    $scope.$parent.$on('itemsLoaded', function() {
-      $scope.$parent.$broadcast('redrawitems', []);
-      angular.extend($scope.$parent.data.displayItems, $scope.$parent.data.items);
+    $scope.$on('startupItemsLoaded', function() {
+      $scope.$broadcast('redrawitems', []);
+
+      angular.extend($scope.data.displayItems, $scope.data.items);
     });
 
 
@@ -58,15 +59,15 @@ angular.module('prindleApp')
     };
 
     var updateItemsDisplay = function(IDList) {
-      $scope.$parent.data.displayItems = [];
+      $scope.data.displayItems = [];
       var tempList = [];
       _.each(IDList, function(id) {
 
-        tempList.push(_.findWhere($scope.$parent.data.items, { _id : id }));
+        tempList.push(_.findWhere($scope.data.items, { _id : id }));
 
       });
 
-      $scope.$parent.$broadcast('redrawitems', tempList);
+      $scope.$broadcast('redrawitems', tempList);
 
     };
 
@@ -85,7 +86,7 @@ angular.module('prindleApp')
 
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {
-      $scope.$parent.data.displayItems = data;
+      $scope.data.displayItems = data;
       itemView.selected = [];
     });
 
