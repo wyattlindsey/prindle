@@ -69,6 +69,7 @@ angular.module('prindleApp')
         $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
       } else {
         // single catalog selection
+        console.log(row[0].entity);
         $scope.$parent.$broadcast('updateCatalogSubView', row[0].entity);
       }
     });

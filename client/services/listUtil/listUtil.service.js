@@ -30,6 +30,8 @@ angular.module('prindleApp')
     this.copy = function(listName, entries) {
       async.each(entries, function(entry, callback) {
         delete entry['_id'];
+        entry['readOnly'] = false;        // copied items aren't read-only
+        entry['name'] = 'copy of ' + entry['name'];
         crud.add(listName, entry).then(function() {
           callback();
         });
@@ -64,6 +66,7 @@ angular.module('prindleApp')
 
     this.delete = function(listName, entries ) {
       async.each(entries, function(entry, callback) {
+        console.log(entry);
         crud.remove(listName, entry._id).then(function() {
           callback();
         });

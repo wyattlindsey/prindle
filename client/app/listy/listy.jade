@@ -21,7 +21,7 @@ block content
               ng-disabled='state.items.selected.length === 0')
             i.fa.fa-copy
           button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemAction()',
-              ng-disabled='!state.items.selectionDeletable' || state.items.selected.length === 0')
+              ng-disabled='!state.items.selectionDeletable || state.items.selected.length === 0')
             i.fa.fa-minus
           button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
             i.fa.fa-plus

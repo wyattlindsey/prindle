@@ -15,13 +15,13 @@ angular.module('prindleApp')
 
     $scope.addCatalogAction = function() {
 
-//      var itemList = [$scope.$parent.data.items[0]._id];
+      var itemList = [$scope.$parent.data.items[4]._id];
 
       $scope.listUtil.add('catalogs',
         [{
             name: 'my new list of things',
-            readOnly: false
-//            items : itemList
+            readOnly: false,
+            items : itemList
           }
         ]
       );
@@ -36,7 +36,9 @@ angular.module('prindleApp')
 
       if (typeof $scope.data.catalogs  === 'undefined' || $scope.data.catalogs.length === 0 ||
         $scope.state.catalogs.selected.length === 0) {
+
         return;
+
       } else {
 
         // need to make sure when copying a read-only item, that item becomes writable

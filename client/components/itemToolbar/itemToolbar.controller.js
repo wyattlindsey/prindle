@@ -47,13 +47,12 @@ angular.module('prindleApp')
       $scope.removeItemAction = function() {
 
         if ($scope.data.displayItems.length === 0 || $scope.state.items.selected.length === 0) {
-          console.log('no');
 
           return;
 
         } else {
 
-          $scope.listUtil.delete('items', $scope.state.items.selected);
+          $scope.listUtil.delete('items', $scope.data.items);
 
         }
       };
