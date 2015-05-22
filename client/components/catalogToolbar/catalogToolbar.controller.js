@@ -8,9 +8,6 @@
 angular.module('prindleApp')
   .controller('catalogToolbarCtrl', function ($scope) {
 
-    var catalogs = $scope.data.catalogs;
-    var state = $scope.state.catalogs;
-
     /**
      * addCatalogAction() - ideally create new collection with edit action enabled
      */
@@ -18,12 +15,12 @@ angular.module('prindleApp')
 
     $scope.addCatalogAction = function() {
 
-      var itemList = [$scope.$parent.data.items[0]._id];
+//      var itemList = [$scope.$parent.data.items[0]._id];
 
       $scope.listUtil.add('catalogs',
         [{
-            name : 'my new list of things',
-            items : itemList
+            name : 'my new list of things'
+//            items : itemList
           }
         ]
       );
@@ -36,8 +33,8 @@ angular.module('prindleApp')
 
     $scope.copyCatalogAction = function() {
 
-      if (typeof catalogs  === 'undefined' || catalogs.length === 0 ||
-        state.selected.length === 0) {
+      if (typeof $scope.data.catalogs  === 'undefined' || $scope.data.catalogs.length === 0 ||
+        $scope.state.catalogs.selected.length === 0) {
         return;
       } else {
 
@@ -52,14 +49,14 @@ angular.module('prindleApp')
 
     $scope.removeCatalogAction = function() {
 
-      if (typeof catalogs  === 'undefined' || catalogs.length === 0 ||
-        state.selected.length === 0) {
+      if (typeof $scope.data.catalogs  === 'undefined' || $scope.data.catalogs.length === 0 ||
+        $scope.state.catalogs.selected.length === 0) {
 
         return;
 
       } else {
 
-        $scope.listUtil.delete('catalogs', state.selected);
+        $scope.listUtil.delete('catalogs', $scope.state.catalogs.selected);
 
       }
     };

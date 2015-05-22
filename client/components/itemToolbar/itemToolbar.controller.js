@@ -8,11 +8,6 @@
 angular.module('prindleApp')
   .controller('itemToolbarCtrl', function ($scope) {
 
-    var items = $scope.data.items;
-    var displayItems = $scope.data.displayItems;
-    var itemView = $scope.itemView;
-    var state = $scope.state.items;
-
     /**
      * addItemAction() - present dialog, take input and create new item
      */
@@ -35,11 +30,11 @@ angular.module('prindleApp')
       $scope.copyItemAction = function() {
 
 
-        if (displayItems.length === 0 || state.selected.length === 0) {
+        if ($scope.data.displayItems.length === 0 || $scope.state.items.selected.length === 0) {
           return;
         } else {
 
-          $scope.listUtil.copy('items', state.selected);
+          $scope.listUtil.copy('items', $scope.state.items.selected);
 
         }
       };
@@ -50,14 +45,14 @@ angular.module('prindleApp')
 
       $scope.removeItemAction = function() {
 
-        if (displayItems.length === 0 || state.selected.length === 0) {
+        if ($scope.data.displayItems.length === 0 || $scope.state.items.selected.length === 0) {
           console.log('no');
 
           return;
 
         } else {
 
-          $scope.listUtil.delete('items', state.selected);
+          $scope.listUtil.delete('items', $scope.state.items.selected);
 
         }
       };

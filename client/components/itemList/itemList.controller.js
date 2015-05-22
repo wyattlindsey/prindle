@@ -8,21 +8,19 @@
 angular.module('prindleApp')
   .controller('itemListCtrl', function ($scope) {
 
-    var items = $scope.data.items;
-    var displayItems = $scope.data.displayItems; // unneeded?
-    var state = $scope.state.items;
-
 
     // set up shallow reference from real data to display data
-    $scope.$on('startupItemsLoaded', function() {
-      $scope.$broadcast('redrawitems', []);
 
+    $scope.$on('startupItemsLoaded', function(data) {
       angular.extend($scope.data.displayItems, $scope.data.items);
+      $scope.$parent.$broadcast('redrawitems', []);
     });
 
 
     // set up ui-grid
 
+
+    // does the itemView really need to be at the $scope?
     $scope.itemView = {
       data: '$parent.data.displayItems',
       enableFiltering: true,
@@ -31,15 +29,14 @@ angular.module('prindleApp')
       enableRowHeaderSelection: false
     };
 
-    var itemView = $scope.itemView;
+    // initialize grid
 
-
-    itemView.onRegisterApi = function(itemViewApi) {
-      itemView.api = itemViewApi;
+    $scope.itemView.onRegisterApi = function(itemViewApi) {
+      $scope.itemView.api = itemViewApi;
 
       // set up columns
 
-      itemView.columnDefs = [
+      $scope.itemView.columnDefs = [
         {
           field: 'name', displayName: 'Name'
         },
@@ -51,11 +48,15 @@ angular.module('prindleApp')
         }
       ];
 
+
       // set up event handlers for editing and selection
-      $scope.gridService.registerSelectionEditEvents($scope, itemView, $scope.state.items, 'items');
+
+      $scope.gridService.registerSelectionEditEvents($scope, $scope.itemView, $scope.state.items, 'items');
+
 
       // set up keyboard events for this particular list
-      $scope.gridService.registerKeyEvents(itemView);
+
+      $scope.gridService.registerKeyEvents($scope.itemView);
     };
 
     var updateItemsDisplay = function(IDList) {
@@ -67,7 +68,7 @@ angular.module('prindleApp')
 
       });
 
-      $scope.$broadcast('redrawitems', tempList);
+      $scope.$parent.$broadcast('redrawitems', tempList);
 
     };
 
@@ -87,7 +88,7 @@ angular.module('prindleApp')
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {
       $scope.data.displayItems = data;
-      itemView.selected = [];
+      $scope.itemView.selected = [];
     });
 
   });

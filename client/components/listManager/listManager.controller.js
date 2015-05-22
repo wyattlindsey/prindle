@@ -13,7 +13,7 @@ angular.module('prindleApp')
     $scope.data = {
       catalogs: [],
       items: [],
-      displayItems: []
+      displayItems: []  // stores the list that should be displayed in the $scope.itemView grid
     };
 
     // initialize list state
@@ -39,15 +39,15 @@ angular.module('prindleApp')
 
     // initialize views
 
-    crud.get('catalogs')
+    $scope.crud.get('catalogs')
       .then(function(data) {
         $scope.data.catalogs = data;
       });
 
-    crud.get('items')
+    $scope.crud.get('items')
       .then(function(data) {
         $scope.data.items = data;
-        $scope.$parent.$broadcast('startupItemsLoaded', $scope.data.items);
+        $scope.$broadcast('startupItemsLoaded');
       });
 
 

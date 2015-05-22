@@ -7,8 +7,6 @@
 angular.module('prindleApp')
   .controller('catalogListCtrl', function ($scope) {
 
-    var catalogs = $scope.data.catalogs;
-    var state = $scope.state.catalogs;
 
 
     // set up ui-grid instance
@@ -21,18 +19,18 @@ angular.module('prindleApp')
       enableRowHeaderSelection: false
     };
 
-    var catalogView = $scope.catalogView;
+    // initialize grid
 
-    catalogView.onRegisterApi = function(catalogViewApi) {
+    $scope.catalogView.onRegisterApi = function(catalogViewApi) {
 
-      catalogView.api = catalogViewApi;
+      $scope.catalogView.api = catalogViewApi;
 
-      catalogView.columnDefs = [
+      $scope.catalogView.columnDefs = [
         {field: 'name', displayName: 'Catalogs'}
       ];
 
       // set up event handlers for editing and selection
-      $scope.gridService.registerSelectionEditEvents($scope, catalogView, $scope.state.catalogs, 'catalogs');
+      $scope.gridService.registerSelectionEditEvents($scope, $scope.catalogView, $scope.state.catalogs, 'catalogs');
 
       // set up keyboard events for this particular list
       $scope.gridService.registerKeyEvents($scope.catalogView);
@@ -42,11 +40,21 @@ angular.module('prindleApp')
 
     // initialize master list
 
-    $scope.$on('startupItemsLoaded', function(data) {
-      $scope.listUtil.add('catalogs', {
-        name : 'All items',
+    $scope.$on('startupItemsLoaded', function() {
+      if (typeof $scope.data.catalogs[0] === 'undefined') {
+        var itemIDs = [];
 
-      })
+        _.forEach($scope.data.items, function(item, index) {
+          itemIDs[index] = item._id;
+        });
+
+        $scope.listUtil.add('catalogs', [{
+          name : 'All items',
+          items : itemIDs
+        }]);
+        $scope.$broadcast('redrawcatalogs', $scope.data.catalogs);
+      }
+
 
     });
 
@@ -54,14 +62,14 @@ angular.module('prindleApp')
     // listen for selection changes
 
     $scope.$on('catalogsSelectionChanged', function(event, row) {
-      if (catalogView.api.grid.selection.selectedCount === 0) {
+      if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
 
-        $scope.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
-      } else if (state.multipleItemsSelected) {
-        $scope.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
+        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
+      } else if ($scope.state.catalogs.multipleItemsSelected) {
+        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
       } else {
         // single catalog selection
-        $scope.$broadcast('updateCatalogSubView', row[0].entity);
+        $scope.$parent.$broadcast('updateCatalogSubView', row[0].entity);
       }
     });
 
@@ -69,8 +77,8 @@ angular.module('prindleApp')
     // listen for display refreshes
 
     $scope.$on('redrawcatalogs', function(event, data) {
-      catalogs = data;
-      catalogView.selected = [];
+      $scope.$parent.data.catalogs = data;
+      $scope.catalogView.selected = [];
     });
 
   });

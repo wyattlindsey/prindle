@@ -46,7 +46,7 @@ angular.module('prindleApp')
     this.add = function(endpoint, newItemData) {
       var deferred = $q.defer();
 
-      if (newItemData === '') {
+      if (typeof newItemData === 'undefined') {
           deferred.reject('no data');
       } else {
         $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
