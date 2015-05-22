@@ -21,6 +21,7 @@ angular.module('prindleApp')
     $scope.state = {
       catalogs: {
         selected: [],
+        selectionDeletable: false,
         editInProgress: false,
         multipleItemsSelected: false
       },

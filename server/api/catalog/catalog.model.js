@@ -7,7 +7,8 @@ var CatalogSchema = new Schema({
   name: String,
   info: String,
   items: Array,
-  active: Boolean
+  active: Boolean,
+  readOnly: Boolean
 });
 
 module.exports = mongoose.model('Catalog', CatalogSchema);

@@ -19,7 +19,8 @@ angular.module('prindleApp')
 
       $scope.listUtil.add('catalogs',
         [{
-            name : 'my new list of things'
+            name: 'my new list of things',
+            readOnly: false
 //            items : itemList
           }
         ]
@@ -38,7 +39,9 @@ angular.module('prindleApp')
         return;
       } else {
 
-        $scope.listUtil.copy('catalogs', state.selected);
+        console.log($scope.state.calalogs);
+
+        $scope.listUtil.copy('catalogs', $scope.state.catalogs.selected);
 
       }
     };

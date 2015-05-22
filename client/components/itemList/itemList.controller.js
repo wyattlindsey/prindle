@@ -78,7 +78,7 @@ angular.module('prindleApp')
 
     // listen for selection changes
     $scope.$on('itemsSelectionChanged', function(event, data) {
-      if (state.multipleItemsSelected) {
+      if ($scope.state.items.multipleItemsSelected) {
 //        console.log('multiple');
       } else {
 //        console.log('single');

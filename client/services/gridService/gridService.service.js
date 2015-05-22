@@ -25,6 +25,17 @@ angular.module('prindleApp')
 
       var processSelectionChange = function(rows) {
         state.selected = listView.api.selection.getSelectedRows();
+
+        var deleteable = _.filter(state.selected, function(selectedItem) {
+          return !selectedItem.readOnly;
+        });
+
+        if (deleteable.length === 0) {
+          state.selectionDeletable = false;
+        } else {
+          state.selectionDeletable = true;
+        }
+
         if (state.selected.length > 1) {
           state.multipleItemsSelected = true;
         } else {

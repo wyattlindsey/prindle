@@ -49,8 +49,9 @@ angular.module('prindleApp')
         });
 
         $scope.listUtil.add('catalogs', [{
-          name : 'All items',
-          items : itemIDs
+          name: 'All items',
+          items: itemIDs,
+          readOnly: true
         }]);
         $scope.$broadcast('redrawcatalogs', $scope.data.catalogs);
       }

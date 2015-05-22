@@ -16,9 +16,10 @@ angular.module('prindleApp')
     $scope.addItemAction = function() {
       $scope.listUtil.add('items',
         [{
-          name : 'my new thing',
-          weight : i++,
-          category : 'stuff'
+          name: 'my new thing',
+          weight: i++,
+          category: 'stuff',
+          readOnly: false
         }]
       );
     };
