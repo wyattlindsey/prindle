@@ -64,7 +64,6 @@ angular.module('prindleApp')
 
     $scope.$on('catalogsSelectionChanged', function(event, row) {
       if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
-
         $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
       } else if ($scope.state.catalogs.multipleItemsSelected) {
         $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected

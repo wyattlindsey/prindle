@@ -30,7 +30,7 @@ angular.module('prindleApp')
           return !selectedItem.readOnly;
         });
 
-        if (deleteable.length === 0) {
+        if (deleteable.length < state.selected.length) {  // if any item isn't deletable, then no item shall be deleted
           state.selectionDeletable = false;
         } else {
           state.selectionDeletable = true;

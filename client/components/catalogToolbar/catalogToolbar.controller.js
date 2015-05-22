@@ -39,7 +39,7 @@ angular.module('prindleApp')
         return;
       } else {
 
-        console.log($scope.state.calalogs);
+        // need to make sure when copying a read-only item, that item becomes writable
 
         $scope.listUtil.copy('catalogs', $scope.state.catalogs.selected);
 
@@ -58,7 +58,7 @@ angular.module('prindleApp')
         return;
 
       } else {
-
+        console.log($scope.state);
         $scope.listUtil.delete('catalogs', $scope.state.catalogs.selected);
 
       }
