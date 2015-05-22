@@ -9,7 +9,8 @@ angular.module('prindleApp', [
   'ui.grid',
   'ui.grid.selection',
   'ui.grid.edit',
-  'xeditable'
+  'xeditable',
+  'lvl.directives.dragdrop'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

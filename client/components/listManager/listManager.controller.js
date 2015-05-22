@@ -52,5 +52,11 @@ angular.module('prindleApp')
         $scope.$broadcast('startupItemsLoaded');
       });
 
+    $scope.dropped = function(dragEl, dropEl) {
+      // this is your application logic, do whatever makes sense
+      var drag = angular.element(dragEl);
+      var drop = angular.element(dropEl);
 
+      console.log("The element " + drag.attr('id') + " has been dropped on " + drop.attr("id") + "!");
+    };
   });
