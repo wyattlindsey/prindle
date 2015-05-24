@@ -26,9 +26,9 @@ angular.module('prindleApp')
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
-      enableRowHeaderSelection: false,
-      rowTemplate: '<div x-lvl-draggable="true" style="" ng-click="grid.appScope.fnOne(row)" ' +
-        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
+      enableRowHeaderSelection: false
+//      rowTemplate: '<div x-lvl-draggable="true" ng-click="grid.appScope.fnOne(row)" ' +
+//        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
     };
 
     // initialize grid

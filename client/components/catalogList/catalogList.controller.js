@@ -16,9 +16,9 @@ angular.module('prindleApp')
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
-      enableRowHeaderSelection: false,
-      rowTemplate: '<div x-lvl-drop-target="true" x-on-drop="dropped(dragEl, dropEl)" style="" ng-click="grid.appScope.fnOne(row)" ' +
-        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
+      enableRowHeaderSelection: false
+//      rowTemplate: '<div x-lvl-drop-target="true" x-on-drop="$scope.$parent.droppedOnCatalog(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
+//        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
     };
 
     // initialize grid
@@ -38,6 +38,8 @@ angular.module('prindleApp')
       $scope.gridService.registerKeyEvents($scope.catalogView);
 
     };
+
+
 
 
     // initialize master list
@@ -82,5 +84,6 @@ angular.module('prindleApp')
       $scope.$parent.data.catalogs = data;
       $scope.catalogView.selected = [];
     });
+
 
   });
