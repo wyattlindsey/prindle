@@ -52,8 +52,8 @@ angular.module('prindleApp')
         $scope.$broadcast('startupItemsLoaded');
       });
 
-//    $scope.droppedOnCatalog = function(dragEl, dropEl) {
-//      console.log(dragEl);
-//    };
+    $scope.droppedOnCatalog = function(dragEl, dropEl) {
+      console.log(dragEl);
+    };
 
   });

@@ -19,6 +19,7 @@ angular.module('prindleApp')
 
     // set up ui-grid
 
+    var dragCellTemplate = '<div x-lvl-draggable="true"><i class="fa fa-arrows item-list-drag-arrow"></i></div>'
 
     // does the itemView really need to be at the $scope?
     $scope.itemView = {
@@ -39,6 +40,15 @@ angular.module('prindleApp')
       // set up columns
 
       $scope.itemView.columnDefs = [
+        { field: 'null',
+          displayName: '',
+          cellTemplate: dragCellTemplate,
+          enableSorting: false,
+          enableColumnMenu: false,
+          enableFiltering: false,
+          enableCellEdit: false,
+          width: 50
+        },
         {
           field: 'name', displayName: 'Name'
         },
