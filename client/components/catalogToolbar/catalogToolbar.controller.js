@@ -15,13 +15,12 @@ angular.module('prindleApp')
 
     $scope.addCatalogAction = function() {
 
-      var itemList = [$scope.$parent.data.items[4]._id];
+//      var itemList = [$scope.$parent.data.items[4]._id];
 
       $scope.listUtil.add('catalogs',
         [{
             name: 'my new list of things',
-            readOnly: false,
-            items : itemList
+            readOnly: false
           }
         ]
       );

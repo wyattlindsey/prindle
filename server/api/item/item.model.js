@@ -7,7 +7,10 @@ var ItemSchema = new Schema({
   name: String,
   weight: String,
   category: String,
-  readOnly: Boolean
+  readOnly: Boolean,
+  catalogs: [String]
 });
+
+ItemSchema.set('versionKey', false);
 
 module.exports = mongoose.model('Item', ItemSchema);

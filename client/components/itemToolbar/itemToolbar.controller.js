@@ -19,7 +19,8 @@ angular.module('prindleApp')
           name: 'my new thing',
           weight: i++,
           category: 'stuff',
-          readOnly: false
+          readOnly: false,
+          catalogs: []
         }]
       );
     };
@@ -52,7 +53,7 @@ angular.module('prindleApp')
 
         } else {
 
-          $scope.listUtil.delete('items', $scope.data.items);
+          $scope.listUtil.delete('items', $scope.state.items.selected);
 
         }
       };

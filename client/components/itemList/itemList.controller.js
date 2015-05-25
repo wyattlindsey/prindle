@@ -13,7 +13,7 @@ angular.module('prindleApp')
 
     $scope.$on('startupItemsLoaded', function() {
       angular.extend($scope.data.displayItems, $scope.data.items);
-      $scope.$parent.$broadcast('redrawitems', []);
+      $scope.$parent.$broadcast('redrawitems', $scope.data.items);
     });
 
 
@@ -23,7 +23,7 @@ angular.module('prindleApp')
 
     // does the itemView really need to be at the $scope?
     $scope.itemView = {
-      data: '$parent.data.displayItems',
+      data: '$parent.data.items',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
@@ -70,21 +70,80 @@ angular.module('prindleApp')
     };
 
 
-    var updateItemsDisplay = function(IDList) {
-      $scope.data.displayItems = [];
-      var tempList = [];
+    var updateItemsDisplay = function(itemList) {
+      $scope.data.displayItems = itemList;
+//      var tempList = [];
+//
+//      _.each(IDList, function(id) {
+//        tempList.push(_.findWhere($scope.data.displayItems, { _id : id }));
+//      });
 
-      _.each(IDList, function(id) {
-        tempList.push(_.findWhere($scope.data.items, { _id : id }));
-      });
-
-      $scope.$parent.$broadcast('redrawitems', tempList);
+      $scope.$parent.$broadcast('redrawitems', $scope.data.displayItems);
 
     };
 
 
+    var addItemToCatalog = function(srcItem, destCatalog) {
+
+      var foundInCatalogs = _.filter(srcItem.catalogs, function(catalog) {
+        return catalog === destCatalog._id;
+      });
+
+      console.log(foundInCatalogs);
+
+      if (foundInCatalogs.length === 0) {
+        srcItem.catalogs.push(destCatalog._id);
+        $scope.listUtil.update('items', [srcItem]);
+      }
+
+//      var foundInCatalogs = [];
+//
+//      foundInCatalogs = _.filter(srcItem.catalogs, function(catalog) {
+//        return catalog === destCatalog._id;
+//      });
+//
+//      if (foundInCatalogs === 'undefined') {
+//        console.log('not found');
+//        srcItem.catalogs.push(destCatalog._id);
+//      }
+//
+//      console.log(srcItem.catalogs[0]);
+//      var srcItemID = srcItem._id;
+//      var match = _.find(destCatalog.items, function(item) {
+//        return item === srcItemID;
+//      });
+//      if(!match) {
+//        console.log('unique');
+//        destCatalog.items.push(srcItemID);    // add dropped item to catalog items list
+//
+//        // this is not really updating permanently
+//        $scope.listUtil.update('catalogs', [destCatalog]);
+//      }
+    };
+
+
+    $scope.$on('itemDropped', function(event, data) {
+      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
+      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
+      addItemToCatalog(srcEntity, destEntity);
+    });
+
+
     $scope.$on('updateCatalogSubView', function (event, parentViewRow) {
-      updateItemsDisplay(parentViewRow.items);
+      var catalogID = parentViewRow._id;
+
+      var itemsInCatalog = _.filter($scope.data.items, function(item) {
+        console.log(item.catalogs[0]);
+        var matches = _.filter(item.catalogs, function(catalog) {
+
+          return catalog === catalogID;
+        });
+//        console.log(matches);
+      });
+
+//      console.log(belongsToCatalogs);
+
+//      updateItemsDisplay(belongsToCatalogs);
     });
 
 

@@ -51,7 +51,6 @@ angular.module('prindleApp')
     };
 
     this.update = function(listName, editedEntries) {
-      console.log(editedEntries);
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry);
       }, function(err) {

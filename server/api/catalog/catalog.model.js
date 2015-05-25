@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
 var CatalogSchema = new Schema({
   name: String,
   info: String,
-  items: Array,
   active: Boolean,
   readOnly: Boolean
 });
