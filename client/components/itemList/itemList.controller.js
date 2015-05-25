@@ -19,7 +19,7 @@ angular.module('prindleApp')
 
     // set up ui-grid
 
-    var dragCellTemplate = '<div x-lvl-draggable="true"><i class="fa fa-arrows item-list-drag-arrow"></i></div>'
+    var dragCellTemplate = '<div x-lvl-draggable="true"><i class="fa fa-arrows item-list-drag-arrow"></i></div>';
 
     // does the itemView really need to be at the $scope?
     $scope.itemView = {
@@ -28,8 +28,6 @@ angular.module('prindleApp')
       enableRowSelection: true,
       multiSelect: false,
       enableRowHeaderSelection: false
-//      rowTemplate: '<div x-lvl-draggable="true" ng-click="grid.appScope.fnOne(row)" ' +
-//        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
     };
 
     // initialize grid
@@ -71,6 +69,7 @@ angular.module('prindleApp')
       $scope.gridService.registerKeyEvents($scope.itemView);
     };
 
+
     var updateItemsDisplay = function(IDList) {
       $scope.data.displayItems = [];
       var tempList = [];
@@ -84,9 +83,19 @@ angular.module('prindleApp')
 
     };
 
+
+    var addItemToCatalog = function(item, catalog) {
+      var itemID = item._id;
+      _.forEach(catalog.items, function(item) {
+        console.log(item);
+      });
+    };
+
+
     $scope.$on('updateCatalogSubView', function (event, parentViewRow) {
       updateItemsDisplay(parentViewRow.items);
     });
+
 
     // listen for selection changes
     $scope.$on('itemsSelectionChanged', function(event, data) {
@@ -96,6 +105,14 @@ angular.module('prindleApp')
 //        console.log('single');
       }
     });
+
+
+    $scope.$on('itemDropped', function(event, data) {
+      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
+      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
+      addItemToCatalog(srcEntity, destEntity);
+    });
+    
 
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {
