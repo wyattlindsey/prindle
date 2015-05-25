@@ -9,27 +9,24 @@ angular.module('prindleApp')
   .service('listUtil', function ($rootScope, $q, crud) {
 
 
-    // the only promisified operation in this collection
-
     this.add = function(listName, newEntryData) {
       var deferred = $q.defer();
 
       async.each(newEntryData, function(entry, callback) {
         crud.add(listName, entry)
           .then(function(data) {
-            var broadcastString = 'addedto' + listName;
+            var broadcastString = 'added-to-' + listName;
             $rootScope.$broadcast(broadcastString, data);
             callback();
           });
       }, function(err) {
         if (err) {
-          console.log('error adding item(s)');
-          deferred.reject('add record failed in listUtil ' + err);
+          deferred.reject('add record(s) failed in listUtil ' + err);
         } else {
           crud.get(listName)
             .then(function(data) {
               deferred.resolve();
-              var broadcastString = 'redraw' + listName;
+              var broadcastString = 'redraw-' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
         }
@@ -60,6 +57,8 @@ angular.module('prindleApp')
     };
 
     this.update = function(listName, editedEntries) {
+      var deferred = $q.defer();
+
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry).then(function() {
           callback();
@@ -67,20 +66,25 @@ angular.module('prindleApp')
       }, function(err) {
         if (err) {
           console.log('error editing entry');
+          deferred.reject('error updating record in listUtil: ' + err);
         } else {
           crud.get(listName)
             .then(function(data) {
-              var broadcastString = 'redraw' + listName;
+              $rootScope.$broadcast(('refresh-' + listName + '-data'), data);
+              var broadcastString = 'redraw-' + listName;
               $rootScope.$broadcast(broadcastString, data);
+              deferred.resolve();
             });
         }
       });
+
+      return deferred.promise;
     };
 
     this.delete = function(listName, entries ) {
       async.each(entries, function(entry, callback) {
         crud.remove(listName, entry._id).then(function() {
-          var broadcastString = 'deletedfrom' + listName;
+          var broadcastString = 'deleted-from-' + listName;
           $rootScope.$broadcast(broadcastString, entry._id);
           callback();
         });
@@ -90,7 +94,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
             .then(function(data) {
-              var broadcastString = 'redraw' + listName;
+              var broadcastString = 'redraw-' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
         }

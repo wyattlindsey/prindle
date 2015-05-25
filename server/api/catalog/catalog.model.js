@@ -10,4 +10,6 @@ var CatalogSchema = new Schema({
   readOnly: Boolean
 });
 
+CatalogSchema.set('versionKey', false);
+
 module.exports = mongoose.model('Catalog', CatalogSchema);

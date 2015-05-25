@@ -43,7 +43,7 @@ angular.module('prindleApp')
         } else {
           state.multipleItemsSelected = false;
         }
-        var broadcastMessage = listName + 'SelectionChanged';
+        var broadcastMessage = listName + '-selection-changed';
         scope.$parent.$broadcast(broadcastMessage, rows);
 
         if (state.editInProgress && !state.multipleItemsSelected) {

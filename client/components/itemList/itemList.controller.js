@@ -72,15 +72,15 @@ angular.module('prindleApp')
     var updateItemsDisplay = function(itemList) {
       $scope.data.displayItems = [];
       angular.extend($scope.data.displayItems, itemList);
-
-      $scope.$parent.$broadcast('redrawitems', $scope.data.displayItems);
+      $scope.$parent.$broadcast('redraw-items', $scope.data.displayItems);
 
     };
 
 
-    var addItemToCatalog = function(srcItems, destCatalog) {
+    var addItemsToCatalog = function(srcItems, destCatalog) {
 
       var itemsToUpdate = [];
+
 
       _.forEach(srcItems, function(item) {
         var foundInCatalogs = _.filter(item.catalogs, function(catalog) {
@@ -93,26 +93,28 @@ angular.module('prindleApp')
         }
       });
 
-      $scope.listUtil.update('items', itemsToUpdate);
+      $scope.listUtil.update('items', itemsToUpdate)
+        .then(function() {
+          console.log($scope.data);
+        });
     };
 
 
-    $scope.$on('mastercatalogloaded', function(event, catalog) {
+    $scope.$on('master-catalog-loaded', function(event, catalog) {
       // master catalog should contain all items currently in the collection
-      addItemToCatalog($scope.data.items, catalog);
+      addItemsToCatalog($scope.data.items, catalog);
     });
 
 
-    $scope.$on('itemDropped', function(event, data) {
+    $scope.$on('item-dropped', function(event, data) {
       var srcEntity = angular.element(data.src).scope().$parent.row.entity;
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      addItemToCatalog([srcEntity], destEntity);
+      addItemsToCatalog([srcEntity], destEntity);
     });
 
 
-    $scope.$on('updateCatalogSubView', function (event, parentViewRow) {
+    $scope.$on('update-catalog-subview', function (event, parentViewRow) {
       var catalogID = parentViewRow._id;
-      console.log(catalogID);
 
       var itemsInCatalog = _.filter($scope.data.items, function(item) {
         var matches = _.filter(item.catalogs, function(catalog) {
@@ -124,8 +126,15 @@ angular.module('prindleApp')
     });
 
 
+    $scope.$on('added-to-items', function(event, data) {
+      // add any new item to the master list
+      console.log($scope.data);
+      addItemsToCatalog([data], $scope.data.catalogs[0]);
+    });
+
+
     // listen for selection changes
-    $scope.$on('itemsSelectionChanged', function(event, data) {
+    $scope.$on('items-selection-changed', function(event, data) {
       if ($scope.state.items.multipleItemsSelected) {
 //        console.log('multiple');
       } else {
@@ -134,8 +143,13 @@ angular.module('prindleApp')
     });
 
 
+    $scope.$on('refresh-items-data', function(event, items) {
+      $scope.data.items = items;
+    });
+
+
     // listen for display refreshes
-    $scope.$on('redrawitems', function(event, data) {
+    $scope.$on('redraw-items', function(event, data) {
       $scope.data.displayItems = data;
       $scope.itemView.selected = [];
     });

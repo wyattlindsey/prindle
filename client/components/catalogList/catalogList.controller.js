@@ -44,7 +44,7 @@ angular.module('prindleApp')
 
     // initialize master list
 
-    $scope.$on('startupItemsLoaded', function() {
+    $scope.$on('startup-items-loaded', function() {
       if (typeof $scope.data.catalogs[0] === 'undefined') {
         var itemIDs = [];
 
@@ -57,31 +57,31 @@ angular.module('prindleApp')
           items: itemIDs,
           readOnly: true
         }]).then(function() {
-          $scope.$parent.$broadcast('mastercatalogloaded', $scope.data.catalogs[0]);
+          $scope.$parent.$broadcast('master-catalog-loaded', $scope.data.catalogs[0]);
         });
       }
     });
 
-    $scope.$on('addedtoitems', function(event, data) {
+    $scope.$on('added-to-items', function(event, data) {
 //      addItemToCatalog(data, $scope.data.catalogs[0]);
     });
 
-    $scope.$on('deletedfromitems', function(event, data) {
+    $scope.$on('deleted-from-items', function(event, data) {
       console.log(data);
     });
 
 
     // listen for selection changes
 
-    $scope.$on('catalogsSelectionChanged', function(event, row) {
+    $scope.$on('catalogs-selection-changed', function(event, row) {
       if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
-        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
+        $scope.$parent.$broadcast('redraw-items', []); // blank out items list since no single catalog is selected
       }
       else if ($scope.state.catalogs.multipleItemsSelected) {
-        $scope.$parent.$broadcast('redrawitems', []); // blank out items list since no single catalog is selected
+        $scope.$parent.$broadcast('redraw-items', []); // blank out items list since no single catalog is selected
       } else {
         // single catalog selection - at some point maybe allow display of multiple catalogs in item view but too complex for now
-        $scope.$parent.$broadcast('updateCatalogSubView', row[0].entity);
+        $scope.$parent.$broadcast('update-catalog-subview', row[0].entity);
       }
     });
 
