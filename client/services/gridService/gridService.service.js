@@ -36,6 +36,8 @@ angular.module('prindleApp')
           state.selectionDeletable = true;
         }
 
+        state.selectionDeletable = true;
+
         if (state.selected.length > 1) {
           state.multipleItemsSelected = true;
         } else {

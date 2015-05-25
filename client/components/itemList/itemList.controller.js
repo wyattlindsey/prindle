@@ -73,22 +73,13 @@ angular.module('prindleApp')
     var updateItemsDisplay = function(IDList) {
       $scope.data.displayItems = [];
       var tempList = [];
+
       _.each(IDList, function(id) {
-
         tempList.push(_.findWhere($scope.data.items, { _id : id }));
-
       });
 
       $scope.$parent.$broadcast('redrawitems', tempList);
 
-    };
-
-
-    var addItemToCatalog = function(item, catalog) {
-      var itemID = item._id;
-      _.forEach(catalog.items, function(item) {
-        console.log(item);
-      });
     };
 
 
@@ -106,13 +97,6 @@ angular.module('prindleApp')
       }
     });
 
-
-    $scope.$on('itemDropped', function(event, data) {
-      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
-      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      addItemToCatalog(srcEntity, destEntity);
-    });
-    
 
     // listen for display refreshes
     $scope.$on('redrawitems', function(event, data) {

@@ -11,7 +11,9 @@ angular.module('prindleApp')
     this.add = function(listName, newEntryData) {
       async.each(newEntryData, function(entry, callback) {
         crud.add(listName, entry)
-          .then(function() {
+          .then(function(data) {
+            var broadcastString = 'addedto' + listName;
+            $rootScope.$broadcast(broadcastString, data);
             callback();
           });
       }, function(err) {
@@ -49,6 +51,7 @@ angular.module('prindleApp')
     };
 
     this.update = function(listName, editedEntries) {
+      console.log(editedEntries);
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry);
       }, function(err) {
@@ -66,8 +69,9 @@ angular.module('prindleApp')
 
     this.delete = function(listName, entries ) {
       async.each(entries, function(entry, callback) {
-        console.log(entry);
         crud.remove(listName, entry._id).then(function() {
+          var broadcastString = 'deletedfrom' + listName;
+          $rootScope.$broadcast(broadcastString, entry._id);
           callback();
         });
       }, function(err) {

@@ -39,7 +39,19 @@ angular.module('prindleApp')
 
     };
 
+    var addItemToCatalog = function(srcItem, destCatalog) {
+      var srcItemID = srcItem._id;
+      var match = _.find(destCatalog.items, function(item) {
+        return item === srcItemID;
+      });
+      if(!match) {
+        console.log('unique');
+        destCatalog.items.push(srcItemID);    // add dropped item to catalog items list
 
+        // this is not really updating permanently
+        $scope.listUtil.update('catalogs', [destCatalog]);
+      }
+    };
 
 
     // initialize master list
@@ -59,8 +71,14 @@ angular.module('prindleApp')
         }]);
         $scope.$broadcast('redrawcatalogs', $scope.data.catalogs);
       }
+    });
 
+    $scope.$on('addedtoitems', function(event, data) {
+//      addItemToCatalog(data, $scope.data.catalogs[0]);
+    });
 
+    $scope.$on('deletedfromitems', function(event, data) {
+      console.log(data);
     });
 
 
@@ -83,6 +101,12 @@ angular.module('prindleApp')
     $scope.$on('redrawcatalogs', function(event, data) {
       $scope.$parent.data.catalogs = data;
       $scope.catalogView.selected = [];
+    });
+
+    $scope.$on('itemDropped', function(event, data) {
+      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
+      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
+      addItemToCatalog(srcEntity, destEntity);
     });
 
 
