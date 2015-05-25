@@ -6,9 +6,14 @@
  */
 
 angular.module('prindleApp')
-  .service('listUtil', function ($rootScope, crud) {
+  .service('listUtil', function ($rootScope, $q, crud) {
+
+
+    // the only promisified operation in this collection
 
     this.add = function(listName, newEntryData) {
+      var deferred = $q.defer();
+
       async.each(newEntryData, function(entry, callback) {
         crud.add(listName, entry)
           .then(function(data) {
@@ -19,14 +24,18 @@ angular.module('prindleApp')
       }, function(err) {
         if (err) {
           console.log('error adding item(s)');
+          deferred.reject('add record failed in listUtil ' + err);
         } else {
           crud.get(listName)
             .then(function(data) {
+              deferred.resolve();
               var broadcastString = 'redraw' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
         }
       });
+
+      return deferred.promise;
     };
 
     this.copy = function(listName, entries) {
@@ -52,7 +61,9 @@ angular.module('prindleApp')
 
     this.update = function(listName, editedEntries) {
       async.each(editedEntries, function(entry, callback) {
-        crud.update(listName, entry._id, entry);
+        crud.update(listName, entry._id, entry).then(function() {
+          callback();
+        });
       }, function(err) {
         if (err) {
           console.log('error editing entry');

@@ -13,7 +13,7 @@ angular.module('prindleApp')
 
     $scope.$on('startupItemsLoaded', function() {
       angular.extend($scope.data.displayItems, $scope.data.items);
-      $scope.$parent.$broadcast('redrawitems', $scope.data.items);
+      $scope.$parent.$broadcast('redrawitems', []);
     });
 
 
@@ -23,7 +23,7 @@ angular.module('prindleApp')
 
     // does the itemView really need to be at the $scope?
     $scope.itemView = {
-      data: '$parent.data.items',
+      data: '$parent.data.displayItems',
       enableFiltering: true,
       enableRowSelection: true,
       multiSelect: false,
@@ -63,7 +63,6 @@ angular.module('prindleApp')
 
       $scope.gridService.registerSelectionEditEvents($scope, $scope.itemView, $scope.state.items, 'items');
 
-
       // set up keyboard events for this particular list
 
       $scope.gridService.registerKeyEvents($scope.itemView);
@@ -71,79 +70,57 @@ angular.module('prindleApp')
 
 
     var updateItemsDisplay = function(itemList) {
-      $scope.data.displayItems = itemList;
-//      var tempList = [];
-//
-//      _.each(IDList, function(id) {
-//        tempList.push(_.findWhere($scope.data.displayItems, { _id : id }));
-//      });
+      $scope.data.displayItems = [];
+      angular.extend($scope.data.displayItems, itemList);
 
       $scope.$parent.$broadcast('redrawitems', $scope.data.displayItems);
 
     };
 
 
-    var addItemToCatalog = function(srcItem, destCatalog) {
+    var addItemToCatalog = function(srcItems, destCatalog) {
 
-      var foundInCatalogs = _.filter(srcItem.catalogs, function(catalog) {
-        return catalog === destCatalog._id;
+      var itemsToUpdate = [];
+
+      _.forEach(srcItems, function(item) {
+        var foundInCatalogs = _.filter(item.catalogs, function(catalog) {
+          return catalog === destCatalog._id;
+        });
+
+        if (foundInCatalogs.length === 0) {
+          item.catalogs.push(destCatalog._id);
+          itemsToUpdate.push(item);
+        }
       });
 
-      console.log(foundInCatalogs);
-
-      if (foundInCatalogs.length === 0) {
-        srcItem.catalogs.push(destCatalog._id);
-        $scope.listUtil.update('items', [srcItem]);
-      }
-
-//      var foundInCatalogs = [];
-//
-//      foundInCatalogs = _.filter(srcItem.catalogs, function(catalog) {
-//        return catalog === destCatalog._id;
-//      });
-//
-//      if (foundInCatalogs === 'undefined') {
-//        console.log('not found');
-//        srcItem.catalogs.push(destCatalog._id);
-//      }
-//
-//      console.log(srcItem.catalogs[0]);
-//      var srcItemID = srcItem._id;
-//      var match = _.find(destCatalog.items, function(item) {
-//        return item === srcItemID;
-//      });
-//      if(!match) {
-//        console.log('unique');
-//        destCatalog.items.push(srcItemID);    // add dropped item to catalog items list
-//
-//        // this is not really updating permanently
-//        $scope.listUtil.update('catalogs', [destCatalog]);
-//      }
+      $scope.listUtil.update('items', itemsToUpdate);
     };
+
+
+    $scope.$on('mastercatalogloaded', function(event, catalog) {
+      // master catalog should contain all items currently in the collection
+      addItemToCatalog($scope.data.items, catalog);
+    });
 
 
     $scope.$on('itemDropped', function(event, data) {
       var srcEntity = angular.element(data.src).scope().$parent.row.entity;
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      addItemToCatalog(srcEntity, destEntity);
+      addItemToCatalog([srcEntity], destEntity);
     });
 
 
     $scope.$on('updateCatalogSubView', function (event, parentViewRow) {
       var catalogID = parentViewRow._id;
+      console.log(catalogID);
 
       var itemsInCatalog = _.filter($scope.data.items, function(item) {
-        console.log(item.catalogs[0]);
         var matches = _.filter(item.catalogs, function(catalog) {
-
           return catalog === catalogID;
         });
-//        console.log(matches);
+        return matches.length > 0;
       });
-
-//      console.log(belongsToCatalogs);
-
-//      updateItemsDisplay(belongsToCatalogs);
+      updateItemsDisplay(itemsInCatalog);
     });
 
 

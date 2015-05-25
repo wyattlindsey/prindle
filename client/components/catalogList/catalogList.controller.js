@@ -44,22 +44,23 @@ angular.module('prindleApp')
 
     // initialize master list
 
-//    $scope.$on('startupItemsLoaded', function() {
-//      if (typeof $scope.data.catalogs[0] === 'undefined') {
-//        var itemIDs = [];
-//
-//        _.forEach($scope.data.items, function(item, index) {
-//          itemIDs[index] = item._id;
-//        });
-//
-//        $scope.listUtil.add('catalogs', [{
-//          name: 'All items',
-//          items: itemIDs,
-//          readOnly: true
-//        }]);
-//        $scope.$broadcast('redrawcatalogs', $scope.data.catalogs);
-//      }
-//    });
+    $scope.$on('startupItemsLoaded', function() {
+      if (typeof $scope.data.catalogs[0] === 'undefined') {
+        var itemIDs = [];
+
+        _.forEach($scope.data.items, function(item, index) {
+          itemIDs[index] = item._id;
+        });
+
+        $scope.listUtil.add('catalogs', [{
+          name: 'All items',
+          items: itemIDs,
+          readOnly: true
+        }]).then(function() {
+          $scope.$parent.$broadcast('mastercatalogloaded', $scope.data.catalogs[0]);
+        });
+      }
+    });
 
     $scope.$on('addedtoitems', function(event, data) {
 //      addItemToCatalog(data, $scope.data.catalogs[0]);
