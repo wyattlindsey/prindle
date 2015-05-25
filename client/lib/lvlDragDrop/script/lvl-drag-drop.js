@@ -68,7 +68,7 @@ module.directive('lvlDropTarget', ['$rootScope', 'uuid', function ($rootScope, u
         var dest = document.getElementById(id);
         var src = document.getElementById(data);
 
-        $rootScope.$broadcast('itemDropped', {dest: dest, src: src});
+        $rootScope.$broadcast('item-dropped', {dest: dest, src: src});
       });
 
       $rootScope.$on("LVL-DRAG-START", function () {

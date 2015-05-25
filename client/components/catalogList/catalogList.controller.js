@@ -88,7 +88,7 @@ angular.module('prindleApp')
 
     // listen for display refreshes
 
-    $scope.$on('redrawcatalogs', function(event, data) {
+    $scope.$on('redraw-catalogs', function(event, data) {
       $scope.$parent.data.catalogs = data;
       $scope.catalogView.selected = [];
     });

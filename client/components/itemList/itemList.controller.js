@@ -69,12 +69,7 @@ angular.module('prindleApp')
     };
 
 
-    var updateItemsDisplay = function(itemList) {
-      $scope.data.displayItems = [];
-      angular.extend($scope.data.displayItems, itemList);
-      $scope.$parent.$broadcast('redraw-items', $scope.data.displayItems);
 
-    };
 
 
     var addItemsToCatalog = function(srcItems, destCatalog) {
@@ -113,23 +108,18 @@ angular.module('prindleApp')
     });
 
 
-    $scope.$on('update-catalog-subview', function (event, parentViewRow) {
-      var catalogID = parentViewRow._id;
 
-      var itemsInCatalog = _.filter($scope.data.items, function(item) {
-        var matches = _.filter(item.catalogs, function(catalog) {
-          return catalog === catalogID;
-        });
-        return matches.length > 0;
-      });
-      updateItemsDisplay(itemsInCatalog);
-    });
 
 
     $scope.$on('added-to-items', function(event, data) {
       // add any new item to the master list
-      console.log($scope.data);
       addItemsToCatalog([data], $scope.data.catalogs[0]);
+
+      // if there are catalog selections, also add this to that list,
+      // but for now, only do that when one catalog is selected
+      if ($scope.state.catalogs.selected.length === 1) {
+        addItemsToCatalog([data], $scope.state.catalogs.selected[0]);
+      }
     });
 
 
@@ -150,9 +140,30 @@ angular.module('prindleApp')
 
     // listen for display refreshes
     $scope.$on('redraw-items', function(event, data) {
-      $scope.data.displayItems = data;
-      $scope.itemView.selected = [];
+      $scope.$parent.$broadcast('update-catalog-subview');
     });
+
+    $scope.$on('update-catalog-subview', function (event, parentViewRow) {
+//      $scope.state.items.selected = [];     // <<< necessary? or will it make UI awkward to reset
+      if ($scope.state.catalogs.selected.length === 1) {
+        var catalogID = $scope.state.catalogs.selected[0]._id;
+
+        var itemsInCatalog = _.filter($scope.data.items, function(item) {
+          var matches = _.filter(item.catalogs, function(catalog) {
+            return catalog === catalogID;
+          });
+          return matches.length > 0;
+        });
+        updateItemsDisplay(itemsInCatalog);
+      }
+
+    });
+
+    var updateItemsDisplay = function(itemList) {
+      $scope.data.displayItems = [];
+      angular.extend($scope.data.displayItems, itemList);
+
+    };
 
   });
 
