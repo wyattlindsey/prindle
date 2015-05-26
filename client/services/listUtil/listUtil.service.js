@@ -71,8 +71,6 @@ angular.module('prindleApp')
           crud.get(listName)
             .then(function(data) {
               $rootScope.$broadcast(('refresh-' + listName + '-data'), data);
-              var broadcastString = 'refresh-' + listName;
-              $rootScope.$broadcast(broadcastString, data);
               deferred.resolve();
             });
         }

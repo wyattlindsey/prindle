@@ -64,7 +64,7 @@ angular.module('prindleApp')
 
 
     $scope.$on('deleted-from-catalogs', function(event, catalog) {
-      $scope.$parent.$broadcast('update-items-catalog-deleted', catalog._id);
+      $scope.$parent.$broadcast('catalog-deleted', catalog._id);
     });
 
 

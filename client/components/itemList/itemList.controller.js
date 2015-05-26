@@ -122,18 +122,17 @@ angular.module('prindleApp')
     });
 
 
-    $scope.$on('update-items-catalog-deleted', function(event, catalogID) {
+    $scope.$on('catalog-deleted', function(event, catalogID) {
+      var itemsWithChanges = [];
       _.forEach($scope.data.items, function(item) {
         _.forEach(item.catalogs, function(id, index) {
-          console.log(id);
-          if (catalogID == id) {
+          if (catalogID === id) {
             item.catalogs.splice(index, 1);
+            itemsWithChanges.push(item);
           }
         });
       });
-      /** this needs to actually update the records in the db, but how to do it batch style?
-       * 
-       */
+      $scope.listUtil.update('items', itemsWithChanges);
       updateView();
     });
 
