@@ -11,9 +11,8 @@ angular.module('prindleApp')
 
     // set up shallow reference from real data to display data
 
-    $scope.$on('startupItemsLoaded', function() {
-      angular.extend($scope.data.displayItems, $scope.data.items);
-      $scope.$parent.$broadcast('redrawitems', []);
+    $scope.$on('startup-items-loaded', function(event, data) {
+      $scope.$parent.$broadcast('refresh-items', data);
     });
 
 
@@ -133,20 +132,16 @@ angular.module('prindleApp')
     });
 
 
-    $scope.$on('refresh-items-data', function(event, items) {
-      $scope.data.items = items;
+    $scope.$on('refresh-items', function(event, items) {
+      if (typeof items !== 'undefined') {
+        $scope.data.items = items;
+      }
+      updateView($scope.state.catalogs.selected);
     });
 
-
-    // listen for display refreshes
-    $scope.$on('redraw-items', function(event, data) {
-      $scope.$parent.$broadcast('update-catalog-subview');
-    });
-
-    $scope.$on('update-catalog-subview', function (event, parentViewRow) {
-//      $scope.state.items.selected = [];     // <<< necessary? or will it make UI awkward to reset
-      if ($scope.state.catalogs.selected.length === 1) {
-        var catalogID = $scope.state.catalogs.selected[0]._id;
+    var updateView = function(parentView) {
+      if (typeof parentView !== 'undefined' && parentView.length === 1) {
+        var catalogID = parentView[0]._id;
 
         var itemsInCatalog = _.filter($scope.data.items, function(item) {
           var matches = _.filter(item.catalogs, function(catalog) {
@@ -154,15 +149,12 @@ angular.module('prindleApp')
           });
           return matches.length > 0;
         });
-        updateItemsDisplay(itemsInCatalog);
+        $scope.data.displayItems = [];
+        angular.extend($scope.data.displayItems, itemsInCatalog);
+
+      } else {
+        $scope.data.displayItems = [];
       }
-
-    });
-
-    var updateItemsDisplay = function(itemList) {
-      $scope.data.displayItems = [];
-      angular.extend($scope.data.displayItems, itemList);
-
     };
 
   });

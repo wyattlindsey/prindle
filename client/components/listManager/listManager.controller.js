@@ -48,8 +48,7 @@ angular.module('prindleApp')
 
     $scope.crud.get('items')
       .then(function(data) {
-        $scope.data.items = data;
-        $scope.$broadcast('startup-items-loaded');
+        $scope.$broadcast('startup-items-loaded', data);
       });
 
   });

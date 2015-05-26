@@ -26,7 +26,7 @@ angular.module('prindleApp')
           crud.get(listName)
             .then(function(data) {
               deferred.resolve();
-              var broadcastString = 'redraw-' + listName;
+              var broadcastString = 'refresh-' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
         }
@@ -49,7 +49,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
           .then(function(data) {
-            var broadcastString = 'redraw' + listName;
+            var broadcastString = 'refresh' + listName;
             $rootScope.$broadcast(broadcastString, data);
           });
         }
@@ -71,7 +71,7 @@ angular.module('prindleApp')
           crud.get(listName)
             .then(function(data) {
               $rootScope.$broadcast(('refresh-' + listName + '-data'), data);
-              var broadcastString = 'redraw-' + listName;
+              var broadcastString = 'refresh-' + listName;
               $rootScope.$broadcast(broadcastString, data);
               deferred.resolve();
             });
@@ -94,7 +94,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
             .then(function(data) {
-              var broadcastString = 'redraw-' + listName;
+              var broadcastString = 'refresh-' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
         }

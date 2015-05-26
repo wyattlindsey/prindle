@@ -74,24 +74,26 @@ angular.module('prindleApp')
     // listen for selection changes
 
     $scope.$on('catalogs-selection-changed', function(event, row) {
-      if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
-        $scope.$parent.$broadcast('redraw-items', []); // blank out items list since no single catalog is selected
-      }
-      else if ($scope.state.catalogs.multipleItemsSelected) {
-        $scope.$parent.$broadcast('redraw-items', []); // blank out items list since no single catalog is selected
-      } else {
-        // single catalog selection - at some point maybe allow display of multiple catalogs in item view but too complex for now
-        $scope.$parent.$broadcast('update-catalog-subview', row[0].entity);
-      }
+      $scope.$parent.$broadcast('refresh-items');
+//      if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
+//        $scope.$parent.$broadcast('update-catalog-subview', []); // blank out items list since no single catalog is selected
+//      }
+//      else if ($scope.state.catalogs.multipleItemsSelected) {
+//        $scope.$parent.$broadcast('update-catalog-subview', []); // blank out items list since no single catalog is selected
+//      } else {
+//        // single catalog selection - at some point maybe allow display of multiple catalogs in item view but too complex for now
+//        $scope.$parent.$broadcast('update-catalog-subview', [row[0].entity]);
+//      }
     });
 
 
     // listen for display refreshes
 
-    $scope.$on('redraw-catalogs', function(event, data) {
-      $scope.$parent.data.catalogs = data;
-      $scope.catalogView.selected = [];
+    $scope.$on('refresh-catalogs', function(event, catalogs) {
+      if (typeof catalogs !== 'undefined') {
+        $scope.data.catalogs = catalogs;
+      }
+
+//      $scope.catalogView.selected = []; // really necessary?
     });
-
-
   });
