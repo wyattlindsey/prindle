@@ -59,7 +59,6 @@ angular.module('prindleApp')
         return;
 
       } else {
-        console.log($scope.state);
         $scope.listUtil.delete('catalogs', $scope.state.catalogs.selected);
 
       }

@@ -9,11 +9,7 @@ angular.module('prindleApp')
   .controller('itemListCtrl', function ($scope) {
 
 
-    // set up shallow reference from real data to display data
 
-    $scope.$on('startup-items-loaded', function(event, data) {
-      $scope.$parent.$broadcast('refresh-items', data);
-    });
 
 
     // set up ui-grid
@@ -89,14 +85,20 @@ angular.module('prindleApp')
 
       $scope.listUtil.update('items', itemsToUpdate)
         .then(function() {
-          console.log($scope.data);
+//          console.log($scope.data);
         });
     };
 
 
     $scope.$on('master-catalog-loaded', function(event, catalog) {
       // master catalog should contain all items currently in the collection
+      // this should fire only when the app initializes the first time
       addItemsToCatalog($scope.data.items, catalog);
+    });
+
+
+    $scope.$on('startup-items-loaded', function(event, data) {
+      $scope.$parent.$broadcast('refresh-items', data);
     });
 
 
@@ -105,8 +107,6 @@ angular.module('prindleApp')
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
       addItemsToCatalog([srcEntity], destEntity);
     });
-
-
 
 
 
@@ -119,6 +119,22 @@ angular.module('prindleApp')
       if ($scope.state.catalogs.selected.length === 1) {
         addItemsToCatalog([data], $scope.state.catalogs.selected[0]);
       }
+    });
+
+
+    $scope.$on('update-items-catalog-deleted', function(event, catalogID) {
+      _.forEach($scope.data.items, function(item) {
+        _.forEach(item.catalogs, function(id, index) {
+          console.log(id);
+          if (catalogID == id) {
+            item.catalogs.splice(index, 1);
+          }
+        });
+      });
+      /** this needs to actually update the records in the db, but how to do it batch style?
+       * 
+       */
+      updateView();
     });
 
 
@@ -155,6 +171,8 @@ angular.module('prindleApp')
       } else {
         $scope.data.displayItems = [];
       }
+
+      console.log($scope.data.items);
     };
 
   });

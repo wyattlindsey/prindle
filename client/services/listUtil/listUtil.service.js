@@ -84,8 +84,7 @@ angular.module('prindleApp')
     this.delete = function(listName, entries ) {
       async.each(entries, function(entry, callback) {
         crud.remove(listName, entry._id).then(function() {
-          var broadcastString = 'deleted-from-' + listName;
-          $rootScope.$broadcast(broadcastString, entry._id);
+          $rootScope.$broadcast(('deleted-from-' + listName), entry);
           callback();
         });
       }, function(err) {

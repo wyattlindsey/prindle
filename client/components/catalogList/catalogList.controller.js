@@ -62,38 +62,20 @@ angular.module('prindleApp')
       }
     });
 
-    $scope.$on('added-to-items', function(event, data) {
-//      addItemToCatalog(data, $scope.data.catalogs[0]);
+
+    $scope.$on('deleted-from-catalogs', function(event, catalog) {
+      $scope.$parent.$broadcast('update-items-catalog-deleted', catalog._id);
     });
 
-    $scope.$on('deleted-from-items', function(event, data) {
-      console.log(data);
-    });
-
-
-    // listen for selection changes
 
     $scope.$on('catalogs-selection-changed', function(event, row) {
       $scope.$parent.$broadcast('refresh-items');
-//      if ($scope.catalogView.api.grid.selection.selectedCount === 0) {
-//        $scope.$parent.$broadcast('update-catalog-subview', []); // blank out items list since no single catalog is selected
-//      }
-//      else if ($scope.state.catalogs.multipleItemsSelected) {
-//        $scope.$parent.$broadcast('update-catalog-subview', []); // blank out items list since no single catalog is selected
-//      } else {
-//        // single catalog selection - at some point maybe allow display of multiple catalogs in item view but too complex for now
-//        $scope.$parent.$broadcast('update-catalog-subview', [row[0].entity]);
-//      }
     });
 
-
-    // listen for display refreshes
 
     $scope.$on('refresh-catalogs', function(event, catalogs) {
       if (typeof catalogs !== 'undefined') {
         $scope.data.catalogs = catalogs;
       }
-
-//      $scope.catalogView.selected = []; // really necessary?
     });
   });
