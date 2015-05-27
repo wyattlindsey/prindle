@@ -12,17 +12,19 @@ angular.module('prindleApp')
     this.add = function(listName, newEntryData) {
       var deferred = $q.defer();
 
+      var addedItems = [];
+
       async.each(newEntryData, function(entry, callback) {
         crud.add(listName, entry)
           .then(function(data) {
-            var broadcastString = 'added-to-' + listName;
-            $rootScope.$broadcast(broadcastString, data);
+            addedItems.push(data);
             callback();
           });
       }, function(err) {
         if (err) {
           deferred.reject('add record(s) failed in listUtil ' + err);
         } else {
+          $rootScope.$broadcast(('added-to-' + listName), addedItems);
           crud.get(listName)
             .then(function(data) {
               deferred.resolve();

@@ -6,7 +6,7 @@
  */
 
 angular.module('prindleApp')
-  .controller('itemListCtrl', function ($scope) {
+  .controller('itemListCtrl', function ($scope, $rootScope) {
 
 
 
@@ -64,9 +64,6 @@ angular.module('prindleApp')
     };
 
 
-
-
-
     var addItemsToCatalog = function(srcItems, destCatalog) {
 
       var itemsToUpdate = [];
@@ -100,11 +97,10 @@ angular.module('prindleApp')
     $scope.$on('startup-items-loaded', function(event, data) {
       $scope.$parent.$broadcast('refresh-items', data);
     });
-
+    
 
     $scope.$on('item-dropped', function(event, data) {
       var sourceItems = $scope.state.items.selected;
-//      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
       addItemsToCatalog(sourceItems, destEntity);
     });
@@ -113,12 +109,12 @@ angular.module('prindleApp')
 
     $scope.$on('added-to-items', function(event, data) {
       // add any new item to the master list
-      addItemsToCatalog([data], $scope.data.catalogs[0]);
+      addItemsToCatalog(data, $scope.data.catalogs[0]);
 
       // if there are catalog selections, also add this to that list,
       // but for now, only do that when one catalog is selected
       if ($scope.state.catalogs.selected.length === 1) {
-        addItemsToCatalog([data], $scope.state.catalogs.selected[0]);
+        addItemsToCatalog(data, $scope.state.catalogs.selected[0]);
       }
     });
 

@@ -68,6 +68,7 @@ module.directive('lvlDropTarget', ['$rootScope', 'uuid', function ($rootScope, u
         var dest = document.getElementById(id);
         var src = document.getElementById(data);
 
+        angular.element(e.target).removeClass('lvl-over');
         $rootScope.$broadcast('item-dropped', {dest: dest, src: src});
       });
 
@@ -78,8 +79,8 @@ module.directive('lvlDropTarget', ['$rootScope', 'uuid', function ($rootScope, u
 
       $rootScope.$on("LVL-DRAG-END", function () {
         var el = document.getElementById(id);
-        angular.element(el).removeClass("lvl-target");
         angular.element(el).removeClass("lvl-over");
+        angular.element(el).removeClass("lvl-target");
       });
     }
   };
