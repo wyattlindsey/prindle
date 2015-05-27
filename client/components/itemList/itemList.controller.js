@@ -103,9 +103,10 @@ angular.module('prindleApp')
 
 
     $scope.$on('item-dropped', function(event, data) {
-      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
+      var sourceItems = $scope.state.items.selected;
+//      var srcEntity = angular.element(data.src).scope().$parent.row.entity;
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      addItemsToCatalog([srcEntity], destEntity);
+      addItemsToCatalog(sourceItems, destEntity);
     });
 
 
