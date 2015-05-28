@@ -57,6 +57,7 @@ angular.module('prindleApp')
           items: itemIDs,
           readOnly: true
         }]).then(function() {
+          console.log($scope.data.catalogs);
           $scope.$parent.$broadcast('master-catalog-loaded', $scope.data.catalogs[0]);
         });
       }
@@ -64,7 +65,7 @@ angular.module('prindleApp')
 
 
     $scope.$on('deleted-from-catalogs', function(event, catalog) {
-      $scope.$parent.$broadcast('catalog-deleted', catalog._id);
+      $scope.$parent.$broadcast('catalog-deleted', catalog);
     });
 
 

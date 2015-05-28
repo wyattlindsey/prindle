@@ -68,7 +68,6 @@ angular.module('prindleApp')
 
       var itemsToUpdate = [];
 
-
       _.forEach(srcItems, function(item) {
         var foundInCatalogs = _.filter(item.catalogs, function(catalog) {
           return catalog === destCatalog._id;
@@ -80,10 +79,23 @@ angular.module('prindleApp')
         }
       });
 
-      $scope.listUtil.update('items', itemsToUpdate)
-        .then(function() {
-//          console.log($scope.data);
+      $scope.listUtil.update('items', itemsToUpdate);
+    };
+
+
+    var removeItemsFromCatalog = function(catalog) {
+      var itemsWithChanges = [];
+      _.forEach($scope.data.items, function(item) {
+        console.log(item);
+        _.forEach(item.catalogs, function(id, index) {
+          if (catalog._id === id) {
+            item.catalogs.splice(index, 1);
+            itemsWithChanges.push(item);
+          }
         });
+      });
+      $scope.listUtil.update('items', itemsWithChanges);
+      updateView();
     };
 
 
@@ -97,14 +109,17 @@ angular.module('prindleApp')
     $scope.$on('startup-items-loaded', function(event, data) {
       $scope.$parent.$broadcast('refresh-items', data);
     });
-    
+
 
     $scope.$on('item-dropped', function(event, data) {
-      var sourceItems = $scope.state.items.selected;
+      var sourceItems = [];
+      if ($scope.state.items.selected.length > 0) {
+        sourceItems = $scope.state.items.selected;
+      }
+      sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
       addItemsToCatalog(sourceItems, destEntity);
     });
-
 
 
     $scope.$on('added-to-items', function(event, data) {
@@ -119,18 +134,22 @@ angular.module('prindleApp')
     });
 
 
-    $scope.$on('catalog-deleted', function(event, catalogID) {
-      var itemsWithChanges = [];
+    $scope.$on('copied-catalogs', function(event, data) {
+      var itemsFromSourceCatalog = [];
       _.forEach($scope.data.items, function(item) {
-        _.forEach(item.catalogs, function(id, index) {
-          if (catalogID === id) {
-            item.catalogs.splice(index, 1);
-            itemsWithChanges.push(item);
-          }
+        _.forEach(item.catalogs, function(catalog) {
+          if (catalog === data.src._id) itemsFromSourceCatalog.push(item);
         });
       });
-      $scope.listUtil.update('items', itemsWithChanges);
-      updateView();
+
+      console.log(itemsFromSourceCatalog);
+
+      addItemsToCatalog(itemsFromSourceCatalog, data.dest);
+    });
+
+
+    $scope.$on('catalog-deleted', function(event, catalog) {
+      removeItemsFromCatalog(catalog);
     });
 
 
@@ -168,7 +187,6 @@ angular.module('prindleApp')
         $scope.data.displayItems = [];
       }
 
-      console.log($scope.data.items);
     };
 
   });

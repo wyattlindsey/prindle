@@ -28,8 +28,7 @@ angular.module('prindleApp')
           crud.get(listName)
             .then(function(data) {
               deferred.resolve();
-              var broadcastString = 'refresh-' + listName;
-              $rootScope.$broadcast(broadcastString, data);
+              $rootScope.$broadcast(('refresh-' + listName), data);
             });
         }
       });
@@ -39,10 +38,13 @@ angular.module('prindleApp')
 
     this.copy = function(listName, entries) {
       async.each(entries, function(entry, callback) {
-        delete entry['_id'];
-        entry['readOnly'] = false;        // copied items aren't read-only
-        entry['name'] = 'copy of ' + entry['name'];
-        crud.add(listName, entry).then(function() {
+        var itemCopy = {};
+        angular.copy(entry, itemCopy);
+        delete itemCopy['_id'];
+        itemCopy['readOnly'] = false;        // copied items aren't read-only
+        itemCopy['name'] = 'copy of ' + entry['name'];
+        crud.add(listName, itemCopy).then(function(newItem) {
+          $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
           callback();
         });
       }, function(err) {
@@ -51,8 +53,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
           .then(function(data) {
-            var broadcastString = 'refresh' + listName;
-            $rootScope.$broadcast(broadcastString, data);
+            $rootScope.$broadcast(('refresh-' + listName), data);
           });
         }
       });
