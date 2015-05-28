@@ -1,0 +1,9 @@
+.row.list-toolbar
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyCatalogAction()',
+      ng-disabled='state.catalogs.selected.length === 0')
+    i.fa.fa-copy
+  button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeCatalogAction()',
+      ng-disabled='!state.catalogs.selectionDeletable || state.catalogs.selected.length === 0')
+    i.fa.fa-minus
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCatalogAction()')
+    i.fa.fa-plus

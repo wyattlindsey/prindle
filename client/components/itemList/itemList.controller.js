@@ -83,7 +83,7 @@ angular.module('prindleApp')
     };
 
 
-    var removeItemsFromCatalog = function(catalog) {
+    var removeItemsFromCatalog = function(items, catalog) {
       var itemsWithChanges = [];
       _.forEach($scope.data.items, function(item) {
         console.log(item);
@@ -94,6 +94,7 @@ angular.module('prindleApp')
           }
         });
       });
+      console.log(itemsWithChanges);
       $scope.listUtil.update('items', itemsWithChanges);
       updateView();
     };
@@ -149,7 +150,13 @@ angular.module('prindleApp')
 
 
     $scope.$on('catalog-deleted', function(event, catalog) {
-      removeItemsFromCatalog(catalog);
+      removeItemsFromCatalog($scope.data.items, catalog);
+    });
+
+
+    $scope.$on('remove-items-from-catalog', function(event, data) {
+      console.log('here now');
+      removeItemsFromCatalog(data.items, data.catalog);
     });
 
 

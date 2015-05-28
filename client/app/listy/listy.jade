@@ -4,15 +4,17 @@ block content
   .container-fluid#listApp(ng-controller='listManagerCtrl')
     .row-fluid
       .col-md-3#catalogGrid
-        .row.list-toolbar(ng-controller='catalogToolbarCtrl')
-          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyCatalogAction()',
-              ng-disabled='state.catalogs.selected.length === 0')
-            i.fa.fa-copy
-          button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeCatalogAction()',
-              ng-disabled='!state.catalogs.selectionDeletable || state.catalogs.selected.length === 0')
-            i.fa.fa-minus
-          button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCatalogAction()')
-            i.fa.fa-plus
+        list-toolbar(list-name='catalogs')
+          catalog-toolbar
+        //.row.list-toolbar(ng-controller='catalogToolbarCtrl')
+        //  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyCatalogAction()',
+        //      ng-disabled='state.catalogs.selected.length === 0')
+        //    i.fa.fa-copy
+        //  button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeCatalogAction()',
+        //      ng-disabled='!state.catalogs.selectionDeletable || state.catalogs.selected.length === 0')
+        //    i.fa.fa-minus
+        //  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCatalogAction()')
+        //    i.fa.fa-plus
         .row(ng-controller='catalogListCtrl')
           .listCatalogStyle(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
       .col-md-8.col-md-offset-1#itemGrid
@@ -21,6 +23,8 @@ block content
               ng-disabled='state.items.selected.length === 0')
             i.fa.fa-copy
           button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemAction()',
+              ng-disabled='!state.items.selectionDeletable || state.items.selected.length === 0')
+          button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='removeItemFromCatalogAction()',
               ng-disabled='!state.items.selectionDeletable || state.items.selected.length === 0')
             i.fa.fa-minus
           button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemAction()')
