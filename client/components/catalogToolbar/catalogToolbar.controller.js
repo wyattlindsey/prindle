@@ -9,7 +9,7 @@ angular.module('prindleApp')
   .directive('catalogToolbar', function () {
     return {
       templateUrl: '/components/catalogToolbar/catalogToolbar.html',
-      restrict: 'E',
+      restrict: 'A',
       controller: 'catalogToolbarCtrl'
     };
   })
