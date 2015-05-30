@@ -6,7 +6,7 @@
  */
 
 angular.module('prindleApp')
-  .controller('listManagerCtrl', function ($scope, $http, $q, crud, gridService, listUtil) {
+  .controller('listManagerCtrl', function ($scope, $http, $q, crud, gridService, listUtil, guiState) {
 
     // set up data structures for catalogs, all items, and displayed items
 
@@ -17,6 +17,10 @@ angular.module('prindleApp')
     };
 
     // initialize list state
+
+//    var guiState = guiState;
+    var myGuiState = guiState;
+    console.log(myGuiState.selected('catalogs'));
 
     $scope.state = {
       catalogs: {

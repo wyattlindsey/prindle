@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('gridService', function () {
+  .service('gridService', function (guiState) {
 
     /**
      * The following event handlers ensure that clicks registered by a row during edits
@@ -24,29 +24,28 @@ angular.module('prindleApp')
       });
 
       var processSelectionChange = function(rows) {
-        state.selected = listView.api.selection.getSelectedRows();
+        var selectedRows = listView.api.selection.getSelectedRows();
+        guiState.selected(listName, selectedRows);
 
-        console.log(state);
-
-        var deletable = _.filter(state.selected, function(selectedItem) {
+        var deletable = _.filter(guiState.selected(listName), function(selectedItem) {
           return !selectedItem.readOnly;
         });
 
-        if (deletable.length < state.selected.length) {  // if any item isn't deleteble, then no item shall be deleted
-          state.selectionDeletable = false;
+        if (deletable.length < guiState.selected(listName).length) {  // if any item isn't deleteble, then no item shall be deleted
+          guiState.selectionDeletable(listName, false);
         } else {
-          state.selectionDeletable = true;
+          guiState.selectionDeletable(listName, true);
         }
 
-        if (state.selected.length > 1) {
-          state.multipleItemsSelected = true;
+        if (guiState.selected(listName).length > 1) {
+          guiState.multipleItemsSelected(listName, true);
         } else {
-          state.multipleItemsSelected = false;
+          guiState.multipleItemsSelected(listName, false);
         }
         var broadcastMessage = listName + '-selection-changed';
         scope.$parent.$broadcast(broadcastMessage, rows);
 
-        if (state.editInProgress && !state.multipleItemsSelected) {
+        if (guiState.editInProgress(listName) && guiState.multipleItemsSelected(listName)) {
           selectSingleRow(rows[0].entity, listView, state);
         }
       };
@@ -54,14 +53,14 @@ angular.module('prindleApp')
       // cell editing
 
       listView.api.edit.on.beginCellEdit(scope, function(rowEntity, colDef) {
-        state.editInProgress = true;
-        selectSingleRow(rowEntity, listView, state);
+        guiState.editInProgress(listName, true);
+        selectSingleRow(listName, rowEntity, listView);
         scope.$apply();
       });
 
       listView.api.edit.on.cancelCellEdit(scope, function(rowEntity, colDef) {
         state.editInProgress = false;
-        selectSingleRow(rowEntity, listView, state);
+        selectSingleRow(listName, rowEntity, listView);
         scope.$apply();
       });
 
@@ -69,13 +68,13 @@ angular.module('prindleApp')
         state.editInProgress = false;
         if (newValue != oldValue) {
           scope.listUtil.update(listName, [rowEntity]);
-          selectSingleRow(rowEntity, listView, state);
+          selectSingleRow(listName, rowEntity, listView);
         }
       });
     };
 
-    var selectSingleRow = function(rowEntity, listView, state) {
-      if (state.editInProgress) {
+    var selectSingleRow = function(listName, rowEntity, listView) {
+      if (guiState.editInProgress(listName)) {
         listView.api.selection.selectRow(rowEntity);
       }
     };
