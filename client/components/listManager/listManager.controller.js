@@ -15,12 +15,7 @@ angular.module('prindleApp')
       items: [],
       displayItems: []  // stores the list that should be displayed in the $scope.itemView grid
     };
-
-    // initialize list state
-
-//    var guiState = guiState;
-    var myGuiState = guiState;
-    console.log(myGuiState.selected('catalogs'));
+    
 
     $scope.state = {
       catalogs: {
