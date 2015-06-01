@@ -6,8 +6,8 @@ block content
       .col-md-3#catalogGrid
         list-toolbar(list-name='catalogs')
           .row.list-toolbar(catalog-toolbar)
-        .row(ng-controller='catalogListCtrl')
-          .listCatalogStyle(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
+        catalog-grid
+          .row.catalog-grid-style(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
       .col-md-8.col-md-offset-1#itemGrid
         list-toolbar(list-name='items')
           .row.list-toolbar(item-toolbar)

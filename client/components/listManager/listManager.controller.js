@@ -6,7 +6,7 @@
  */
 
 angular.module('prindleApp')
-  .controller('listManagerCtrl', function ($scope, $http, $q, crud, gridService, listUtil, guiState) {
+  .controller('listManagerCtrl', function ($scope, $http, $q, crud, gridService, listUtil) {
 
     // set up data structures for catalogs, all items, and displayed items
 
@@ -15,7 +15,8 @@ angular.module('prindleApp')
       items: [],
       displayItems: []  // stores the list that should be displayed in the $scope.itemView grid
     };
-    
+
+
 
     $scope.state = {
       catalogs: {
