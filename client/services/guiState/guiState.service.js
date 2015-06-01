@@ -11,6 +11,7 @@ angular.module('prindleApp')
       },
       items: {
         selected: [],
+        displayItems: [],
         selectionDeletable: false,
         editInProgress: false,
         multipleItemsSelected: false

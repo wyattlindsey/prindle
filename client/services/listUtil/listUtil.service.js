@@ -8,6 +8,17 @@
 angular.module('prindleApp')
   .service('listUtil', function ($rootScope, $q, crud) {
 
+    this.get = function(listName) {
+      var deferred = $q.defer();
+
+      crud.get(listName)
+        .then(function(data) {
+          deferred.resolve(data);
+        });
+
+      return deferred.promise;
+    };
+
 
     this.add = function(listName, newEntryData) {
       var deferred = $q.defer();
@@ -22,7 +33,7 @@ angular.module('prindleApp')
           });
       }, function(err) {
         if (err) {
-          deferred.reject('add record(s) failed in listUtil ' + err);
+          deferred.reject('add record(s) failed in listUtil: ' + err);
         } else {
           $rootScope.$broadcast(('added-to-' + listName), addedItems);
           crud.get(listName)
@@ -73,7 +84,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
             .then(function(data) {
-              $rootScope.$broadcast(('refresh-' + listName + '-data'), data);
+              $rootScope.$broadcast(('refresh-' + listName), data);
               deferred.resolve();
             });
         }

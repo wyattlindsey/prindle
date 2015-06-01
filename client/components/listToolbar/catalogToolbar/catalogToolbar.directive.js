@@ -7,6 +7,8 @@ angular.module('prindleApp')
       restrict: 'A',
       require: '^listToolbar',
       link: function (scope, element, attrs, listToolbarCtrl) {
+        scope.nothingSelected = true;
+        scope.selectionDeletable = false;
         scope.addCatalogsAction = function() {
           listToolbarCtrl.add();
         };

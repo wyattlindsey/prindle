@@ -24,33 +24,38 @@ angular.module('prindleApp')
       });
 
       var processSelectionChange = function(rows) {
+        // load in new selections on selection change
         var selectedRows = listView.api.selection.getSelectedRows();
         guiState.state[listName].selected = selectedRows;
 
+        // if any item isn't deletable, then no item shall be deleted
         var deletable = _.filter(guiState.state[listName].selected, function(selectedItem) {
           return !selectedItem.readOnly;
         });
-
-        if (deletable.length < guiState.state[listName].selected.length) {  // if any item isn't deleteble, then no item shall be deleted
+        if (deletable.length < guiState.state[listName].selected.length) {
           guiState.state[listName].selectionDeletable = false;
         } else {
           guiState.state[listName].selectionDeletable = true;
         }
 
+        // keep track of multiselection state
         if (guiState.state[listName].selected.length > 1) {
           guiState.state[listName].multipleItemsSelected = true;
         } else {
           guiState.state[listName].multipleItemsSelected = false;
         }
-        var broadcastMessage = listName + '-selection-changed';
-        scope.$parent.$broadcast(broadcastMessage, rows);
 
+        scope.$parent.$broadcast((listName + '-selection-changed'), rows);
+
+        // when the selection changes due to clicking during an edit-in-place operation,
+        // make sure row remains selected
         if (guiState.state[listName].editInProgress && !guiState.state[listName].multipleItemsSelected) {
           selectSingleRow(listName, rows[0].entity, listView);
         }
       };
 
-      // cell editing
+      // cell editing - keeps track of editing status and keeps rows selected at the
+      // appropriate times
 
       listView.api.edit.on.beginCellEdit(scope, function(rowEntity) {
         guiState.state[listName].editInProgress = true;
@@ -66,13 +71,18 @@ angular.module('prindleApp')
 
       listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
         guiState.state[listName].editInProgress = false;
-        if (newValue != oldValue) {
+        if (newValue != oldValue && !rowEntity.readOnly) {
           listUtil.update(listName, [rowEntity]);
           selectSingleRow(listName, rowEntity, listView);
+        } else { // don't change readOnly records
+          rowEntity[colDef.field] = oldValue;
+          listUtil.update(listName, [rowEntity]);
+          listUtil.get(listName);
         }
       });
     };
 
+    // used throughout the above to keep the row in question selected at the appropriate times
     var selectSingleRow = function(listName, rowEntity, listView) {
       if (guiState.state[listName].editInProgress) {
         listView.api.selection.selectRow(rowEntity);

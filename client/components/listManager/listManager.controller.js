@@ -10,28 +10,28 @@ angular.module('prindleApp')
 
     // set up data structures for catalogs, all items, and displayed items
 
-    $scope.data = {
-      catalogs: [],
-      items: [],
-      displayItems: []  // stores the list that should be displayed in the $scope.itemView grid
-    };
+//    $scope.data = {
+//      catalogs: [],
+//      items: [],
+//      displayItems: []  // stores the list that should be displayed in the $scope.itemView grid
+//    };
 
 
 
-    $scope.state = {
-      catalogs: {
-        selected: [],
-        selectionDeletable: false,
-        editInProgress: false,
-        multipleItemsSelected: false
-      },
-      items: {
-        selected: [],
-        selectionDeletable: false,
-        editInProgress: false,
-        multipleItemsSelected: false
-      }
-    };
+//    $scope.state = {
+//      catalogs: {
+//        selected: [],
+//        selectionDeletable: false,
+//        editInProgress: false,
+//        multipleItemsSelected: false
+//      },
+//      items: {
+//        selected: [],
+//        selectionDeletable: false,
+//        editInProgress: false,
+//        multipleItemsSelected: false
+//      }
+//    };
 
     // instantiate services
 
@@ -41,14 +41,19 @@ angular.module('prindleApp')
 
     // initialize views
 
-    $scope.crud.get('catalogs')
-      .then(function(data) {
-        $scope.data.catalogs = data;
-      });
+//    listUtil.get('catalogs')
+//      .then(function(data) {
+//        $scope.data.catalogs = data;
+//      });
 
-    $scope.crud.get('items')
-      .then(function(data) {
-        $scope.$broadcast('startup-items-loaded', data);
-      });
+//    $scope.crud.get('catalogs')
+//      .then(function(data) {
+//        $scope.data.catalogs = data;
+//      });
+
+//    $scope.crud.get('items')
+//      .then(function(data) {
+//        $scope.$broadcast('startup-items-loaded', data);
+//      });
 
   });

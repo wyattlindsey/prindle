@@ -64,135 +64,135 @@ angular.module('prindleApp')
     };
 
 
-    var addItemsToCatalog = function(srcItems, destCatalog) {
-
-      var itemsToUpdate = [];
-
-      _.forEach(srcItems, function(item) {
-        var foundInCatalogs = _.filter(item.catalogs, function(catalog) {
-          return catalog === destCatalog._id;
-        });
-
-        if (foundInCatalogs.length === 0) {
-          item.catalogs.push(destCatalog._id);
-          itemsToUpdate.push(item);
-        }
-      });
-
-      $scope.listUtil.update('items', itemsToUpdate);
-    };
-
-
-    var removeItemsFromCatalog = function(items, catalog) {
-      var itemsWithChanges = [];
-      _.forEach($scope.data.items, function(item) {
-        console.log(item);
-        _.forEach(item.catalogs, function(id, index) {
-          if (catalog._id === id) {
-            item.catalogs.splice(index, 1);
-            itemsWithChanges.push(item);
-          }
-        });
-      });
-      $scope.listUtil.update('items', itemsWithChanges);
-      updateView();
-    };
-
-
-    $scope.$on('master-catalog-loaded', function(event, catalog) {
-      // master catalog should contain all items currently in the collection
-      // this should fire only when the app initializes the first time
-      addItemsToCatalog($scope.data.items, catalog);
-    });
-
-
-    $scope.$on('startup-items-loaded', function(event, data) {
-      $scope.$parent.$broadcast('refresh-items', data);
-    });
-
-
-    $scope.$on('item-dropped', function(event, data) {
-      var sourceItems = [];
-      if ($scope.state.items.selected.length > 0) {
-        sourceItems = $scope.state.items.selected;
-      }
-      sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
-      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      addItemsToCatalog(sourceItems, destEntity);
-    });
-
-
-    $scope.$on('added-to-items', function(event, data) {
-      // add any new item to the master list
-      addItemsToCatalog(data, $scope.data.catalogs[0]);
-
-      // if there are catalog selections, also add this to that list,
-      // but for now, only do that when one catalog is selected
-      if ($scope.state.catalogs.selected.length === 1) {
-        addItemsToCatalog(data, $scope.state.catalogs.selected[0]);
-      }
-    });
-
-
-    $scope.$on('copied-catalogs', function(event, data) {
-      var itemsFromSourceCatalog = [];
-      _.forEach($scope.data.items, function(item) {
-        _.forEach(item.catalogs, function(catalog) {
-          if (catalog === data.src._id) itemsFromSourceCatalog.push(item);
-        });
-      });
-
-      console.log(itemsFromSourceCatalog);
-
-      addItemsToCatalog(itemsFromSourceCatalog, data.dest);
-    });
-
-
-    $scope.$on('catalog-deleted', function(event, catalog) {
-      removeItemsFromCatalog($scope.data.items, catalog);
-    });
-
-
-    $scope.$on('remove-items-from-catalog', function(event, data) {
-      removeItemsFromCatalog(data.items, data.catalog);
-    });
-
-
-    // listen for selection changes
-    $scope.$on('items-selection-changed', function(event, data) {
-      if ($scope.state.items.multipleItemsSelected) {
-//        console.log('multiple');
-      } else {
-//        console.log('single');
-      }
-    });
-
-
-    $scope.$on('refresh-items', function(event, items) {
-      if (typeof items !== 'undefined') {
-        $scope.data.items = items;
-      }
-      updateView($scope.state.catalogs.selected);
-    });
-
-    var updateView = function(parentView) {
-      if (typeof parentView !== 'undefined' && parentView.length === 1) {
-        var catalogID = parentView[0]._id;
-
-        var itemsInCatalog = _.filter($scope.data.items, function(item) {
-          var matches = _.filter(item.catalogs, function(catalog) {
-            return catalog === catalogID;
-          });
-          return matches.length > 0;
-        });
-        $scope.data.displayItems = [];
-        angular.extend($scope.data.displayItems, itemsInCatalog);
-
-      } else {
-        $scope.data.displayItems = [];
-      }
-
-    };
+//    var addItemsToCatalog = function(srcItems, destCatalog) {
+//
+//      var itemsToUpdate = [];
+//
+//      _.forEach(srcItems, function(item) {
+//        var foundInCatalogs = _.filter(item.catalogs, function(catalog) {
+//          return catalog === destCatalog._id;
+//        });
+//
+//        if (foundInCatalogs.length === 0) {
+//          item.catalogs.push(destCatalog._id);
+//          itemsToUpdate.push(item);
+//        }
+//      });
+//
+//      $scope.listUtil.update('items', itemsToUpdate);
+//    };
+//
+//
+//    var removeItemsFromCatalog = function(items, catalog) {
+//      var itemsWithChanges = [];
+//      _.forEach($scope.data.items, function(item) {
+//        console.log(item);
+//        _.forEach(item.catalogs, function(id, index) {
+//          if (catalog._id === id) {
+//            item.catalogs.splice(index, 1);
+//            itemsWithChanges.push(item);
+//          }
+//        });
+//      });
+//      $scope.listUtil.update('items', itemsWithChanges);
+//      updateView();
+//    };
+//
+//
+//    $scope.$on('master-catalog-loaded', function(event, catalog) {
+//      // master catalog should contain all items currently in the collection
+//      // this should fire only when the app initializes the first time
+//      addItemsToCatalog($scope.data.items, catalog);
+//    });
+//
+//
+//    $scope.$on('startup-items-loaded', function(event, data) {
+//      $scope.$parent.$broadcast('refresh-items', data);
+//    });
+//
+//
+//    $scope.$on('item-dropped', function(event, data) {
+//      var sourceItems = [];
+//      if ($scope.state.items.selected.length > 0) {
+//        sourceItems = $scope.state.items.selected;
+//      }
+//      sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
+//      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
+//      addItemsToCatalog(sourceItems, destEntity);
+//    });
+//
+//
+//    $scope.$on('added-to-items', function(event, data) {
+//      // add any new item to the master list
+//      addItemsToCatalog(data, $scope.data.catalogs[0]);
+//
+//      // if there are catalog selections, also add this to that list,
+//      // but for now, only do that when one catalog is selected
+//      if ($scope.state.catalogs.selected.length === 1) {
+//        addItemsToCatalog(data, $scope.state.catalogs.selected[0]);
+//      }
+//    });
+//
+//
+//    $scope.$on('copied-catalogs', function(event, data) {
+//      var itemsFromSourceCatalog = [];
+//      _.forEach($scope.data.items, function(item) {
+//        _.forEach(item.catalogs, function(catalog) {
+//          if (catalog === data.src._id) itemsFromSourceCatalog.push(item);
+//        });
+//      });
+//
+//      console.log(itemsFromSourceCatalog);
+//
+//      addItemsToCatalog(itemsFromSourceCatalog, data.dest);
+//    });
+//
+//
+//    $scope.$on('catalog-deleted', function(event, catalog) {
+//      removeItemsFromCatalog($scope.data.items, catalog);
+//    });
+//
+//
+//    $scope.$on('remove-items-from-catalog', function(event, data) {
+//      removeItemsFromCatalog(data.items, data.catalog);
+//    });
+//
+//
+//    // listen for selection changes
+//    $scope.$on('items-selection-changed', function(event, data) {
+//      if ($scope.state.items.multipleItemsSelected) {
+////        console.log('multiple');
+//      } else {
+////        console.log('single');
+//      }
+//    });
+//
+//
+//    $scope.$on('refresh-items', function(event, items) {
+//      if (typeof items !== 'undefined') {
+//        $scope.data.items = items;
+//      }
+//      updateView($scope.state.catalogs.selected);
+//    });
+//
+//    var updateView = function(parentView) {
+//      if (typeof parentView !== 'undefined' && parentView.length === 1) {
+//        var catalogID = parentView[0]._id;
+//
+//        var itemsInCatalog = _.filter($scope.data.items, function(item) {
+//          var matches = _.filter(item.catalogs, function(catalog) {
+//            return catalog === catalogID;
+//          });
+//          return matches.length > 0;
+//        });
+//        $scope.data.displayItems = [];
+//        angular.extend($scope.data.displayItems, itemsInCatalog);
+//
+//      } else {
+//        $scope.data.displayItems = [];
+//      }
+//
+//    };
 
   });
 
