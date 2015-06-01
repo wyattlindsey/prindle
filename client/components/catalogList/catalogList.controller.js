@@ -32,10 +32,10 @@ angular.module('prindleApp')
       ];
 
       // set up event handlers for editing and selection
-      $scope.gridService.registerSelectionEditEvents($scope, $scope.catalogView, $scope.state.catalogs, 'catalogs');
+//      $scope.gridService.registerSelectionEditEvents($scope, $scope.catalogView, $scope.state.catalogs, 'catalogs');
 
       // set up keyboard events for this particular list
-      $scope.gridService.registerKeyEvents($scope.catalogView);
+//      $scope.gridService.registerKeyEvents($scope.catalogView);
 
     };
 
@@ -57,7 +57,6 @@ angular.module('prindleApp')
           items: itemIDs,
           readOnly: true
         }]).then(function() {
-          console.log($scope.data.catalogs);
           $scope.$parent.$broadcast('master-catalog-loaded', $scope.data.catalogs[0]);
         });
       }

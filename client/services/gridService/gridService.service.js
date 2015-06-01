@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('gridService', function (guiState) {
+  .service('gridService', ['guiState', 'listUtil', function (guiState, listUtil) {
 
     /**
      * The following event handlers ensure that clicks registered by a row during edits
@@ -10,7 +10,7 @@ angular.module('prindleApp')
 
     // selection behavior while editing
 
-    this.registerSelectionEditEvents = function(scope, listView, state, listName) {
+    this.registerSelectionEditEvents = function(scope, listView, listName) {
 
       // selection
 
@@ -25,56 +25,56 @@ angular.module('prindleApp')
 
       var processSelectionChange = function(rows) {
         var selectedRows = listView.api.selection.getSelectedRows();
-        guiState.selected(listName, selectedRows);
+        guiState.state[listName].selected = selectedRows;
 
-        var deletable = _.filter(guiState.selected(listName), function(selectedItem) {
+        var deletable = _.filter(guiState.state[listName].selected, function(selectedItem) {
           return !selectedItem.readOnly;
         });
 
-        if (deletable.length < guiState.selected(listName).length) {  // if any item isn't deleteble, then no item shall be deleted
-          guiState.selectionDeletable(listName, false);
+        if (deletable.length < guiState.state[listName].selected.length) {  // if any item isn't deleteble, then no item shall be deleted
+          guiState.state[listName].selectionDeletable = false;
         } else {
-          guiState.selectionDeletable(listName, true);
+          guiState.state[listName].selectionDeletable = true;
         }
 
-        if (guiState.selected(listName).length > 1) {
-          guiState.multipleItemsSelected(listName, true);
+        if (guiState.state[listName].selected.length > 1) {
+          guiState.state[listName].multipleItemsSelected = true;
         } else {
-          guiState.multipleItemsSelected(listName, false);
+          guiState.state[listName].multipleItemsSelected = false;
         }
         var broadcastMessage = listName + '-selection-changed';
         scope.$parent.$broadcast(broadcastMessage, rows);
 
-        if (guiState.editInProgress(listName) && guiState.multipleItemsSelected(listName)) {
-          selectSingleRow(rows[0].entity, listView, state);
+        if (guiState.state[listName].editInProgress && !guiState.state[listName].multipleItemsSelected) {
+          selectSingleRow(listName, rows[0].entity, listView);
         }
       };
 
       // cell editing
 
-      listView.api.edit.on.beginCellEdit(scope, function(rowEntity, colDef) {
-        guiState.editInProgress(listName, true);
+      listView.api.edit.on.beginCellEdit(scope, function(rowEntity) {
+        guiState.state[listName].editInProgress = true;
         selectSingleRow(listName, rowEntity, listView);
         scope.$apply();
       });
 
-      listView.api.edit.on.cancelCellEdit(scope, function(rowEntity, colDef) {
-        state.editInProgress = false;
+      listView.api.edit.on.cancelCellEdit(scope, function(rowEntity) {
+        guiState.state[listName].editInProgress = false;
         selectSingleRow(listName, rowEntity, listView);
         scope.$apply();
       });
 
       listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
-        state.editInProgress = false;
+        guiState.state[listName].editInProgress = false;
         if (newValue != oldValue) {
-          scope.listUtil.update(listName, [rowEntity]);
+          listUtil.update(listName, [rowEntity]);
           selectSingleRow(listName, rowEntity, listView);
         }
       });
     };
 
     var selectSingleRow = function(listName, rowEntity, listView) {
-      if (guiState.editInProgress(listName)) {
+      if (guiState.state[listName].editInProgress) {
         listView.api.selection.selectRow(rowEntity);
       }
     };
@@ -122,4 +122,4 @@ angular.module('prindleApp')
         }
       });
     };
-  });
+  }]);

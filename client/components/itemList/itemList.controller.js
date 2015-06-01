@@ -56,11 +56,11 @@ angular.module('prindleApp')
 
       // set up event handlers for editing and selection
 
-      $scope.gridService.registerSelectionEditEvents($scope, $scope.itemView, $scope.state.items, 'items');
+//      $scope.gridService.registerSelectionEditEvents($scope, $scope.itemView, $scope.state.items, 'items');
 
       // set up keyboard events for this particular list
 
-      $scope.gridService.registerKeyEvents($scope.itemView);
+//      $scope.gridService.registerKeyEvents($scope.itemView);
     };
 
 
@@ -94,7 +94,6 @@ angular.module('prindleApp')
           }
         });
       });
-      console.log(itemsWithChanges);
       $scope.listUtil.update('items', itemsWithChanges);
       updateView();
     };
@@ -155,7 +154,6 @@ angular.module('prindleApp')
 
 
     $scope.$on('remove-items-from-catalog', function(event, data) {
-      console.log('here now');
       removeItemsFromCatalog(data.items, data.catalog);
     });
 
