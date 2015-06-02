@@ -35,9 +35,9 @@ angular.module('prindleApp')
 
     // instantiate services
 
-    $scope.crud = crud;
-    $scope.listUtil = listUtil;
-    $scope.gridService = gridService;
+//    $scope.crud = crud;
+//    $scope.listUtil = listUtil;
+//    $scope.gridService = gridService;
 
     // initialize views
 

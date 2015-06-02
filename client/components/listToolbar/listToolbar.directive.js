@@ -7,29 +7,42 @@ angular.module('prindleApp')
       scope: {
         listName: '='
       },
-      link: function (scope, element, attrs, ctrl) {
-        ctrl.initToolbar(attrs);
-      },
-      controller: 'listToolbarCtrl'
+      controller: 'listToolbarCtrl',
+      link: function (scope, element, attrs) {
+        scope.initToolbar(attrs);
+      }
     };
   }])
   .controller('listToolbarCtrl', ['$scope', 'Modal', 'listUtil', 'guiState', 'appData',
       function($scope, Modal, listUtil, guiState, appData) {
 
-    this.initToolbar = function(attrs) {
+    $scope.initToolbar = function(attrs) {
       $scope.listName = attrs.listName;
       $scope.nothingSelected = false;
       $scope.selectionDeletable = true;
     };
 
     this.add = function() {
-      listUtil.add($scope.listName,
-        [{
-          name: 'untitled',
-          readOnly: false
-        }
-        ]
-      );
+      if ($scope.listName === 'catalogs') {
+        listUtil.add($scope.listName,
+          [{
+            name: 'untitled',
+            readOnly: false
+          }
+          ]
+        );
+      } else if ($scope.listName === 'items') {
+        listUtil.add($scope.listName,
+          [{
+            name: 'my new thing',
+            weight: 420,
+            category: 'stuff',
+            readOnly: false
+          }
+          ]
+        );
+      }
+
     };
 
 

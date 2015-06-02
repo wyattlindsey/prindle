@@ -74,19 +74,22 @@ angular.module('prindleApp')
         if (newValue != oldValue && !rowEntity.readOnly && newValue !== '') {
           listUtil.update(listName, [rowEntity]);
           selectSingleRow(listName, rowEntity, listView);
-        } else { // don't change readOnly records
+        } else { // don't change readOnly records or update if value is blank
           rowEntity[colDef.field] = oldValue;
           listUtil.update(listName, [rowEntity]);
-          listUtil.get(listName);
+          selectSingleRow(listName, rowEntity, listView);
         }
       });
     };
 
     // used throughout the above to keep the row in question selected at the appropriate times
+
+    /**
+     *
+     *  not working right now after an edit completes
+     */
     var selectSingleRow = function(listName, rowEntity, listView) {
-      if (guiState.state[listName].editInProgress) {
-        listView.api.selection.selectRow(rowEntity);
-      }
+      listView.api.selection.selectRow(rowEntity);
     };
 
 

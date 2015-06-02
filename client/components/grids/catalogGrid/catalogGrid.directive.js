@@ -4,17 +4,16 @@ angular.module('prindleApp')
   .directive('catalogGrid', function () {
     return {
       restrict: 'E',
-      scope: true,
       controller: 'catalogGridCtrl',
-      link: function (scope, element, attrs, ctrl) {
-        ctrl.initGrid();
+      link: function (scope) {
+        scope.initGrid();
       }
     };
   })
   .controller('catalogGridCtrl', ['$scope', 'gridService', 'listUtil', 'appData',
       function($scope, gridService, listUtil, appData) {
 
-    this.initGrid = function() {
+    $scope.initGrid = function() {
       $scope.appData = appData;
       $scope.catalogView = {
         data: 'appData.data.catalogs',
@@ -40,18 +39,19 @@ angular.module('prindleApp')
         // set up keyboard events for this particular list
         gridService.registerKeyEvents($scope.catalogView);
 
-        // event listeners
+      };
 
-        $scope.$on('refresh-catalogs', function(event, catalogs) {
+      // event listeners
+
+      $scope.$on('refresh-catalogs', function(event, catalogs) {
+        refresh(catalogs);
+      });
+
+      // get initial data
+      listUtil.get('catalogs')
+        .then(function(catalogs) {
           refresh(catalogs);
         });
-
-        // get initial data
-        listUtil.get('catalogs')
-          .then(function(catalogs) {
-            refresh(catalogs);
-          });
-      };
     };
 
     var refresh = function(catalogs) {

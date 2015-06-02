@@ -3,13 +3,13 @@ extends ../_default
 block content
   .container-fluid#listApp(ng-controller='listManagerCtrl')
     .row-fluid
-      .col-md-3#catalogGrid
+      .col-md-3#catalog-grid
         list-toolbar(list-name='catalogs')
           catalog-toolbar.row.list-toolbar
         catalog-grid
           .row.catalog-grid-style(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
       .col-md-8.col-md-offset-1#itemGrid
         list-toolbar(list-name='items')
-          .row.list-toolbar(item-toolbar)
-        .row(ng-controller='itemListCtrl')
-          .listGridStyle(ui-grid='itemView', ui-grid-selection, ui-grid-edit)
+          item-toolbar.item-toolbar.row.list-toolbar
+        item-grid
+          .row.list-grid-style(ui-grid='itemView', ui-grid-selection, ui-grid-edit)

@@ -26,6 +26,7 @@ angular.module('prindleApp')
       var addedItems = [];
 
       async.each(newEntryData, function(entry, callback) {
+        console.log(entry);
         crud.add(listName, entry)
           .then(function(data) {
             addedItems.push(data);
@@ -82,11 +83,7 @@ angular.module('prindleApp')
           console.log('error editing entry');
           deferred.reject('error updating record in listUtil: ' + err);
         } else {
-          crud.get(listName)
-            .then(function(data) {
-              $rootScope.$broadcast(('refresh-' + listName), data);
-              deferred.resolve();
-            });
+          deferred.resolve();
         }
       });
 
