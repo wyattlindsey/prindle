@@ -5,7 +5,7 @@ block content
     .row-fluid
       .col-md-3#catalogGrid
         list-toolbar(list-name='catalogs')
-          .row.list-toolbar(catalog-toolbar)
+          catalog-toolbar.row.list-toolbar
         catalog-grid
           .row.catalog-grid-style(ui-grid='catalogView', ui-grid-selection, ui-grid-edit)
       .col-md-8.col-md-offset-1#itemGrid

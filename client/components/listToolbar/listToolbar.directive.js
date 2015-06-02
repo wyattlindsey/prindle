@@ -7,26 +7,8 @@ angular.module('prindleApp')
       scope: {
         listName: '='
       },
-      transclude: true,
-      link: function (scope, element, attrs, ctrl, transclude) {
-        transclude(scope.$new(), function(clone) {
-          element.append(clone);
-        });
-
-        scope.$on((scope.listName + '-selection-changed'), function() {
-          if (guiState.state[scope.listName].selected.length === 0) {
-            scope.nothingSelected = true;
-          } else if (guiState.state[scope.listName].selected.length === 1) {
-            scope.selectionDeletable = !guiState.state[scope.listName].selected[0].readOnly;
-            scope.nothingSelected = false;
-          } else {
-            scope.nothingSelected = false;
-          }
-        });
-
-        scope.listName = attrs.listName;
-
-
+      link: function (scope, element, attrs, ctrl) {
+        ctrl.initToolbar(attrs);
       },
       controller: 'listToolbarCtrl'
     };
@@ -34,7 +16,13 @@ angular.module('prindleApp')
   .controller('listToolbarCtrl', ['$scope', 'Modal', 'listUtil', 'guiState', 'appData',
       function($scope, Modal, listUtil, guiState, appData) {
 
-    $scope.add = function() {
+    this.initToolbar = function(attrs) {
+      $scope.listName = attrs.listName;
+      $scope.nothingSelected = false;
+      $scope.selectionDeletable = true;
+    };
+
+    this.add = function() {
       listUtil.add($scope.listName,
         [{
           name: 'untitled',
@@ -45,7 +33,7 @@ angular.module('prindleApp')
     };
 
 
-    $scope.copy = function() {
+    this.copy = function() {
       if (typeof appData.data[$scope.listName]  === 'undefined' || appData.data[$scope.listName].length === 0 ||
         guiState.state[$scope.listName].selected.length === 0) {
         return;
@@ -55,7 +43,7 @@ angular.module('prindleApp')
     };
 
 
-    $scope.delete = Modal.confirm.delete(function() {
+    this.delete = Modal.confirm.delete(function() {
       if (typeof appData.data[$scope.listName] === 'undefined' || appData.data[$scope.listName].length === 0 ||
         guiState.state[$scope.listName].selected.length === 0) {
         return;
@@ -63,4 +51,23 @@ angular.module('prindleApp')
         listUtil.delete($scope.listName, guiState.state[$scope.listName].selected);
       }
     });
+
+    this.selectionDeletable = function() {
+      var readOnlyItems = _.filter(guiState.state[$scope.listName].selected, function(selectedItem) {
+        return selectedItem.readOnly;
+      });
+      if (guiState.state[$scope.listName].selected.length > 0 && readOnlyItems.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    };
+
+    this.nothingSelected = function() {
+      if (guiState.state[$scope.listName].selected.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    };
   }]);
