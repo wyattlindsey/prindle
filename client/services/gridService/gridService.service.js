@@ -71,7 +71,7 @@ angular.module('prindleApp')
 
       listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
         guiState.state[listName].editInProgress = false;
-        if (newValue != oldValue && !rowEntity.readOnly) {
+        if (newValue != oldValue && !rowEntity.readOnly && newValue !== '') {
           listUtil.update(listName, [rowEntity]);
           selectSingleRow(listName, rowEntity, listView);
         } else { // don't change readOnly records
