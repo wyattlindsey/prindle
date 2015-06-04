@@ -10,12 +10,12 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('itemGridCtrl', ['$scope', 'gridService', 'listUtil', 'appData',
-    function($scope, gridService, listUtil, appData) {
+  .controller('itemGridCtrl', ['$scope', 'gridService', 'listUtil', 'guiState', 'itemViewService',
+    function($scope, gridService, listUtil, guiState, itemViewService) {
 
       $scope.initGrid = function() {
 
-        $scope.appData = appData;   // this goes to scope level because ui-grid needs it
+        $scope.displayItems = guiState.state.items.displayItems;
 
         /**
          * ui-grid setup
@@ -25,7 +25,7 @@ angular.module('prindleApp')
         var dragCellTemplate = '<div x-lvl-draggable="true"><i class="fa fa-arrows item-list-drag-arrow"></i></div>';
 
         $scope.itemView = {
-          data: 'appData.data.items',
+          data: 'displayItems',
           enableFiltering: true,
           enableRowSelection: true,
           multiSelect: false,
@@ -71,20 +71,20 @@ angular.module('prindleApp')
         // event listeners
 
         $scope.$on('refresh-items', function(event, items) {
-          refresh(items);
+//          $scope.displayItems = itemViewService.refresh(items);
+        });
+
+        $scope.$on('catalogs-selection-changed', function() {
+          $scope.displayItems = itemViewService.refresh();
         });
 
         // get initial data
         listUtil.get('items')
           .then(function(items) {
-            refresh(items);
+            itemViewService.loadData(items);
           });
       };
 
-      var refresh = function(items) {
-        if (typeof items !== 'undefined') {
-          appData.data.items = items;
-        }
-      };
+
 
   }]);

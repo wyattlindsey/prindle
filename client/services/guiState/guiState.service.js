@@ -11,10 +11,10 @@ angular.module('prindleApp')
       },
       items: {
         selected: [],
-        displayItems: [],
         selectionDeletable: false,
         editInProgress: false,
-        multipleItemsSelected: false
+        multipleItemsSelected: false,
+        displayItems: []     // items to show in itemView grid at any given time
       }
     };
 
