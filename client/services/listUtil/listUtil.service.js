@@ -26,7 +26,6 @@ angular.module('prindleApp')
       var addedItems = [];
 
       async.each(newEntryData, function(entry, callback) {
-        console.log(entry);
         crud.add(listName, entry)
           .then(function(data) {
             addedItems.push(data);
@@ -39,7 +38,7 @@ angular.module('prindleApp')
           $rootScope.$broadcast(('added-to-' + listName), addedItems);
           crud.get(listName)
             .then(function(data) {
-              deferred.resolve();
+              deferred.resolve(data);
               $rootScope.$broadcast(('refresh-' + listName), data);
             });
         }

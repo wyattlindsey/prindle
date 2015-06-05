@@ -89,6 +89,7 @@ angular.module('prindleApp')
         listUtil.get('items')
           .then(function(items) {
             itemViewService.loadData(items);
+            $scope.$parent.$broadcast('items-loaded');
           });
       };
 

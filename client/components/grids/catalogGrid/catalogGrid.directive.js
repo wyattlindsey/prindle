@@ -48,16 +48,13 @@ angular.module('prindleApp')
         $scope.displayCatalogs = catalogViewService.refresh(catalogs);
       });
 
-      // get initial data
 
-      $scope.displayCatalogs = catalogViewService.loadData();
+      // get initial data
+      $scope.$on('items-loaded', function() {
+        $scope.displayCatalogs = catalogViewService.loadData();
+      });
+
 
     };
-
-//    var refresh = function(catalogs) {
-//      if (typeof catalogs !== 'undefined') {
-//        appData.data.catalogs = catalogs;
-//      }
-//    };
 
   }]);

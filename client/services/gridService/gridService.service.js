@@ -70,8 +70,11 @@ angular.module('prindleApp')
       });
 
       listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
+        /**
+         * there's a PUT happening even when the value is unchanged
+         */
         guiState.state[listName].editInProgress = false;
-        if (newValue != oldValue && !rowEntity.readOnly && newValue !== '') {
+        if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {
           listUtil.update(listName, [rowEntity]);
           selectSingleRow(listName, rowEntity, listView);
         } else { // don't change readOnly records or update if value is blank
