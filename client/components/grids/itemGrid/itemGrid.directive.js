@@ -71,12 +71,19 @@ angular.module('prindleApp')
         // event listeners
 
         $scope.$on('refresh-items', function(event, items) {
-//          $scope.displayItems = itemViewService.refresh(items);
+          $scope.displayItems = itemViewService.refresh();
         });
+
 
         $scope.$on('catalogs-selection-changed', function() {
           $scope.displayItems = itemViewService.refresh();
         });
+
+
+        $scope.$on('item-dropped', function(event, data) {
+          itemViewService.dropItems(data);
+        });
+
 
         // get initial data
         listUtil.get('items')

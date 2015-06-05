@@ -36,6 +36,9 @@ angular.module('prindleApp')
         if (err) {
           deferred.reject('add record(s) failed in listUtil: ' + err);
         } else {
+          /**
+           * possible to pass a callback to this function rather than use $broadcast?
+           */
           $rootScope.$broadcast(('added-to-' + listName), addedItems);
           crud.get(listName)
             .then(function(data) {
