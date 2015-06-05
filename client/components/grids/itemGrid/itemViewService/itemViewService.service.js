@@ -20,13 +20,13 @@ angular.module('prindleApp')
       }
       sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
       var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-      _addItemsToCatalog(sourceItems, destEntity);
+//      _addItemsToCatalog(sourceItems, destEntity);
     };
 
     var _refresh = function() {
 
       if (guiState.state.catalogs.selected.length === 1) {
-        return _getItemsForCatalog(guiState.state.catalogs.selected[0]);
+        return [];//_getItemsForCatalog(guiState.state.catalogs.selected[0]);
       } else {
         return [];
       }
@@ -36,7 +36,7 @@ angular.module('prindleApp')
     var _loadData = function(items) {
       appData.data.items = items;
       _.forEach(appData.data.items, function(item) {
-        item.catalogs.push(appData.data.catalogs[0]._id);
+//        item.catalogs.push(appData.data.catalogs[0]._id);
       });
     };
 
@@ -48,7 +48,6 @@ angular.module('prindleApp')
         });
         return catalogMatches.length > 0;
       });
-      console.log(itemsInCatalog);
       return itemsInCatalog;
     };
 

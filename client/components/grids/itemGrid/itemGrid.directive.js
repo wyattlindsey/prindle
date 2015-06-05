@@ -15,7 +15,7 @@ angular.module('prindleApp')
 
       $scope.initGrid = function() {
 
-        $scope.displayItems = guiState.state.items.displayItems;
+        $scope.displayItems = [];
 
         /**
          * ui-grid setup

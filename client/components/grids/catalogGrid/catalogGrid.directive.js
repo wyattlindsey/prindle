@@ -10,13 +10,14 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('catalogGridCtrl', ['$scope', 'gridService', 'listUtil', 'appData',
-      function($scope, gridService, listUtil, appData) {
+  .controller('catalogGridCtrl', ['$scope', 'gridService', 'listUtil', 'catalogViewService',
+      function($scope, gridService, listUtil, catalogViewService) {
+
+    $scope.displayCatalogs = [];
 
     $scope.initGrid = function() {
-      $scope.appData = appData;
       $scope.catalogView = {
-        data: 'appData.data.catalogs',
+        data: 'displayCatalogs',
         enableFiltering: true,
         enableRowSelection: true,
         multiSelect: false,
@@ -44,20 +45,19 @@ angular.module('prindleApp')
       // event listeners
 
       $scope.$on('refresh-catalogs', function(event, catalogs) {
-        refresh(catalogs);
+        $scope.displayCatalogs = catalogViewService.refresh(catalogs);
       });
 
       // get initial data
-      listUtil.get('catalogs')
-        .then(function(catalogs) {
-          refresh(catalogs);
-        });
+
+      $scope.displayCatalogs = catalogViewService.loadData();
+
     };
 
-    var refresh = function(catalogs) {
-      if (typeof catalogs !== 'undefined') {
-        appData.data.catalogs = catalogs;
-      }
-    };
+//    var refresh = function(catalogs) {
+//      if (typeof catalogs !== 'undefined') {
+//        appData.data.catalogs = catalogs;
+//      }
+//    };
 
   }]);
