@@ -27,7 +27,9 @@ angular.module('prindleApp')
         listUtil.add($scope.listName,
           [{
             name: 'untitled',
-            readOnly: false
+            readOnly: false,
+            isMaster: false,
+            items: []
           }
           ]
         );

@@ -7,8 +7,7 @@ var ItemSchema = new Schema({
   name: String,
   weight: String,
   category: String,
-  readOnly: Boolean,
-  catalogs: [String]
+  readOnly: Boolean
 });
 
 ItemSchema.set('versionKey', false);

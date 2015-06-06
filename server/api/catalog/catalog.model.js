@@ -5,11 +5,9 @@ var mongoose = require('mongoose'),
 
 var CatalogSchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean,
   readOnly: Boolean,
   isMaster: Boolean,
-  items: Array
+  items: []
 });
 
 CatalogSchema.set('versionKey', false);

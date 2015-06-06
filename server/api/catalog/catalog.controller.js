@@ -32,6 +32,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   Catalog.findById(req.params.id, function (err, catalog) {
+    catalog.markModified('items');
     if (err) { return handleError(res, err); }
     if(!catalog) { return res.send(404); }
     var updated = _.merge(catalog, req.body);

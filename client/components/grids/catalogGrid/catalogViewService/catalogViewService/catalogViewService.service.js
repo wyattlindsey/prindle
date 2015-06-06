@@ -27,7 +27,6 @@ angular.module('prindleApp')
           } else {
             listUtil.get('catalogs')
               .then(function(catalogs) {
-                console.log(catalogs);
                 $rootScope.$broadcast('refresh-catalogs', catalogs);
               });
 
