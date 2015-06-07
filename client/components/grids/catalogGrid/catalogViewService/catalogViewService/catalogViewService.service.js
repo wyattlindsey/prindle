@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('catalogViewService', ['$rootScope', 'appData', 'listUtil', function($rootScope, appData, listUtil) {
+  .service('catalogViewService', ['$rootScope', 'appData', 'listUtil', 'guiState',
+      function($rootScope, appData, listUtil, guiState) {
     this.refresh = function(catalogs) {
       if (typeof catalogs !== 'undefined') {
         return appData.data.catalogs = catalogs;
@@ -35,6 +36,36 @@ angular.module('prindleApp')
         });
     };
 
+    this.dropItems = function(data) {
+      var sourceItems = [];
+      if (guiState.state.items.selected.length > 0) {
+        sourceItems = guiState.state.items.selected;
+      }
+      sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
+      var destEntity = angular.element(data.dest).scope().$parent.row.entity;
+      _addItemsToCatalog(sourceItems, destEntity);
+    };
 
+    var _addItemsToCatalog = function(sourceItems, destCatalog) {
+
+      if (typeof destCatalog.items !== 'undefined') {
+
+        var originalItems = destCatalog.items;
+
+        if (destCatalog.items.length > 0) {
+          var newIDs = _.pluck(sourceItems, '_id');
+          destCatalog.items = destCatalog.items.concat(newIDs);
+        } else {
+          destCatalog.items = _.pluck(sourceItems, '_id');
+        }
+        if (_.difference(destCatalog.items, originalItems).length > 0) {
+          destCatalog.items = _.uniq(destCatalog.items);
+
+          listUtil.update('catalogs', [destCatalog]);
+        }
+
+      }
+
+    };
 
   }]);

@@ -80,11 +80,6 @@ angular.module('prindleApp')
         });
 
 
-        $scope.$on('item-dropped', function(event, data) {
-          itemViewService.dropItems(data);
-        });
-
-
         // get initial data
         listUtil.get('items')
           .then(function(items) {

@@ -48,6 +48,13 @@ angular.module('prindleApp')
         $scope.displayCatalogs = catalogViewService.refresh(catalogs);
       });
 
+      $scope.$on('items-added', function(event, newItems) {
+
+      });
+
+      $scope.$on('item-dropped', function(event, data) {
+        catalogViewService.dropItems(data);
+      });
 
       // get initial data
       $scope.$on('items-loaded', function() {
