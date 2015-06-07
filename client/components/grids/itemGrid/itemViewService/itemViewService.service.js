@@ -47,24 +47,21 @@ angular.module('prindleApp')
 
     var _addItemsToCatalog = function(sourceItems, destCatalog) {
 
-      var nonDuplicatedItems = [];
+      if (typeof destCatalog.items !== 'undefined') {
 
-      if (destCatalog.items.length > 0) {
-        nonDuplicatedItems = _.filter(destCatalog.items, function(item) {
-          var isFound = _.find(sourceItems, {'_id': item});
-          console.log(isFound);
-          return typeof isFound === 'undefined';
-        });
-      } else {
-        nonDuplicatedItems = sourceItems;
+        if (destCatalog.items.length > 0) {
+          var newIDs = _.pluck(sourceItems, '_id');
+          destCatalog.items = destCatalog.items.concat(newIDs);
+        } else {
+          console.log('else');
+          destCatalog.items = _.pluck(sourceItems, '_id');
+        }
+        
+        destCatalog.items = _.uniq(destCatalog.items);
+
+        listUtil.update('catalogs', [destCatalog]);
       }
 
-//      console.log(_.pluck(nonDuplicatedItems, '_id'));
-
-      destCatalog.items = _.pluck(nonDuplicatedItems, '_id');
-
-      listUtil.update('catalogs', [destCatalog]);
     };
-
 
   }]);

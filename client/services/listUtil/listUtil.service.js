@@ -73,6 +73,8 @@ angular.module('prindleApp')
     this.update = function(listName, editedEntries) {
       var deferred = $q.defer();
 
+      console.log(editedEntries);
+
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry).then(function() {
           callback();
