@@ -25,11 +25,18 @@ angular.module('prindleApp')
 
 
     var _getItemsForCatalog = function(catalog) {
+      console.log(catalog);
+      /**
+       * Why is the item view not refreshing properly.  It's pulling blank items.
+       */
       var displayItems = [];
       _.forEach(catalog.items, function(itemID) {
-        displayItems.push(_.find(appData.data.items, function(item) {
+        var match = _.find(appData.data.items, function(item) {
           return item._id === itemID;
-        }));
+        });
+        if (typeof match !== 'undefined') {
+          displayItems.push(match);
+        }
       });
       return displayItems;
     };

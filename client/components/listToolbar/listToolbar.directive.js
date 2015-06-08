@@ -30,8 +30,7 @@ angular.module('prindleApp')
             readOnly: false,
             isMaster: false,
             items: []
-          }
-          ]
+          }]
         );
       } else if ($scope.listName === 'items') {
         listUtil.add($scope.listName,
@@ -40,9 +39,9 @@ angular.module('prindleApp')
             weight: 420,
             category: 'stuff',
             readOnly: false
-          }
-          ]
+          }]
         );
+
       }
 
     };
@@ -67,6 +66,7 @@ angular.module('prindleApp')
       }
     });
 
+
     this.selectionDeletable = function() {
       var readOnlyItems = _.filter(guiState.state[$scope.listName].selected, function(selectedItem) {
         return selectedItem.readOnly;
@@ -77,6 +77,7 @@ angular.module('prindleApp')
         return false;
       }
     };
+
 
     this.nothingSelected = function() {
       if (guiState.state[$scope.listName].selected.length > 0) {

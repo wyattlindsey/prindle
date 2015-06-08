@@ -70,7 +70,8 @@ angular.module('prindleApp')
 
         // event listeners
 
-        $scope.$on('refresh-items', function(event, items) {
+        $scope.$on('refresh-items', function() {
+          console.log(itemViewService.refresh());
           $scope.displayItems = itemViewService.refresh();
         });
 
