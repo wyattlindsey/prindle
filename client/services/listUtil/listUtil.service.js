@@ -53,6 +53,8 @@ angular.module('prindleApp')
 
       var deferred = $q.defer();
 
+      var copiedItems = [];
+
       async.each(entries, function(entry, callback) {
         var itemCopy = {};
         angular.copy(entry, itemCopy);
@@ -61,6 +63,7 @@ angular.module('prindleApp')
         itemCopy['name'] = 'copy of ' + entry['name'];
         crud.add(listName, itemCopy)
           .then(function(newItem) {
+            copiedItems.push(newItem);
             $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
             callback();
           });
@@ -68,12 +71,13 @@ angular.module('prindleApp')
         if(err) {
           deferred.reject('error copying item(s) in listUtil: ' + err);
         } else {
+          $rootScope.$broadcast(('added-to-' + listName), copiedItems);
           crud.get(listName)
-          .then(function(data) {
-            appData.data[listName] = data;
-            deferred.resolve(data);
-            $rootScope.$broadcast(('refresh-' + listName), data);
-          });
+            .then(function(data) {
+              appData.data[listName] = data;
+              deferred.resolve(data);
+              $rootScope.$broadcast(('refresh-' + listName), data);
+            });
         }
       });
 
