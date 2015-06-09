@@ -50,6 +50,7 @@ angular.module('prindleApp')
 
       $scope.$on('added-to-items', function(event, newItems) {
         catalogViewService.addItemsToCatalog(newItems);
+        $scope.$parent.$broadcast('refresh-items');
       });
 
       $scope.$on('deleted-from-items', function(event, item) {

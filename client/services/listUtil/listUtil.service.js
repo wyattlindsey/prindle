@@ -6,7 +6,7 @@
  */
 
 angular.module('prindleApp')
-  .service('listUtil', function ($rootScope, $q, crud) {
+  .service('listUtil', ['$rootScope', '$q', 'crud', 'appData', function ($rootScope, $q, crud, appData) {
 
     this.get = function(listName) {
       var deferred = $q.defer();
@@ -38,6 +38,7 @@ angular.module('prindleApp')
           $rootScope.$broadcast(('added-to-' + listName), addedItems);
           crud.get(listName)
             .then(function(data) {
+              appData.data[listName] = data;
               deferred.resolve(data);
               $rootScope.$broadcast(('refresh-' + listName), data);
             });
@@ -47,28 +48,38 @@ angular.module('prindleApp')
       return deferred.promise;
     };
 
+
     this.copy = function(listName, entries) {
+
+      var deferred = $q.defer();
+
       async.each(entries, function(entry, callback) {
         var itemCopy = {};
         angular.copy(entry, itemCopy);
         delete itemCopy['_id'];
         itemCopy['readOnly'] = false;        // copied items aren't read-only
         itemCopy['name'] = 'copy of ' + entry['name'];
-        crud.add(listName, itemCopy).then(function(newItem) {
-          $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
-          callback();
-        });
+        crud.add(listName, itemCopy)
+          .then(function(newItem) {
+            $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
+            callback();
+          });
       }, function(err) {
         if(err) {
-          console.log('error processing copy');
+          deferred.reject('error copying item(s) in listUtil: ' + err);
         } else {
           crud.get(listName)
           .then(function(data) {
+            appData.data[listName] = data;
+            deferred.resolve(data);
             $rootScope.$broadcast(('refresh-' + listName), data);
           });
         }
       });
+
+      return deferred.promise;
     };
+
 
     this.update = function(listName, editedEntries) {
       var deferred = $q.defer();
@@ -82,13 +93,13 @@ angular.module('prindleApp')
           console.log('error editing entry');
           deferred.reject('error updating record in listUtil: ' + err);
         } else {
-//          $rootScope.$broadcast(('refresh-' + listName));
           deferred.resolve();
         }
       });
 
       return deferred.promise;
     };
+
 
     this.delete = function(listName, entries ) {
       async.each(entries, function(entry, callback) {
@@ -102,6 +113,7 @@ angular.module('prindleApp')
         } else {
           crud.get(listName)
             .then(function(data) {
+              appData.data[listName] = data;
               var broadcastString = 'refresh-' + listName;
               $rootScope.$broadcast(broadcastString, data);
             });
@@ -109,4 +121,4 @@ angular.module('prindleApp')
       });
     };
 
-  });
+  }]);

@@ -46,6 +46,10 @@ angular.module('prindleApp')
 
       // first add to master catalog - probably a good place for a try/catch block
       // on the name of the list
+
+      var masterCatalogSelected = (guiState.state.catalogs.selected.length === 1 &&
+        guiState.state.catalogs.selected[0]._id === appData.data.catalogs[0]._id);
+
       _addItemsToCatalog(newItems, appData.data.catalogs[0]);
 
 //      if (guiState.state.catalogs.selected.length === 1) {
@@ -65,6 +69,7 @@ angular.module('prindleApp')
       }
     };
 
+
     this.dropItems = function(data) {
 
       var sourceItems = [];
@@ -79,8 +84,8 @@ angular.module('prindleApp')
       _addItemsToCatalog(sourceItems, destEntity);
     };
 
-    var _addItemsToCatalog = function(sourceItems, destCatalog) {
 
+    var _addItemsToCatalog = function(sourceItems, destCatalog) {
 
       if (typeof destCatalog.items !== 'undefined') {
 
@@ -96,14 +101,12 @@ angular.module('prindleApp')
         if (_.difference(destCatalog.items, originalItems).length > 0) {
           destCatalog.items = _.uniq(destCatalog.items);
 
-          console.log(destCatalog.items);
 
           listUtil.update('catalogs', [destCatalog])
             .then(function() {
               $rootScope.$broadcast('refresh-items');
             });
         } else {
-          console.log('else');
           destCatalog.items = originalItems;
         }
 
@@ -113,8 +116,6 @@ angular.module('prindleApp')
 
 
     var _deleteItemsFromCatalogs = function(deletedItems, catalogs) {
-
-
 
       var catalogsToDeleteItemsFrom = [];
       var masterCatalogSelected = (guiState.state.catalogs.selected.length === 1 &&
