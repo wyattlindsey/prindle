@@ -44,13 +44,17 @@ angular.module('prindleApp')
 
       // event listeners
 
-      $scope.$on('refresh-catalogs', function(event, catalogs) {
-        $scope.displayCatalogs = catalogViewService.refresh(catalogs);
+      $scope.$on('refresh-catalogs', function() {
+        $scope.displayCatalogs = catalogViewService.refresh();
       });
 
       $scope.$on('added-to-items', function(event, newItems) {
         catalogViewService.addItemsToCatalog(newItems);
         $scope.$parent.$broadcast('refresh-items');
+      });
+
+      $scope.$on('deleted-from-catalogs', function() {
+        catalogViewService.clearSelection();
       });
 
       $scope.$on('deleted-from-items', function(event, item) {

@@ -72,7 +72,11 @@ angular.module('prindleApp')
 
         $scope.$on('refresh-items', function() {
           $scope.displayItems = itemViewService.refresh();
-          console.log(itemViewService.refresh());
+        });
+
+
+        $scope.$on('deleted-from-items', function() {
+          itemViewService.clearSelection();
         });
 
 

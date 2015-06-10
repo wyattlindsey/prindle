@@ -11,8 +11,13 @@ angular.module('prindleApp')
         scope.initItemToolbar();
 
         scope.$on('items-selection-changed', function() {
-          scope.nothingSelected = listToolbarCtrl.nothingSelected();
-          scope.selectionDeletable = listToolbarCtrl.selectionDeletable();
+          scope.noItemSelected = listToolbarCtrl.nothingSelected();
+          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
+        });
+
+        scope.$on('items-selection-cleared', function() {
+          scope.noItemSelected = listToolbarCtrl.nothingSelected();
+          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
         });
 
         scope.addItemsAction = function() {

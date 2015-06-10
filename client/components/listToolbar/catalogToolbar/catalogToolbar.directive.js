@@ -11,8 +11,14 @@ angular.module('prindleApp')
         scope.initCatalogToolbar();
 
         scope.$on('catalogs-selection-changed', function() {
-          scope.nothingSelected = listToolbarCtrl.nothingSelected();
-          scope.selectionDeletable = listToolbarCtrl.selectionDeletable();
+          scope.noCatalogSelected = listToolbarCtrl.nothingSelected();
+          scope.catalogDeletable = listToolbarCtrl.selectionDeletable();
+        });
+
+        scope.$on('catalogs-selection-cleared', function() {
+          console.log('happened');
+          scope.noCatalogSelected = listToolbarCtrl.nothingSelected();
+          scope.catalogDeletable = listToolbarCtrl.selectionDeletable();
         });
 
         scope.addCatalogsAction = function() {

@@ -4,18 +4,18 @@ angular.module('prindleApp')
   .service('catalogViewService', ['$rootScope', 'appData', 'listUtil', 'guiState',
   function($rootScope, appData, listUtil, guiState) {
 
-    this.refresh = function(catalogs) {
-      if (typeof catalogs !== 'undefined') {
-        return appData.data.catalogs = catalogs;
-      } else {
-        return false;
-      }
+    this.refresh = function() {
+      return appData.data.catalogs;
+    };
+
+
+    this.clearSelection = function() {
+      guiState.state.catalogs.selected = [];
+      $rootScope.$broadcast('catalogs-selection-cleared');
     };
 
 
     this.loadData = function() {
-
-//      listUtil.delete('items', appData.data.items);
 
       listUtil.get('catalogs')
         .then(function(catalogs) {
@@ -40,26 +40,26 @@ angular.module('prindleApp')
         });
     };
 
-    // expose addItemsToCatalog to catalogGrid
+
 
     this.addItemsToCatalog = function(newItems) {
 
-      // first add to master catalog - probably a good place for a try/catch block
-      // on the name of the list
+
 
       var masterCatalogSelected = (guiState.state.catalogs.selected.length === 1 &&
         guiState.state.catalogs.selected[0]._id === appData.data.catalogs[0]._id);
 
+      // first add to master catalog
       _addItemsToCatalog(newItems, appData.data.catalogs[0]);
 
-//      if (guiState.state.catalogs.selected.length === 1) {
-//        var destCatalog = guiState.state.catalogs.selected[0];
-//        _addItemsToCatalog(newItems, destCatalog);
-//      }
+      if (guiState.state.catalogs.selected.length === 1 && !masterCatalogSelected) {
+        var destCatalog = guiState.state.catalogs.selected[0];
+        _addItemsToCatalog(newItems, destCatalog);
+      }
 
     };
 
-    // expose deleteItemsToCatalog to catalogGrid
+
 
     this.deleteItemsFromCatalogs = function(deletedItems, catalogs) {
       if (typeof catalogs !== 'undefined') {

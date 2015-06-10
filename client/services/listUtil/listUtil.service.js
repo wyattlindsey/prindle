@@ -11,17 +11,6 @@ angular.module('prindleApp')
     this.get = function(listName) {
       var deferred = $q.defer();
 
-      _get(listName)
-        .then(function(data) {
-          deferred.resolve(data);
-        });
-
-      return deferred.promise;
-    };
-
-    var _get = function(listName) {
-      var deferred = $q.defer();
-
       crud.get(listName)
         .then(function(data) {
           appData.data[listName] = data;
@@ -48,11 +37,10 @@ angular.module('prindleApp')
         if (err) {
           deferred.reject('add record(s) failed in listUtil: ' + err);
         } else {
+          appData.data[listName] = appData.data[listName].concat(addedItems);
           $rootScope.$broadcast(('added-to-' + listName), addedItems);
-          _get(listName)
-            .then(function(data) {
-              deferred.resolve(data);
-            });
+          $rootScope.$broadcast(('refresh-' + listName));
+          deferred.resolve();
         }
       });
 
@@ -75,18 +63,17 @@ angular.module('prindleApp')
         crud.add(listName, itemCopy)
           .then(function(newItem) {
             copiedItems.push(newItem);
-            $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
+//            $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
             callback();
           });
       }, function(err) {
         if(err) {
           deferred.reject('error copying item(s) in listUtil: ' + err);
         } else {
+          appData.data[listName] = appData.data[listName].concat(copiedItems);
           $rootScope.$broadcast(('added-to-' + listName), copiedItems);
-          _get(listName)
-            .then(function(data) {
-              deferred.resolve(data);
-            });
+          $rootScope.$broadcast(('refresh-' + listName));
+          deferred.resolve();
         }
       });
 
@@ -120,17 +107,20 @@ angular.module('prindleApp')
 
       async.each(entries, function(entry, callback) {
         crud.remove(listName, entry._id).then(function() {
-          $rootScope.$broadcast(('deleted-from-' + listName), entry);
+          appData.data[listName] = _.filter(appData.data[listName], function(listMember) {
+            return listMember._id !== entry._id;
+          });
+          $rootScope.$broadcast(('deleted-from-' + listName), [entry]);
+          $rootScope.$broadcast(('refresh-' + listName));
           callback();
         });
       }, function(err) {
         if(err) {
           deferred.reject('error deleting item(s) in listUtil: ' + err);
         } else {
-          _get(listName)
-            .then(function(data) {
-              deferred.resolve(data);
-            });
+
+          deferred.resolve();
+          $rootScope.$broadcast(('refresh-' + listName));
         }
       });
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('itemViewService', ['appData', 'guiState', 'listUtil', function(appData, guiState, listUtil) {
+  .service('itemViewService', ['$rootScope','appData', 'guiState', 'listUtil', function($rootScope, appData, guiState, listUtil) {
 
     this.refresh = function() {
       return _refresh();
@@ -13,6 +13,10 @@ angular.module('prindleApp')
     };
 
 
+    this.clearSelection = function() {
+      guiState.state.items.selected = [];
+      $rootScope.$broadcast('items-selection-cleared');
+    };
 
     var _refresh = function() {
 
