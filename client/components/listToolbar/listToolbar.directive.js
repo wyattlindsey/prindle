@@ -56,15 +56,34 @@ angular.module('prindleApp')
       }
     };
 
+    this.delete = function() {
 
-    this.delete = Modal.confirm.delete(function() {
-      if (typeof appData.data[$scope.listName] === 'undefined' || appData.data[$scope.listName].length === 0 ||
-        guiState.state[$scope.listName].selected.length === 0) {
-        return;
-      } else {
-        listUtil.delete($scope.listName, guiState.state[$scope.listName].selected);
-      }
-    });
+      var names = '';
+      var qtyNames = guiState.state[$scope.listName].selected.length;
+
+      _.forEach(guiState.state[$scope.listName].selected, function(selectedMember, i) {
+
+        if (i !== 0 && i < (qtyNames - 1)) {
+          names += ', ';
+        }
+        if (i === (qtyNames - 1)) {
+          names += ' and ';
+        }
+
+        names += selectedMember.name;
+      });
+
+      var openDeleteModel = Modal.confirm.delete(function() {
+        if (typeof appData.data[$scope.listName] === 'undefined' || appData.data[$scope.listName].length === 0 ||
+          guiState.state[$scope.listName].selected.length === 0) {
+          return;
+        } else {
+          listUtil.delete($scope.listName, guiState.state[$scope.listName].selected);
+        }
+      });
+
+      openDeleteModel(names);
+    };
 
 
     this.selectionDeletable = function() {

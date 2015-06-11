@@ -10,12 +10,14 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('itemGridCtrl', ['$scope', 'gridService', 'listUtil', 'guiState', 'itemViewService',
-    function($scope, gridService, listUtil, guiState, itemViewService) {
+  .controller('itemGridCtrl', ['$scope', 'gridService', 'itemViewService',
+    function($scope, gridService, itemViewService) {
 
       $scope.initGrid = function() {
 
         $scope.displayItems = [];
+        $scope.masterListSelected = {};
+        $scope.masterListSelected.selected = false;
 
         /**
          * ui-grid setup
@@ -23,6 +25,7 @@ angular.module('prindleApp')
 
         // draggable handles
         var dragCellTemplate = '<div x-lvl-draggable="true"><i class="fa fa-arrows item-list-drag-arrow"></i></div>';
+//        var toolCellTemplate = '<div class="toolCell"><button ng-click="removeFromCatalog()" ng-hide="{{masterListSelected.selected}}" class="btn btn-xs btn-warning"><i class="fa fa-minus item-list-delete-tool"></i></button></div>';
 
         $scope.itemView = {
           data: 'displayItems',
@@ -58,6 +61,15 @@ angular.module('prindleApp')
             {
               field: 'category', displayName: 'Category'
             }
+//            ,{ field: 'null',
+//              displayName: '',
+//              cellTemplate: toolCellTemplate,
+//              enableSorting: false,
+//              enableColumnMenu: false,
+//              enableFiltering: false,
+//              enableCellEdit: false,
+//              width: 50
+//            }
           ];
 
           // set up event handlers for editing and selection
@@ -67,6 +79,7 @@ angular.module('prindleApp')
         gridService.registerKeyEvents($scope.itemView);
 
         };
+
 
         // event listeners
 
@@ -82,17 +95,16 @@ angular.module('prindleApp')
 
         $scope.$on('catalogs-selection-changed', function() {
           $scope.displayItems = itemViewService.refresh();
+          $scope.masterListSelected.selected = itemViewService.masterListSelected();
         });
 
 
-        // get initial data
-        listUtil.get('items')
-          .then(function(items) {
-            itemViewService.loadData(items);
-            $scope.$parent.$broadcast('items-loaded');
-          });
+        itemViewService.loadData();
       };
 
-
+    // it seems like angular actions in the cell template are not working
+    $scope.removeFromCatalog = function() {
+      console.log('clicked');
+    }
 
   }]);

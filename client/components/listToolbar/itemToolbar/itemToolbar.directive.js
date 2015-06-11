@@ -39,4 +39,10 @@ angular.module('prindleApp')
       $scope.nothingSelected = true;
       $scope.selectionDeletable = true;
     };
+
+//    $scope.deleteItems = function() {
+//      var name = guiState.state[$scope.listName].selected[0].name;
+//      var item = guiState.state[$scope.listName].selected[0];
+//      listToolbarCtrl.delete(name, item);
+//    }
   }]);
