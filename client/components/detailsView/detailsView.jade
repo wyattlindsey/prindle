@@ -1,7 +1,8 @@
 #details-view.well
   .col-md-8(ng-show='currentItem')
     div(editable-text="currentItem.name", onaftersave="update()") {{currentItem.name}}
-    div {{currentItem.weight}}
-    div {{currentItem.category}}
-  .col-md-3.col-md-offset-1
-    .well-lg#item-image
+    div(editable-text="currentItem.weight", onaftersave="update()") {{currentItem.weight}}
+    div(editable-text="currentItem.category", onaftersave="update()") {{currentItem.category}}
+  .col-md-3.pull-right
+    #item-image.well.well-lg
+      img(ng-src='{{currentItem.imagePath}}')

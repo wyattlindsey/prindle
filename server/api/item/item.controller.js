@@ -43,7 +43,7 @@ exports.update = function(req, res) {
   });
 };
 
-// Deletes a item from the DB.
+// Deletes an item from the DB.
 exports.destroy = function(req, res) {
   Item.findById(req.params.id, function (err, item) {
     if(err) { return handleError(res, err); }

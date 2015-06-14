@@ -11,7 +11,15 @@ angular.module('prindleApp')
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
+          if (scope.currentItem) {
+            scope.currentItem.imagePath = 'assets/images/clipart/tent.gif';
+          }
         });
+
+//        scope.currentItem.imagePath = [];
+//        scope.currentItem.imagePath = 'client/assets/images/clipart/tent.gif';
+
+        scope.addImage('client/assets/images/clipart/tent.gif');
 
       }
     };
@@ -29,5 +37,9 @@ angular.module('prindleApp')
     $scope.update = function() {
       var currentItem = $scope.getSelectedItem();
       listUtil.update('items', [currentItem]);
+    };
+
+    $scope.addImage = function(imagePath) {
+
     };
   }]);
