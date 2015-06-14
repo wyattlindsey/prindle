@@ -1,7 +1,7 @@
 extends ../_default
 
 block content
-  .container-fluid#listApp
+  .container-fluid
     .row-fluid
       .col-md-3#catalog-grid
         list-toolbar(list-name='catalogs')
@@ -13,3 +13,6 @@ block content
           item-toolbar.item-toolbar.row.list-toolbar
         item-grid
           .row.list-grid-style(ui-grid='itemView', ui-grid-selection, ui-grid-edit)
+    .row-fluid
+      .col-md-12
+        details-view

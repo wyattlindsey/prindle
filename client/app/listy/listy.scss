@@ -31,3 +31,15 @@
   padding-left: 18px;
   padding-top: 8px;
 }
+
+#details-view {
+  margin: 40px !important;
+  border-width: 1px;
+  border-color: $gray-lighter;
+
+  #item-image {
+    border-width: 1px;
+    border-color: $gray-lighter;
+
+  }
+}

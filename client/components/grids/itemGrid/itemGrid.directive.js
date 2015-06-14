@@ -104,7 +104,7 @@ angular.module('prindleApp')
 
     // it seems like angular actions in the cell template are not working
     $scope.removeFromCatalog = function() {
-      console.log('clicked');
+//      console.log('clicked');
     }
 
   }]);

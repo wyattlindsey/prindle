@@ -25,7 +25,7 @@ angular.module('prindleApp')
 
     this.masterListSelected = function() {
       if (guiState.state.catalogs.selected.length > 0) {
-        console.log(guiState.state.catalogs.selected[0].name === "Master List");
+//        console.log(guiState.state.catalogs.selected[0].name === "Master List");
         return guiState.state.catalogs.selected[0].name === "Master List"; // NEED TO CHANGE THIS
       } else {
         return false;

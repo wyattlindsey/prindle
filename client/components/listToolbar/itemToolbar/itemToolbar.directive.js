@@ -7,29 +7,29 @@ angular.module('prindleApp')
       restrict: 'E',
       require: '^listToolbar',
       controller: 'itemToolbarCtrl',
-      link: function (scope, element, attrs, listToolbarCtrl) {
+      link: function (scope, element, attrs, listToolbar) {
         scope.initItemToolbar();
 
         scope.$on('items-selection-changed', function() {
-          scope.noItemSelected = listToolbarCtrl.nothingSelected();
-          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
+          scope.noItemSelected = listToolbar.nothingSelected();
+          scope.itemDeletable = listToolbar.selectionDeletable();
         });
 
         scope.$on('items-selection-cleared', function() {
-          scope.noItemSelected = listToolbarCtrl.nothingSelected();
-          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
+          scope.noItemSelected = listToolbar.nothingSelected();
+          scope.itemDeletable = listToolbar.selectionDeletable();
         });
 
         scope.addItemsAction = function() {
-          listToolbarCtrl.add();
+          listToolbar.add();
         };
 
         scope.copyItemsAction = function() {
-          listToolbarCtrl.copy();
+          listToolbar.copy();
         };
 
         scope.deleteItemsAction = function() {
-          listToolbarCtrl.delete();
+          listToolbar.delete();
         };
       }
     };
@@ -39,10 +39,4 @@ angular.module('prindleApp')
       $scope.nothingSelected = true;
       $scope.selectionDeletable = true;
     };
-
-//    $scope.deleteItems = function() {
-//      var name = guiState.state[$scope.listName].selected[0].name;
-//      var item = guiState.state[$scope.listName].selected[0];
-//      listToolbarCtrl.delete(name, item);
-//    }
   }]);
