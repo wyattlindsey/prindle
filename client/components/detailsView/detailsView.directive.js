@@ -11,20 +11,19 @@ angular.module('prindleApp')
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
-          if (scope.currentItem) {
-            scope.currentItem.imagePath = 'assets/images/clipart/tent.gif';
-          }
+          scope.addImage(scope.currentItem, 'assets/images/clipart/tent.gif');
         });
 
 //        scope.currentItem.imagePath = [];
 //        scope.currentItem.imagePath = 'client/assets/images/clipart/tent.gif';
 
-        scope.addImage('client/assets/images/clipart/tent.gif');
+
 
       }
     };
   })
   .controller('detailsViewCtrl', ['$scope', 'guiState', 'listUtil', function($scope, guiState, listUtil) {
+
     $scope.getSelectedItem = function() {
       if (guiState.state.items.selected.length === 1) {
         return guiState.state.items.selected[0];
@@ -39,7 +38,7 @@ angular.module('prindleApp')
       listUtil.update('items', [currentItem]);
     };
 
-    $scope.addImage = function(imagePath) {
-
+    $scope.addImage = function(item, imagePath) {
+      item.imagePath = imagePath;
     };
   }]);

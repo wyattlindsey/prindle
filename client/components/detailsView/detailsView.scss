@@ -5,7 +5,12 @@
 
   #item-image {
     min-height: 4em;
-    width: 4em;
+    min-width: 4em;
     padding-top: 1em;
+
+    img {
+      max-width: 3.5em;
+//      margin-bottom: 1em;
+    }
   }
 }
