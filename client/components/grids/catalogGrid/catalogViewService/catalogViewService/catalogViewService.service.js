@@ -44,8 +44,6 @@ angular.module('prindleApp')
 
     this.addItemsToCatalog = function(newItems) {
 
-
-
       var masterCatalogSelected = (guiState.state.catalogs.selected.length === 1 &&
         guiState.state.catalogs.selected[0]._id === appData.data.catalogs[0]._id);
 

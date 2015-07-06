@@ -5,5 +5,14 @@
       div(editable-text='currentItem.weight', onaftersave='update()') {{currentItem.weight}}
       div(editable-text='currentItem.category', onaftersave='update()') {{currentItem.category}}
     .col-md-3.pull-right
-      #item-image.well.well-lg
-        img(ng-src='{{currentItem.imagePath}}')
+      .row
+        #item-image.well.well-lg
+          img(ng-src='{{currentItem.imagePath}}')
+      .row
+        form.form(ng-submit='doUpload()')
+          .form-group
+            label Title
+            input.form-control(ng-model='title', type='text', required)
+          .form-group
+            file-field.btn.btn-primary(ng-model='uploadFile') Select File
+          button.btn.btn-success(ng-disabled='!uploadFile') Submit

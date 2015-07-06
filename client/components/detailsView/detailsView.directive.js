@@ -8,16 +8,12 @@ angular.module('prindleApp')
       controller: 'detailsViewCtrl',
       link: function (scope, element, attrs) {
 
+
+
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
-          scope.addImage(scope.currentItem, 'assets/images/clipart/tent.gif');
         });
-
-//        scope.currentItem.imagePath = [];
-//        scope.currentItem.imagePath = 'client/assets/images/clipart/tent.gif';
-
-
 
       }
     };
@@ -30,15 +26,22 @@ angular.module('prindleApp')
       } else {
         return false;
       }
-
     };
 
     $scope.update = function() {
       var currentItem = $scope.getSelectedItem();
-      listUtil.update('items', [currentItem]);
+      if(currentItem) {
+        listUtil.update('items', [currentItem]);
+      }
     };
 
     $scope.addImage = function(item, imagePath) {
       item.imagePath = imagePath;
+      listUtil.update('items', [item]);
     };
+
+    $scope.uploadImage = function() {
+      console.log('upload');
+    };
+
   }]);

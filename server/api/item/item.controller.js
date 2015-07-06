@@ -36,6 +36,7 @@ exports.update = function(req, res) {
     if(!item) { return res.send(404); }
     var updated = _.merge(item, req.body);
     updated.markModified('catalogs');
+//    updated.markModified('imagePath');
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, item);
