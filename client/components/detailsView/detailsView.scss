@@ -12,5 +12,24 @@
       max-width: 3.5em;
 //      margin-bottom: 1em;
     }
+
+    #image-upload {
+      font-size: 2rem;
+      .drop-box {
+        font-size: 2rem;
+        background: #F8F8F8;
+        border: 5px dashed #DDD;
+        width: 200px;
+        height: 65px;
+        text-align: center;
+        padding-top: 12px;
+        margin-top: 25px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .dragover {
+        border: 5px dashed blue;
+      }
+    }
   }
 }

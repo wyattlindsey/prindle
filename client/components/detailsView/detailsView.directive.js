@@ -8,12 +8,20 @@ angular.module('prindleApp')
       controller: 'detailsViewCtrl',
       link: function (scope, element, attrs) {
 
-
-
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
         });
+
+//        scope.$watch('files', function() {
+////          console.log(scope.files);
+//          if (scope.files) {
+////            if (scope.files.length !== 0) {
+////              console.log('I\'d buy that for a dollar');
+////            }
+////            console.log('hi');
+//          }
+//        });
 
       }
     };
@@ -40,8 +48,20 @@ angular.module('prindleApp')
       listUtil.update('items', [item]);
     };
 
-    $scope.uploadImage = function() {
-      console.log('upload');
+    $scope.onFileSelect = function($files) {
+      if ($files.length !== 0) {
+        _uploadImage($files[0]);
+      }
+    };
+
+    $scope.fileDropped = function($files, $event, $rejectedFiles) {
+      if ($rejectedFiles.length === 0) {
+        _uploadImage($files[0]);
+      }
+    };
+
+    var _uploadImage = function(file) {
+      // this is where the server upload happens
     };
 
   }]);
