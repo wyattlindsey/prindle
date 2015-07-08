@@ -26,7 +26,7 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'listUtil', function($scope, guiState, listUtil) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'listUtil', 'Upload', function($scope, guiState, listUtil, Upload) {
 
     $scope.getSelectedItem = function() {
       if (guiState.state.items.selected.length === 1) {
@@ -61,7 +61,10 @@ angular.module('prindleApp')
     };
 
     var _uploadImage = function(file) {
-      // this is where the server upload happens
+      Upload.upload({
+        url: '/api/images/',
+        file: file
+      });
     };
 
   }]);
