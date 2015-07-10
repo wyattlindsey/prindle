@@ -101,7 +101,7 @@ angular.module('prindleApp')
     };
 
 
-    this.delete = function(listName, entries ) {
+    this.delete = function(listName, entries) {
 
       var deferred = $q.defer();
 
@@ -123,6 +123,18 @@ angular.module('prindleApp')
           $rootScope.$broadcast(('refresh-' + listName));
         }
       });
+
+      return deferred.promise;
+    };
+
+    this.getImage = function(entry) {
+
+      var deferred = $q.defer();
+      crud.show('images', entry.imageID)
+        .then(function(image) {
+          console.log(image);
+          deferred.resolve(image);
+        });
 
       return deferred.promise;
     };

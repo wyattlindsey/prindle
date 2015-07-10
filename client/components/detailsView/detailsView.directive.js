@@ -6,22 +6,17 @@ angular.module('prindleApp')
       templateUrl: 'components/detailsView/detailsView.html',
       restrict: 'E',
       controller: 'detailsViewCtrl',
-      link: function (scope, element, attrs) {
+      link: function (scope, element, attrs, ctrl) {
+
+
 
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
+          if (scope.currentItem) {
+            scope.getImage(scope.currentItem);
+          }
         });
-
-//        scope.$watch('files', function() {
-////          console.log(scope.files);
-//          if (scope.files) {
-////            if (scope.files.length !== 0) {
-////              console.log('I\'d buy that for a dollar');
-////            }
-////            console.log('hi');
-//          }
-//        });
 
       }
     };
@@ -43,11 +38,6 @@ angular.module('prindleApp')
       }
     };
 
-    $scope.addImage = function(item, imagePath) {
-      item.imagePath = imagePath;
-      listUtil.update('items', [item]);
-    };
-
     $scope.onFileSelect = function($files) {
       if ($files && $files.length) {
         _uploadImage($files[0]);
@@ -63,12 +53,21 @@ angular.module('prindleApp')
     var _uploadImage = function(file) {
       Upload.upload({
         url: '/api/images/',
-        data: {imageFile: 'data'},
         file: file
       })
         .success(function(data) {
-          console.log(data);
+          $scope.currentItem.imageID = data._id;
+          listUtil.update('items', [$scope.currentItem]);
+          $scope.getImage($scope.currentItem);
         });
+    };
+
+    $scope.getImage = function(currentItem) {
+//      scope.currentImage = 'http://localhost:9000'
+      listUtil.getImage(currentItem).then(function(data) {
+        // here we have the image data
+        $scope.currentImage = 'public/uploads/user/' + data.name;
+      });
     };
 
   }]);

@@ -25,10 +25,24 @@ angular.module('prindleApp')
       $http.get('/api/' + endpoint).success(function(data) {
         deferred.resolve(data);
       }).
-          error(function(err) {
-            console.log(err);
-            deferred.reject();
-          });
+        error(function(err) {
+          console.log(err);
+          deferred.reject();
+        });
+
+      return deferred.promise;
+    };
+
+    this.show = function(endpoint, id) {
+      var deferred = $q.defer();
+
+      $http.get('/api/' + endpoint + '/' + id).success(function(data) {
+        deferred.resolve(data);
+      }).
+        error(function(err) {
+          console.log(err);
+          deferred.reject();
+        });
 
       return deferred.promise;
     };

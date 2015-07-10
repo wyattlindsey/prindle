@@ -33,24 +33,14 @@ angular.module('prindleApp')
           }]
         );
       } else if ($scope.listName === 'items') {
-        var rand = _.random(0,3);
-        var imagePath;
-        if (rand === 0) {
-          imagePath = 'assets/images/clipart/tent.gif'
-        } else if (rand === 1) {
-          imagePath = 'assets/images/clipart/campfire.gif'
-        } else if (rand === 2) {
-          imagePath = 'assets/images/clipart/backpack.gif'
-        } else {
-          imagePath = '';
-        }
+
         listUtil.add($scope.listName,
           [{
             name: 'my new thing',
             weight: 420,
             category: 'stuff',
             readOnly: false,
-            imagePath: imagePath
+            imageID: ''
           }]
         );
 

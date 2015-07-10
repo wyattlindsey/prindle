@@ -16,6 +16,7 @@ exports.show = function(req, res) {
   Image.findById(req.params.id, function (err, image) {
     if(err) { return handleError(res, err); }
     if(!image) { return res.send(404); }
+    res.sendfile('./public/images/user/024048634ce5842c9df530ec6f64fca7.png');
     return res.json(image);
   });
 };
