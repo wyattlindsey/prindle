@@ -66,7 +66,7 @@ angular.module('prindleApp')
 //      scope.currentImage = 'http://localhost:9000'
       listUtil.getImage(currentItem).then(function(data) {
         // here we have the image data
-        $scope.currentImage = 'public/uploads/user/' + data.name;
+        $scope.currentImage = 'images/' + data.name;
       });
     };
 

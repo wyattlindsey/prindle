@@ -132,7 +132,6 @@ angular.module('prindleApp')
       var deferred = $q.defer();
       crud.show('images', entry.imageID)
         .then(function(image) {
-          console.log(image);
           deferred.resolve(image);
         });
 
