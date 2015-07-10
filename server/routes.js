@@ -4,9 +4,19 @@
 
 'use strict';
 
+var multer = require('multer');
+var fs = require('fs');
+
 var errors = require('./components/errors');
 
 module.exports = function(app) {
+
+  app.use(multer({
+    dest: './server/assets/images/user',
+    onFileUploadComplete: function(file, req, res) {
+//      console.log(req.files.file);
+    }
+  }));
 
   // Insert routes below
   app.use('/api/images', require('./api/image'));

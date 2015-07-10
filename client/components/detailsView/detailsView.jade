@@ -11,7 +11,8 @@
             img(ng-src='{{currentItem.imagePath}}')
           #image-upload(ng-hide='currentItem.imagePath !== ""')
             .row
-              button.btn.btn-primary(ngf-select, ngf-change='onFileSelect($files)', accept='image/*') Select image
+              button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+              accept='image/*') Select image
             .row
               .drop-box(ngf-drop, ng-model='files', ngf-drag-over-class='dragover',
               ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'

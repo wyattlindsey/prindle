@@ -49,13 +49,13 @@ angular.module('prindleApp')
     };
 
     $scope.onFileSelect = function($files) {
-      if ($files.length !== 0) {
+      if ($files && $files.length) {
         _uploadImage($files[0]);
       }
     };
 
     $scope.fileDropped = function($files, $event, $rejectedFiles) {
-      if ($rejectedFiles.length === 0) {
+      if ($rejectedFiles.length === 0 && $files && $files.length) {
         _uploadImage($files[0]);
       }
     };
@@ -63,8 +63,12 @@ angular.module('prindleApp')
     var _uploadImage = function(file) {
       Upload.upload({
         url: '/api/images/',
+        data: {imageFile: 'data'},
         file: file
-      });
+      })
+        .success(function(data) {
+          console.log(data);
+        });
     };
 
   }]);
