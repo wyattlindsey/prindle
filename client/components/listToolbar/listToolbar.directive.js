@@ -68,7 +68,7 @@ angular.module('prindleApp')
         if (i !== 0 && i < (qtyNames - 1)) {
           names += ', ';
         }
-        if (i === (qtyNames - 1)) {
+        if (i === (qtyNames - 1) && qtyNames > 1) {
           names += ' and ';
         }
 

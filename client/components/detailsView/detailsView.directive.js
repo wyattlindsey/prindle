@@ -53,7 +53,8 @@ angular.module('prindleApp')
 
       Upload.upload({
         url: '/api/images/',
-        file: file
+        file: file,
+        fields: {'readOnly': false}
       })
         .success(function(data) {
           $scope.currentItem.imageID = data._id;

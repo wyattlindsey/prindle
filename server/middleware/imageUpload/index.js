@@ -5,7 +5,7 @@ var gm = require('gm');
 
 module.exports = function(req, res, next) {
   return multer({
-    dest: 'server/public/images',
+    dest: 'server/public/images/',
     onFileUploadComplete: function(file, req, res) {
       req.body.name = file.name;
       gm('server/public/images/' + file.name).resize(280, 280)

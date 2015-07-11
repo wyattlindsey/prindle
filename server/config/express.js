@@ -15,7 +15,7 @@ var errorHandler = require('errorhandler');
 var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
-var imageUpload = require('../components/imageUpload');
+var imageUpload = require('../middleware/imageUpload');
 
 module.exports = function(app) {
   var env = app.get('env');

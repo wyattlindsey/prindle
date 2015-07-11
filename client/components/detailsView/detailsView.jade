@@ -8,20 +8,16 @@
       .row
         #item-image.well.well-lg
           div(ng-hide='currentItem.imageID === ""')
-            img(ng-src='{{currentImage}}')
+            .row
+              img(ng-src='{{currentImage}}')
+            .row
+              button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+                accept='image/*') Upload image
           #image-upload(ng-hide='currentItem.imageID !== ""')
             .row
               button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
-              accept='image/*') Select image
+                accept='image/*') Upload image
             .row
               .drop-box(ngf-drop, ng-model='files', ngf-drag-over-class='dragover',
-              ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'
-              ) Drop image file
-      //.row
-      //  form.form(ng-submit='uploadImage()')
-      //    .form-group
-      //      label Title
-      //      input.form-control(ng-model='title', type='text', required)
-      //    .form-group
-      //      file-field.btn.btn-primary(ng-model='uploadFile') Select File
-      //    button.btn.btn-success(ng-disabled='!uploadFile') Submit
+                ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'
+                ) Drop image file
