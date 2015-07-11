@@ -27,6 +27,10 @@ angular.module('prindleApp')
 
       var addedItems = [];
 
+      if (!Array.isArray(newEntryData)) {
+        newEntryData = [newEntryData];
+      }
+
       async.each(newEntryData, function(entry, callback) {
         crud.add(listName, entry)
           .then(function(data) {
@@ -54,6 +58,10 @@ angular.module('prindleApp')
 
       var copiedItems = [];
 
+      if (!Array.isArray(entries)) {
+        entries = [entries];
+      }
+
       async.each(entries, function(entry, callback) {
         var itemCopy = {};
         angular.copy(entry, itemCopy);
@@ -63,7 +71,6 @@ angular.module('prindleApp')
         crud.add(listName, itemCopy)
           .then(function(newItem) {
             copiedItems.push(newItem);
-//            $rootScope.$broadcast(('copied-' + listName), {src: entry, dest: newItem});
             callback();
           });
       }, function(err) {
@@ -83,6 +90,10 @@ angular.module('prindleApp')
 
     this.update = function(listName, editedEntries) {
       var deferred = $q.defer();
+
+      if (!Array.isArray(editedEntries)) {
+        editedEntries = [editedEntries];
+      }
 
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry).then(function() {
@@ -104,6 +115,10 @@ angular.module('prindleApp')
     this.delete = function(listName, entries) {
 
       var deferred = $q.defer();
+
+      if (!Array.isArray(entries)) {
+        entries = [entries];
+      }
 
       async.each(entries, function(entry, callback) {
         crud.remove(listName, entry._id).then(function() {
@@ -127,12 +142,17 @@ angular.module('prindleApp')
       return deferred.promise;
     };
 
+
     this.getImage = function(entry) {
 
       var deferred = $q.defer();
       crud.show('images', entry.imageID)
-        .then(function(image) {
-          deferred.resolve(image);
+        .then(function(image, err) {      // not sure if those are the correct callback parameters
+          if(err) {
+            deferred.reject('error showing image in listUtil: ' + err);
+          } else {
+            deferred.resolve(image);
+          }
         });
 
       return deferred.promise;

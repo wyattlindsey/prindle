@@ -21,7 +21,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'listUtil', 'Upload', function($scope, guiState, listUtil, Upload) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'listUtil', 'Upload',
+    function($scope, guiState, listUtil, Upload) {
 
     $scope.getSelectedItem = function() {
       if (guiState.state.items.selected.length === 1) {
@@ -34,7 +35,7 @@ angular.module('prindleApp')
     $scope.update = function() {
       var currentItem = $scope.getSelectedItem();
       if(currentItem) {
-        listUtil.update('items', [currentItem]);
+        listUtil.update('items', currentItem);
       }
     };
 
@@ -51,21 +52,20 @@ angular.module('prindleApp')
     };
 
     var _uploadImage = function(file) {
+
       Upload.upload({
         url: '/api/images/',
         file: file
       })
         .success(function(data) {
           $scope.currentItem.imageID = data._id;
-          listUtil.update('items', [$scope.currentItem]);
+          listUtil.update('items', $scope.currentItem);
           $scope.getImage($scope.currentItem);
         });
     };
 
     $scope.getImage = function(currentItem) {
-//      scope.currentImage = 'http://localhost:9000'
       listUtil.getImage(currentItem).then(function(data) {
-        // here we have the image data
         $scope.currentImage = 'images/' + data.name;
       });
     };

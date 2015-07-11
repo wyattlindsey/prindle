@@ -100,7 +100,7 @@ angular.module('prindleApp')
           destCatalog.items = _.uniq(destCatalog.items);
 
 
-          listUtil.update('catalogs', [destCatalog])
+          listUtil.update('catalogs', destCatalog)
             .then(function() {
               $rootScope.$broadcast('refresh-items');
             });

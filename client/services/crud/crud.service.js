@@ -41,7 +41,7 @@ angular.module('prindleApp')
       }).
         error(function(err) {
           console.log(err);
-          deferred.reject();
+          deferred.reject(err);
         });
 
       return deferred.promise;

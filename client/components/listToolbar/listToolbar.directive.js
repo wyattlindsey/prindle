@@ -35,13 +35,13 @@ angular.module('prindleApp')
       } else if ($scope.listName === 'items') {
 
         listUtil.add($scope.listName,
-          [{
+          {
             name: 'my new thing',
             weight: 420,
             category: 'stuff',
             readOnly: false,
             imageID: ''
-          }]
+          }
         );
 
       }

@@ -11,7 +11,6 @@ angular.module('prindleApp', [
   'ui.grid.edit',
   'lvl.directives.dragdrop',
   'xeditable',
-//  'bootstrap.fileField',
   'ngFileUpload'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {

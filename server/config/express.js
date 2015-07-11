@@ -31,13 +31,13 @@ module.exports = function(app) {
 
   // Used for uploading images
   app.use(multer({
-    dest: 'public/images',
+    dest: 'server/public/images',
     onFileUploadComplete: function(file, req, res) {
       req.body.name = file.name;
     }
   }));
   // and for viewing those images
-  app.use('/images', express.static(path.join(config.root, 'public/images')));
+  app.use('/images', express.static(path.join(config.root, 'server/public/images')));
 
   if ('production' === env) {
     app.use(favicon(path.join(config.root, 'public', 'favicon.ico')));

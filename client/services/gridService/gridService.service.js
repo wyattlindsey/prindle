@@ -75,11 +75,11 @@ angular.module('prindleApp')
          */
         guiState.state[listName].editInProgress = false;
         if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {
-          listUtil.update(listName, [rowEntity]);
+          listUtil.update(listName, rowEntity);
           selectSingleRow(listName, rowEntity, listView);
         } else { // don't change readOnly records or update if value is blank
           rowEntity[colDef.field] = oldValue;
-          listUtil.update(listName, [rowEntity]);
+          listUtil.update(listName, rowEntity);
           selectSingleRow(listName, rowEntity, listView);
         }
       });
