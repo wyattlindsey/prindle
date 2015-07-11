@@ -16,6 +16,8 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 var multer = require('multer');
+var gm = require('gm');
+var fs = require('fs');
 
 module.exports = function(app) {
   var env = app.get('env');
@@ -34,9 +36,13 @@ module.exports = function(app) {
     dest: 'server/public/images',
     onFileUploadComplete: function(file, req, res) {
       req.body.name = file.name;
+      gm('server/public/images/' + file.name).resize(280, 280)
+        .write('server/public/images/' + file.name, function(err) {
+          console.log('written');
+        });
     }
   }));
-  // and for viewing those images
+
   app.use('/images', express.static(path.join(config.root, 'server/public/images')));
 
   if ('production' === env) {

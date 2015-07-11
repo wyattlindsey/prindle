@@ -19,7 +19,7 @@ angular.module('prindleApp')
 
     this.clearSelection = function() {
       guiState.state.items.selected = [];
-      $rootScope.$broadcast('items-selection-cleared');
+      $rootScope.$broadcast('clear-selected-items');
     };
 
 

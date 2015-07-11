@@ -23,6 +23,12 @@ angular.module('prindleApp')
         processSelectionChange(rows);
       });
 
+      scope.$parent.$on('clear-selected-items', function() {
+        if (listName === 'items') {
+          listView.api.selection.clearSelectedRows();
+        }
+      });
+
       var processSelectionChange = function(rows) {
         // load in new selections on selection change
         var selectedRows = listView.api.selection.getSelectedRows();

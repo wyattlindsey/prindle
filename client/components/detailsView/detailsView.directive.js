@@ -8,8 +8,6 @@ angular.module('prindleApp')
       controller: 'detailsViewCtrl',
       link: function (scope, element, attrs, ctrl) {
 
-
-
         scope.$on('items-selection-changed', function() {
           scope.currentItem = {};
           scope.currentItem = scope.getSelectedItem();
@@ -66,6 +64,9 @@ angular.module('prindleApp')
 
     $scope.getImage = function(currentItem) {
       listUtil.getImage(currentItem).then(function(data) {
+        if (data._id) {
+          $scope.currentItem.imageID = data._id;
+        }
         $scope.currentImage = 'images/' + data.name;
       });
     };

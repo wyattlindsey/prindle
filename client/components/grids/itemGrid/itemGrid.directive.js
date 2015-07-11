@@ -95,6 +95,7 @@ angular.module('prindleApp')
 
         $scope.$on('catalogs-selection-changed', function() {
           $scope.displayItems = itemViewService.refresh();
+          itemViewService.clearSelection();
           $scope.masterListSelected.selected = itemViewService.masterListSelected();
         });
 
