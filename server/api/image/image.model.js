@@ -8,7 +8,7 @@ var ImageSchema = new Schema({
   info: String,
   active: Boolean,
   filePath: String,
-  readOnly: Boolean
+  isClipArt: Boolean
 });
 
 module.exports = mongoose.model('Image', ImageSchema);

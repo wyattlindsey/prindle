@@ -4,7 +4,8 @@ angular.module('prindleApp')
   .service('appData', function () {
     this.data = {
       catalogs: [],
-      items: []
+      items: [],
+      categories: []
     };
     Object.seal(this);
   });

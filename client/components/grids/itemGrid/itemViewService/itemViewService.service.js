@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('itemViewService', ['$rootScope','appData', 'guiState', 'listUtil', function($rootScope, appData, guiState, listUtil) {
+  .service('itemViewService', ['$rootScope','appData', 'guiState', 'listUtil', 'categoryService',
+    function($rootScope, appData, guiState, listUtil, categoryService) {
 
     this.refresh = function() {
       return _refresh();

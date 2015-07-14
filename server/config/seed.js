@@ -6,6 +6,7 @@
 'use strict';
 
 var Thing = require('../api/thing/thing.model');
+var Category = require('../api/category/category.model');
 var Item = require('../api/item/item.model');
 var User = require('../api/user/user.model');
 
@@ -33,7 +34,17 @@ Thing.find({}).remove(function() {
   });
 });
 
-
+Category.find({}).remove(function() {
+  Category.create({
+    name : 'One Category'
+    },
+    {
+      name : 'Another Category'
+    },
+    {
+      name : 'Finally, a third'
+    });
+});
 
 User.find({}).remove(function() {
   User.create({
