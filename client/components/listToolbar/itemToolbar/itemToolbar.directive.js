@@ -12,11 +12,13 @@ angular.module('prindleApp')
 
         scope.$on('items-selection-changed', function() {
           scope.noItemSelected = listToolbar.nothingSelected();
+          scope.noCatalogSelected = listToolbar.noCatalogSelected();
           scope.itemDeletable = listToolbar.selectionDeletable();
         });
 
         scope.$on('items-selection-cleared', function() {
           scope.noItemSelected = listToolbar.nothingSelected();
+          scope.noCatalogSelected = listToolbar.noCatalogSelected();
           scope.itemDeletable = listToolbar.selectionDeletable();
         });
 
@@ -37,6 +39,7 @@ angular.module('prindleApp')
   .controller('itemToolbarCtrl', ['$scope', function($scope) {
     $scope.initItemToolbar = function() {
       $scope.nothingSelected = true;
+      $scope.noCatalogSelected = true;
       $scope.selectionDeletable = true;
     };
   }]);

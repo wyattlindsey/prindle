@@ -19,6 +19,7 @@ angular.module('prindleApp')
     $scope.initToolbar = function(attrs) {
       $scope.listName = attrs.listName;
       $scope.nothingSelected = false;
+      $scope.noCatalogSelected = true;
       $scope.selectionDeletable = true;
     };
 
@@ -38,7 +39,7 @@ angular.module('prindleApp')
           {
             name: 'my new thing',
             weight: Math.round(Math.random() * 100),
-            category: 'stuff',
+            category: 'my stuff',
             readOnly: false,
             imageID: ''
           }
@@ -102,6 +103,15 @@ angular.module('prindleApp')
 
     this.nothingSelected = function() {
       if (guiState.state[$scope.listName].selected.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    };
+
+
+    this.noCatalogSelected = function() {
+      if (guiState.state.catalogs.selected.length > 0) {
         return false;
       } else {
         return true;

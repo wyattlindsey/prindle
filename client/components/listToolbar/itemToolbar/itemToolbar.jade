@@ -1,9 +1,10 @@
 .row.list-toolbar
   button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemsAction()',
-  ng-disabled='noItemSelected')
+  ng-disabled='noItemSelected || noCatalogSelected')
     i.fa.fa-copy
   button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='deleteItemsAction()',
   ng-disabled='noItemSelected || !itemDeletable')
     i.fa.fa-trash
-  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemsAction()')
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemsAction()',
+  ng-disabled='noCatalogSelected')
     i.fa.fa-plus

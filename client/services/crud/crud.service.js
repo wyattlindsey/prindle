@@ -33,6 +33,14 @@ angular.module('prindleApp')
       return deferred.promise;
     };
 
+    /**
+     * show() - gets a single record
+     *
+     * @param endpoint
+     * @param id
+     * @returns {*}
+     */
+
     this.show = function(endpoint, id) {
       var deferred = $q.defer();
 
