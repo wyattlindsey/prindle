@@ -25,6 +25,43 @@ angular.module('prindleApp')
     // Public API here
     return {
 
+      getSingleName: function(add) {
+        add = add || angular.noop;
+
+        return function() {
+          var args = Array.prototype.slice.call(arguments),
+            name = args.shift(),
+            getSingleNameModal;
+
+          getSingleNameModal = openModal({
+            modal: {
+              dismissable: true,
+              title: 'Add New Category',
+              html: '<form>category<br><input type="text" name="category"></form>',
+              buttons: [
+                  {
+                    classes: 'btn-success',
+                    text: 'Create',
+                    click: function(e) {
+                      getSingleNameModal.close(e);
+                    }
+                  },
+                  {
+                    classes: 'btn-default',
+                    text: 'Cancel',
+                    click: function(e) {
+                      getSingleNameModal.dismiss(e);
+                    }
+                  }
+                ]
+              }
+            });
+          getSingleNameModal.result.then(function(event) {
+            add.apply(event, args);
+          });
+          }
+        },
+
       /* Confirmation modals */
       confirm: {
 

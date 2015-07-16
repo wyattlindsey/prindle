@@ -18,9 +18,6 @@ angular.module('prindleApp')
 
     $scope.initToolbar = function(attrs) {
       $scope.listName = attrs.listName;
-      $scope.nothingSelected = false;
-      $scope.noCatalogSelected = true;
-      $scope.selectionDeletable = true;
     };
 
     this.add = function() {

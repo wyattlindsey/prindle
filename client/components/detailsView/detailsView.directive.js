@@ -23,8 +23,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload',
-    function($scope, guiState, appData, listUtil, Upload) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal',
+    function($scope, guiState, appData, listUtil, Upload, Modal) {
 
     $scope.getSelectedItem = function() {
       if (guiState.state.items.selected.length === 1) {
@@ -42,8 +42,22 @@ angular.module('prindleApp')
       }
     };
 
+
     this.getCategories = function() {
       return appData.data.categories;
+    };
+
+
+    $scope.addNewCategory = function() {
+      var openAddNewCategoryModal = Modal.getSingleName(function() {
+
+      })();
+
+    };
+
+
+    $scope.manageCategories = function() {
+
     };
 
 

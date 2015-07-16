@@ -12,6 +12,11 @@
             ul.dropdown-menu(role='menu')
               li(ng-repeat='category in categories')
                 a(href='#') {{category.name}}
+              li.divider
+              li
+                a(href='#', ng-click='addNewCategory()') Add new category
+              li
+                a(href='#', ng-click='manageCategories()') Manage categories
     .col-md-3.pull-right
       #item-image.well.well-lg
           div(ng-hide='currentItem.imageID === ""')

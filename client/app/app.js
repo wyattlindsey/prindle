@@ -1,5 +1,7 @@
 'use strict';
 
+// let Listy lighten the load
+
 angular.module('prindleApp', [
   'ngCookies',
   'ngResource',

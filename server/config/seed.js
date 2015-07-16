@@ -34,17 +34,6 @@ Thing.find({}).remove(function() {
   });
 });
 
-Category.find({}).remove(function() {
-  Category.create({
-    name : 'One Category'
-    },
-    {
-      name : 'Another Category'
-    },
-    {
-      name : 'Finally, a third'
-    });
-});
 
 User.find({}).remove(function() {
   User.create({
