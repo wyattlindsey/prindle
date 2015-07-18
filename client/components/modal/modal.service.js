@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .factory('Modal', function ($rootScope, $modal) {
+  .factory('Modal', ['$rootScope', '$modal', '$sce', function ($rootScope, $modal, $sce) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -31,13 +31,14 @@ angular.module('prindleApp')
         return function() {
           var args = Array.prototype.slice.call(arguments),
             name = args.shift(),
-            getSingleNameModal;
+            getSingleNameModal,
+            html = $sce.trustAsHtml('<div><form><input type="text" name="category" /></form></div>');
 
           getSingleNameModal = openModal({
             modal: {
               dismissable: true,
               title: 'Add New Category',
-              html: '<form>category<br><input type="text" name="category"></form>',
+              html: html,
               buttons: [
                   {
                     classes: 'btn-success',
@@ -111,4 +112,4 @@ angular.module('prindleApp')
         }
       }
     };
-  });
+  }]);
