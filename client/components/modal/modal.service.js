@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .factory('Modal', ['$rootScope', '$modal', '$sce', function ($rootScope, $modal, $sce) {
+  .factory('Modal', ['$rootScope', '$modal', function ($rootScope, $modal) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -16,8 +16,9 @@ angular.module('prindleApp')
       angular.extend(modalScope, scope);
 
       return $modal.open({
-        templateUrl: 'components/modal/modal.html',
+        templateUrl: scope.modal.template,
         windowClass: modalClass,
+        size: scope.modal.size,
         scope: modalScope
       });
     }
@@ -25,40 +26,46 @@ angular.module('prindleApp')
     // Public API here
     return {
 
-      getSingleName: function(add) {
+      singleField: function(add) {
         add = add || angular.noop;
 
         return function() {
-          var args = Array.prototype.slice.call(arguments),
-            name = args.shift(),
-            getSingleNameModal,
-            html = $sce.trustAsHtml('<div><form><input type="text" name="category" /></form></div>');
+          var singleFieldModal;
+          var args = Array.prototype.slice.call(arguments);
+          var name = args.shift();
+          var submitResult = function(result) {
+            $rootScope.$broadcast('got-' + name + '-from-singleFieldModal', result);
+          };
 
-          getSingleNameModal = openModal({
+          // need to find how to redirect return key to Create button
+
+          singleFieldModal = openModal({
             modal: {
               dismissable: true,
               title: 'Add New Category',
-              html: html,
+              size: 'sm',
+              template: 'components/modal/singleField.html',
+              submitResult: submitResult,
               buttons: [
                   {
                     classes: 'btn-success',
                     text: 'Create',
                     click: function(e) {
-                      getSingleNameModal.close(e);
+                      singleFieldModal.close(e);
                     }
                   },
                   {
                     classes: 'btn-default',
                     text: 'Cancel',
                     click: function(e) {
-                      getSingleNameModal.dismiss(e);
+                      singleFieldModal.dismiss(e);
                     }
                   }
                 ]
               }
             });
-          getSingleNameModal.result.then(function(event) {
-            add.apply(event, args);
+          singleFieldModal.result.then(function(event) {
+            add.apply(event);
           });
           }
         },
@@ -88,6 +95,7 @@ angular.module('prindleApp')
               modal: {
                 dismissable: true,
                 title: 'Confirm Delete',
+                template: 'components/modal/modal.html',
                 html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>',
                 buttons: [{
                   classes: 'btn-danger',

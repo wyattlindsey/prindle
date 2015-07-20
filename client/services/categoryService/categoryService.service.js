@@ -30,4 +30,14 @@ angular.module('prindleApp')
     });
 
 
+    $rootScope.$on('got-category-from-singleFieldModal', function(event, name) {
+      add(name);
+    });
+
+
+    var add = function(name) {
+      console.log('adding new category: ' + name);
+    };
+
+
   }]);

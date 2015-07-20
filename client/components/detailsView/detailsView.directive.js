@@ -49,10 +49,9 @@ angular.module('prindleApp')
 
 
     $scope.addNewCategory = function() {
-      var openAddNewCategoryModal = Modal.getSingleName(function() {
-
-      })();
-
+      Modal.singleField(function(event) {
+        // deal with display stuff after creating that new category
+      })('category');
     };
 
 
