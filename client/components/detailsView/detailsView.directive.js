@@ -59,7 +59,9 @@ angular.module('prindleApp')
 
 
       $scope.manageCategories = function () {
-
+        Modal.categories(function(stuff) {
+          // callback
+        })();
       };
 
 

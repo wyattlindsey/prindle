@@ -26,6 +26,7 @@ angular.module('prindleApp')
     // Public API here
     return {
 
+      /* get a value from a single field */
       singleField: function(add) {
         add = add || angular.noop;
 
@@ -42,7 +43,7 @@ angular.module('prindleApp')
           singleFieldModal = openModal({
             modal: {
               dismissable: true,
-              title: 'Add New Category',
+              title: 'Add New Category',    // this should be parameterized to make the modal modular
               size: 'sm',
               template: 'components/modal/singleField.html',
               submitResult: submitResult,
@@ -69,6 +70,49 @@ angular.module('prindleApp')
           });
           }
         },
+
+
+      /* open categories editor */
+      categories: function(cb) {
+        cb = cb || angular.noop;
+
+        return function() {
+          var categoriesModal;
+
+
+          // need to find how to redirect return key to Create button
+
+          categoriesModal = openModal({
+            modal: {
+              dismissable: true,
+              title: 'Manage Categories',    // this should be parameterized to make the modal modular
+              size: 'lg',
+              template: 'components/modal/categoriesModal/categoriesModal.html',
+              buttons: [
+                {
+                  classes: 'btn-success',
+                  text: 'Done',
+                  click: function(e) {
+                    categoriesModal.close(e);
+                  }
+                },
+                {
+                  classes: 'btn-default',
+                  text: 'Cancel',
+                  click: function(e) {
+                    categoriesModal.dismiss(e);
+                  }
+                }
+              ]
+            }
+          });
+          categoriesModal.result.then(function(event) {
+            cb.apply(event);
+          });
+        }
+      },
+
+
 
       /* Confirmation modals */
       confirm: {
