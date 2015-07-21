@@ -11,7 +11,7 @@
             a(href, dropdown-toggle) {{currentItem.category}}
             ul.dropdown-menu(role='menu')
               li(ng-repeat='category in categories')
-                a(href='#') {{category.name}}
+                a(href='#', ng-click='selectCategory(category.name)') {{category.name}}
               li.divider
               li
                 a(href='#', ng-click='addNewCategory()') Add new category

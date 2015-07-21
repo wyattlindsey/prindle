@@ -36,7 +36,14 @@ angular.module('prindleApp')
 
 
     var add = function(name) {
-      console.log('adding new category: ' + name);
+      listUtil.add('categories', {name: name})
+        .then(function() {
+          listUtil.get('categories')
+            .then(function(categories) {
+              appData.data.categories = categories;
+              $rootScope.$broadcast('categories-loaded');
+            });
+        });
     };
 
 
