@@ -19,7 +19,8 @@ angular.module('prindleApp')
         templateUrl: scope.modal.template,
         windowClass: modalClass,
         size: scope.modal.size,
-        scope: modalScope
+        scope: modalScope,
+        controller: scope.modal.controller
       });
     }
 
@@ -87,6 +88,7 @@ angular.module('prindleApp')
               dismissable: true,
               title: 'Manage Categories',    // this should be parameterized to make the modal modular
               size: 'lg',
+              controller: 'categoriesModalCtrl',
               template: 'components/modal/categoriesModal/categoriesModal.html',
               buttons: [
                 {
