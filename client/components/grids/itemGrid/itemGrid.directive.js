@@ -43,7 +43,8 @@ angular.module('prindleApp')
           // set up columns
 
           $scope.itemView.columnDefs = [
-            { field: 'null',
+            {
+              field: 'null',
               displayName: '',
               cellTemplate: dragCellTemplate,
               enableSorting: false,

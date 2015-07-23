@@ -8,7 +8,7 @@
           span(editable-text='currentItem.weight', onaftersave='update()') {{currentItem.weight}}
         div category:&nbsp
           span.btn-group.dropup(dropdown, dropdown-append-to-body)
-            a(href, dropdown-toggle) {{currentItem.category}}
+            a(href, dropdown-toggle) {{currentItem.category || 'none'}}
             ul.dropdown-menu(role='menu')
               li(ng-repeat='category in categories')
                 a(href='#', ng-click='selectCategory(category.name)') {{category.name}}

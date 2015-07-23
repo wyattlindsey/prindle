@@ -53,8 +53,11 @@ angular.module('prindleApp')
       };
 
 
-      $scope.addNewCategory = function () {
-        Modal.singleField()('category');
+      $scope.addNewCategory = function() {
+        $scope.$parent.$on('got-category-from-singleFieldModal', function(event, category) {
+          $scope.selectCategory(category);
+        });
+        Modal.singleField()('category', 'Add new category');
       };
 
 

@@ -28,15 +28,16 @@ angular.module('prindleApp')
     return {
 
       /* get a value from a single field */
-      singleField: function(add) {
-        add = add || angular.noop;
+      singleField: function(cb) {
+        cb = cb || angular.noop;
 
         return function() {
           var singleFieldModal;
           var args = Array.prototype.slice.call(arguments);
-          var name = args.shift();
+          var value = args.shift();
+          var modalTitle = args.shift();
           var submitResult = function(result) {
-            $rootScope.$broadcast('got-' + name + '-from-singleFieldModal', result);
+            $rootScope.$broadcast('got-' + value + '-from-singleFieldModal', result);
           };
 
           // need to find how to redirect return key to Create button
@@ -44,7 +45,7 @@ angular.module('prindleApp')
           singleFieldModal = openModal({
             modal: {
               dismissable: true,
-              title: 'Add New Category',    // this should be parameterized to make the modal modular
+              title: modalTitle,
               size: 'sm',
               template: 'components/modal/singleField.html',
               submitResult: submitResult,
@@ -67,7 +68,7 @@ angular.module('prindleApp')
               }
             });
           singleFieldModal.result.then(function(event) {
-            add.apply(event);
+            cb.apply(event);
           });
           }
         },

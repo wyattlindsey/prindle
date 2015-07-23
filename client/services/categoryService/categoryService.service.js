@@ -36,14 +36,18 @@ angular.module('prindleApp')
 
 
     var add = function(name) {
-      listUtil.add('categories', {name: name})
-        .then(function() {
-          listUtil.get('categories')
-            .then(function(categories) {
-              appData.data.categories = categories;
-              $rootScope.$broadcast('categories-loaded');
-            });
-        });
+      if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined') {
+        listUtil.add('categories', {name: name})
+          .then(function () {
+            listUtil.get('categories')
+              .then(function (categories) {
+                appData.data.categories = categories;
+                $rootScope.$broadcast('categories-loaded');
+              });
+          });
+      } else {
+        // alert
+      }
     };
 
 
