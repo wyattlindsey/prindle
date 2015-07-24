@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('categoryService', ['$rootScope', 'appData', 'listUtil', function ($rootScope, appData, listUtil) {
+  .service('categoryService', ['$rootScope', '$q', 'appData', 'listUtil',
+    function ($rootScope, $q, appData, listUtil) {
 
     var unregisterLoadCategories = $rootScope.$on('items-loaded', function() {
       listUtil.get('categories')
@@ -30,24 +31,25 @@ angular.module('prindleApp')
     });
 
 
-    $rootScope.$on('got-category-from-singleFieldModal', function(event, name) {
-      add(name);
-    });
 
+    this.add = function(name) {
 
-    var add = function(name) {
+      var deferred = $q.defer();
+
       if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined') {
         listUtil.add('categories', {name: name})
           .then(function () {
             listUtil.get('categories')
               .then(function (categories) {
                 appData.data.categories = categories;
-                $rootScope.$broadcast('categories-loaded');
+                deferred.resolve();   // need reject for error
               });
           });
       } else {
-        // alert
+        // alert because the name isn't unique - use deferred.reject()?
       }
+
+      return deferred.promise;
     };
 
 

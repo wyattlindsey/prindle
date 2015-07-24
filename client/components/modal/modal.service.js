@@ -32,43 +32,37 @@ angular.module('prindleApp')
         cb = cb || angular.noop;
 
         return function() {
-          var singleFieldModal;
+          // need to find how to make return key trigger Create button
+
           var args = Array.prototype.slice.call(arguments);
-          var value = args.shift();
           var modalTitle = args.shift();
-          var submitResult = function(result) {
-            $rootScope.$broadcast('got-' + value + '-from-singleFieldModal', result);
-          };
 
-          // need to find how to redirect return key to Create button
-
-          singleFieldModal = openModal({
+          var singleFieldModal = openModal({
             modal: {
               dismissable: true,
               title: modalTitle,
               size: 'sm',
               template: 'components/modal/singleField.html',
-              submitResult: submitResult,
               buttons: [
                   {
                     classes: 'btn-success',
                     text: 'Create',
-                    click: function(e) {
-                      singleFieldModal.close(e);
+                    click: function(result) {
+                      singleFieldModal.close(result);
                     }
                   },
                   {
                     classes: 'btn-default',
                     text: 'Cancel',
-                    click: function(e) {
-                      singleFieldModal.dismiss(e);
+                    click: function() {
+                      singleFieldModal.dismiss();
                     }
                   }
                 ]
               }
             });
-          singleFieldModal.result.then(function(event) {
-            cb.apply(event);
+          singleFieldModal.result.then(function(result) {
+            cb(result.data);   // not sure why cb.apply() doesn't work right here
           });
           }
         },
@@ -80,6 +74,8 @@ angular.module('prindleApp')
 
         return function() {
           var categoriesModal;
+          var args = Array.prototype.slice.call(arguments);
+          var modalTitle = args.shift();
 
 
           // need to find how to redirect return key to Create button
@@ -87,7 +83,7 @@ angular.module('prindleApp')
           categoriesModal = openModal({
             modal: {
               dismissable: true,
-              title: 'Manage Categories',    // this should be parameterized to make the modal modular
+              title: modalTitle,
               size: 'lg',
               controller: 'categoriesModalCtrl',
               template: 'components/modal/categoriesModal/categoriesModal.html',

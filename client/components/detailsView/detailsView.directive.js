@@ -9,7 +9,7 @@ angular.module('prindleApp')
       link: function (scope, element, attrs, ctrl) {
 
         scope.$on('categories-loaded', function () {
-          scope.categories = ctrl.getCategories();
+          scope.getCategories();
         });
 
         scope.$on('items-selection-changed', function () {
@@ -23,8 +23,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal',
-    function ($scope, guiState, appData, listUtil, Upload, Modal) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
+    function ($scope, guiState, appData, listUtil, Upload, Modal, categoryService) {
 
       $scope.getSelectedItem = function () {
         if (guiState.state.items.selected.length === 1) {
@@ -34,8 +34,8 @@ angular.module('prindleApp')
         }
       };
 
-      this.getCategories = function () {
-        return appData.data.categories;
+      $scope.getCategories = function() {
+        $scope.categories = appData.data.categories;
       };
 
 
@@ -54,17 +54,20 @@ angular.module('prindleApp')
 
 
       $scope.addNewCategory = function() {
-        $scope.$parent.$on('got-category-from-singleFieldModal', function(event, category) {
-          $scope.selectCategory(category);
-        });
-        Modal.singleField()('category', 'Add new category');
+        Modal.singleField(function(newCategory) {
+          categoryService.add(newCategory)
+            .then(function() {
+              $scope.getCategories();
+              $scope.selectCategory(newCategory);
+            });
+        })('Add new category');
       };
 
 
       $scope.manageCategories = function () {
         Modal.categories(function(stuff) {
           // callback
-        })();
+        })('Manage Categories');
       };
 
 

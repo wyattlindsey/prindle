@@ -3,10 +3,10 @@
   h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
 .modal-body
   p(ng-if='modal.text', ng-bind='modal.text')
-  div(ng-if='modal.html', ng-bind-html='modal.html')
+  div(ng-if='scope.modalData', ng-bind-html='modal.html')
   form
-    input.form-control(ng-model='result', type='text', name='category', value='', autofocus)
+    input.form-control(ng-model='result.data', type='text', name='category', value='', autofocus)
 .modal-footer
   button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',
-  ng-click='button.click($event); modal.submitResult(result)', ng-bind='button.text')
+  ng-click='button.click(result)', ng-bind='button.text')
 
