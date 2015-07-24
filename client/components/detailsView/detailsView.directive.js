@@ -8,8 +8,9 @@ angular.module('prindleApp')
       controller: 'detailsViewCtrl',
       link: function (scope, element, attrs, ctrl) {
 
-        scope.$on('categories-loaded', function () {
+        var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           scope.getCategories();
+          unregisterCategoriesLoaded();
         });
 
         scope.$on('items-selection-changed', function () {
@@ -65,8 +66,8 @@ angular.module('prindleApp')
 
 
       $scope.manageCategories = function () {
-        Modal.categories(function(stuff) {
-          // callback
+        Modal.categories(function() {
+          $scope.getCategories();
         })('Manage Categories');
       };
 

@@ -31,7 +31,6 @@ angular.module('prindleApp')
     });
 
 
-
     this.add = function(name) {
 
       var deferred = $q.defer();
@@ -48,6 +47,19 @@ angular.module('prindleApp')
       } else {
         // alert because the name isn't unique - use deferred.reject()?
       }
+
+      return deferred.promise;
+    };
+
+
+    this.delete = function(category) {
+
+      var deferred = $q.defer();
+
+      listUtil.delete('categories', category)
+        .then(function() {
+          deferred.resolve();
+        });
 
       return deferred.promise;
     };

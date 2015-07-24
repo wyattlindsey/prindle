@@ -3,7 +3,11 @@
   h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
 .modal-body
   ul.category-list(ng-repeat='category in categories')
-    li.category {{category.name}}
+    li
+      a(href='#', ng-click='removeCategory(category)')
+        i.fa.fa-remove
+      span.category {{category.name}}
+
 .modal-footer
   button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',
   ng-click='button.click($event); modal.submitResults(results)', ng-bind='button.text')
