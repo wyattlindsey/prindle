@@ -17,7 +17,7 @@ angular.module('prindleApp')
       _.forEach(items, function(item) {
         var category = item.category;
         var found = _.findWhere(appData.data.categories, {name: category});
-        if (!found) {
+        if (!found && category !== '' && typeof(category) !== 'undefined') {
           listUtil.add('categories', {name: category})
             .then(function() {
               listUtil.get('categories')
@@ -35,7 +35,8 @@ angular.module('prindleApp')
 
       var deferred = $q.defer();
 
-      if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined') {
+      if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined'
+            && name !== '') {
         listUtil.add('categories', {name: name})
           .then(function () {
             listUtil.get('categories')
@@ -58,6 +59,11 @@ angular.module('prindleApp')
 
       listUtil.delete('categories', category)
         .then(function() {
+          _.forEach(appData.data.items, function(item) {
+            if (item.category === category.name) {
+              item.category = '';
+            }
+          });
           deferred.resolve();
         });
 
