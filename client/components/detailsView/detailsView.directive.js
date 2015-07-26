@@ -10,8 +10,11 @@ angular.module('prindleApp')
 
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           scope.getCategories();
+          scope.manageCategories();
           unregisterCategoriesLoaded();
         });
+
+
 
         scope.$on('items-selection-changed', function () {
           scope.currentItem = {};
@@ -34,6 +37,7 @@ angular.module('prindleApp')
           return false;
         }
       };
+
 
       $scope.getCategories = function() {
         $scope.categories = appData.data.categories;

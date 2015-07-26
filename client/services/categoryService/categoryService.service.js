@@ -54,6 +54,23 @@ angular.module('prindleApp')
     };
 
 
+    this.update = function(category, oldName) {
+
+      var deferred = $q.defer();
+
+      listUtil.update('categories', category)
+        .then(function() {
+          _.forEach(appData.data.items, function(item) {
+            if (item.category === oldName) {
+              item.category = category.name;
+              listUtil.update('items', item);
+            }
+          });
+          deferred.resolve();
+        })
+    };
+
+
     this.delete = function(category) {
 
       var deferred = $q.defer();

@@ -15,6 +15,12 @@ angular.module('prindleApp')
         editInProgress: false,
         multipleItemsSelected: false,
         displayItems: []     // items to show in itemView grid at any given time
+      },
+      categories: {
+        selected: [],
+        selectionDeletable: false,
+        editInProgress: false,
+        multipleItemsSelected: false
       }
     };
 

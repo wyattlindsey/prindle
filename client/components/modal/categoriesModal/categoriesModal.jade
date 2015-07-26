@@ -2,11 +2,17 @@
   button.close(ng-if='modal.dismissable', type='button', ng-click='$dismiss()') &times;
   h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
 .modal-body
-  ul.category-list(ng-repeat='category in categories')
-    li
-      a(href='#', ng-click='removeCategory(category)')
-        i.fa.fa-remove
-      span.category {{category.name}}
+  //.row
+  //  .col-md-6
+  //    ul.category-list(ng-repeat='category in categories')
+  //      li
+  //        a(href='#', ng-click='removeCategory(category)')
+  //          i.fa.fa-remove
+  //        span.category(editable-text='category.name', onbeforesave='preUpdate(category)',
+  //          onaftersave='update(category)') {{category.name}}
+  .row
+    .col-md-12
+      .row.category-grid-style(ui-grid='categoryView', ui-grid-selection, ui-grid-edit)
 
 .modal-footer
   button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',

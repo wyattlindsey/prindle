@@ -15,12 +15,15 @@ angular.module('prindleApp')
 
       angular.extend(modalScope, scope);
 
+      console.log(modalScope.$parent);
+
       return $modal.open({
         templateUrl: scope.modal.template,
         windowClass: modalClass,
         size: scope.modal.size,
         scope: modalScope,
-        controller: scope.modal.controller
+        controller: scope.modal.controller,
+        keyboard: scope.modal.keyboard
       });
     }
 
@@ -88,6 +91,7 @@ angular.module('prindleApp')
           categoriesModal = openModal({
             modal: {
               dismissable: true,
+              keyboard: false,
               title: modalTitle,
               size: 'lg',
               controller: 'categoriesModalCtrl',
