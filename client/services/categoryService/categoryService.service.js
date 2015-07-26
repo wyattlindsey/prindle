@@ -46,6 +46,7 @@ angular.module('prindleApp')
               });
           });
       } else {
+        deferred.resolve();
         // alert because the name isn't unique - use deferred.reject()?
       }
 
@@ -62,6 +63,7 @@ angular.module('prindleApp')
           _.forEach(appData.data.items, function(item) {
             if (item.category === category.name) {
               item.category = '';
+              listUtil.update('items', item);
             }
           });
           deferred.resolve();

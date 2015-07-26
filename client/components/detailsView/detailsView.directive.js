@@ -49,8 +49,10 @@ angular.module('prindleApp')
 
 
       $scope.selectCategory = function(name) {
-        $scope.currentItem.category = name;
-        listUtil.update('items', $scope.currentItem);
+        if ($scope.currentItem.category !== name) {
+          $scope.currentItem.category = name;
+          listUtil.update('items', $scope.currentItem);
+        }
       };
 
 

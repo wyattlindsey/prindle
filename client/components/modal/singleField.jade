@@ -3,8 +3,8 @@
   h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
 .modal-body
   div(ng-if='scope.modalData', ng-bind-html='modal.html')
-  form
-    input.form-control(ng-model='result.data', type='text', name='category', value='', autofocus)
+  form(ng-submit='modal.buttons[0].click(result)')
+    input.form-control#singleField(ng-model='result.data', type='text', name='category', value='', autofocus)
 .modal-footer
   button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',
   ng-click='button.click(result)', ng-bind='button.text')

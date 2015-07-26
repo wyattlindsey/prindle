@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .factory('Modal', ['$rootScope', '$modal', function ($rootScope, $modal) {
+  .factory('Modal', ['$rootScope', '$modal', '$timeout', function ($rootScope, $modal, $timeout) {
     /**
      * Opens a modal
      * @param  {Object} scope      - an object to be merged with modal's scope
@@ -61,6 +61,11 @@ angular.module('prindleApp')
                 ]
               }
             });
+          singleFieldModal.opened.then(function() {
+            $timeout(function() {
+              angular.element('#singleField').trigger('focus');
+            });
+          });
           singleFieldModal.result.then(function(result) {
             cb(result.data);   // not sure why cb.apply() doesn't work right here
           });
