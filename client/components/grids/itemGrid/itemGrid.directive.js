@@ -90,7 +90,7 @@ angular.module('prindleApp')
 
 
         $scope.$on('deleted-from-items', function() {
-          itemViewService.clearSelection();
+          guiState.state.categories.selected = [];
         });
 
 

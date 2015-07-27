@@ -21,6 +21,12 @@ angular.module('prindleApp')
         selectionDeletable: false,
         editInProgress: false,
         multipleItemsSelected: false
+      },
+      itemsInCategoryView: {
+        selected: [],
+        selectionDeletable: false,
+        editInProgress: false,
+        multipleItemsSelected: false
       }
     };
 

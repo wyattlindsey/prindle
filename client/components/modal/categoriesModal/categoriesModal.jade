@@ -11,8 +11,10 @@
   //        span.category(editable-text='category.name', onbeforesave='preUpdate(category)',
   //          onaftersave='update(category)') {{category.name}}
   .row
-    .col-md-12
+    .col-md-5
       .row.category-grid-style(ui-grid='categoryView', ui-grid-selection, ui-grid-edit)
+    .col-md-5.pull-right
+      .row.itemsInCategory-grid-style(ui-grid='itemsInCategoryView', ui-grid-selection, ui-grid-edit)
 
 .modal-footer
   button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',

@@ -15,8 +15,6 @@ angular.module('prindleApp')
 
       angular.extend(modalScope, scope);
 
-      console.log(modalScope.$parent);
-
       return $modal.open({
         templateUrl: scope.modal.template,
         windowClass: modalClass,
@@ -102,13 +100,6 @@ angular.module('prindleApp')
                   text: 'Done',
                   click: function(e) {
                     categoriesModal.close(e);
-                  }
-                },
-                {
-                  classes: 'btn-default',
-                  text: 'Cancel',
-                  click: function(e) {
-                    categoriesModal.dismiss(e);
                   }
                 }
               ]
