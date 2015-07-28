@@ -75,37 +75,37 @@ angular.module('prindleApp')
 
 
       /* open categories editor */
-      categories: function(cb) {
+      category: function(cb) {
         cb = cb || angular.noop;
 
         return function() {
-          var categoriesModal;
+          var categoryModal;
           var args = Array.prototype.slice.call(arguments);
           var modalTitle = args.shift();
 
 
           // need to find how to redirect return key to Create button
 
-          categoriesModal = openModal({
+          categoryModal = openModal({
             modal: {
               dismissable: true,
               keyboard: false,
               title: modalTitle,
               size: 'lg',
-              controller: 'categoriesModalCtrl',
-              template: 'components/modal/categoriesModal/categoriesModal.html',
+              controller: 'categoryModalCtrl',
+              template: 'components/modal/categoryModal/categoryModal.html',
               buttons: [
                 {
                   classes: 'btn-success',
                   text: 'Done',
                   click: function(e) {
-                    categoriesModal.close(e);
+                    categoryModal.close(e);
                   }
                 }
               ]
             }
           });
-          categoriesModal.result.then(function(event) {
+          categoryModal.result.then(function(event) {
             cb.apply(event);
           });
         }

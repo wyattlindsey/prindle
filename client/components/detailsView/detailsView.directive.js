@@ -10,7 +10,7 @@ angular.module('prindleApp')
 
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           scope.getCategories();
-          scope.manageCategories();
+//          scope.manageCategories();
           unregisterCategoriesLoaded();
         });
 
@@ -72,7 +72,7 @@ angular.module('prindleApp')
 
 
       $scope.manageCategories = function () {
-        Modal.categories(function() {
+        Modal.category(function() {
           $scope.getCategories();
         })('Manage Categories');
       };

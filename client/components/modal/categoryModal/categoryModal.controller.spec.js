@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: categoriesModalCtrl', function () {
+describe('Controller: categoryModalCtrl', function () {
 
   // load the controller's module
   beforeEach(module('prindleApp'));
 
-  var CategoriesmodalCtrl, scope;
+  var categoryModalCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    CategoriesmodalCtrl = $controller('categoriesModalCtrl', {
+    categoryModalCtrl = $controller('categoryModalCtrl', {
       $scope: scope
     });
   }));

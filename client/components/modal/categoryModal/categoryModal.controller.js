@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .controller('categoriesModalCtrl', ['$scope', 'appData', 'guiState', 'listUtil', 'categoryService', 'gridService',
+  .controller('categoryModalCtrl', ['$scope', 'appData', 'guiState', 'listUtil', 'categoryService', 'gridService',
     function ($scope, appData, guiState, listUtil, categoryService, gridService) {
       $scope.categories = appData.data.categories;
       $scope.displayCategories = appData.data.categories;
@@ -14,17 +14,16 @@ angular.module('prindleApp')
           });
       };
 
-//      var oldName;
-//
-//      $scope.preUpdate = function (category) {
-//        oldName = category.name;
-//      };
-//
-//      $scope.update = function (category) {
-//        if (category.name !== oldName) {
-//          categoryService.update(category, oldName);
-//        }
-//      };
+
+      $scope.$on('updated-categories', function(event, data) {
+        _.forEach(appData.data.items, function(item) {
+          if (item.category === data.oldValue) {
+            item.category = data.newValue;
+            listUtil.update('items', item);
+          }
+        });
+      });
+
 
       /**
        * Category grid
@@ -97,10 +96,7 @@ angular.module('prindleApp')
 
         _.forEach(sourceItems, function(item) {
           item.category = destCategory.name;
-          listUtil.update('items', item)
-            .then(function() {
-              $scope.$parent.$broadcast('refresh-itemsInCategory');
-            });
+          listUtil.update('items', item);
         });
 
         $scope.$parent.$broadcast('refresh-itemsInCategory');

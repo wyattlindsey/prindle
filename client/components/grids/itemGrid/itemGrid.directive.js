@@ -18,6 +18,7 @@ angular.module('prindleApp')
         $scope.displayItems = [];
         $scope.masterListSelected = {};
         $scope.masterListSelected.selected = false;
+        $scope.displayCategories = [];
 
         /**
          * ui-grid setup
@@ -60,7 +61,14 @@ angular.module('prindleApp')
               field: 'weight', displayName: 'Weight'
             },
             {
-              field: 'category', displayName: 'Category'
+              field: 'category',
+              displayName: 'Category',
+              editType: 'dropdown',
+              editableCellTemplate: 'ui-grid/dropdownEditor',
+              editDropdownOptionsArray: $scope.displayCategories,
+              editDropdownIdLabel: 'name',
+              editDropdownValueLabel: 'name'
+//              cellTemplate: 'components/grids/itemGrid/categoryCell.html'
             }
 //            ,{ field: 'null',
 //              displayName: '',
@@ -89,17 +97,24 @@ angular.module('prindleApp')
         });
 
 
-        $scope.$on('deleted-from-items', function() {
-          guiState.state.categories.selected = [];
-        });
-
-
         $scope.$on('catalogs-selection-changed', function() {
+          // noticed that there's a new GET for image with every selection change when
+          // there's no image to load
           $scope.displayItems = itemViewService.refresh();
           itemViewService.clearSelection();
           $scope.masterListSelected.selected = itemViewService.masterListSelected();
         });
 
+
+        $scope.$on('categories-loaded', function() {
+          $scope.refreshCategoryMenu();
+        });
+
+
+        $scope.refreshCategoryMenu = function() {
+          var categoryColumn = _.find($scope.itemView.columnDefs, {displayName: 'Category'});
+          categoryColumn.editDropdownOptionsArray = itemViewService.getCategories();
+        };
 
         itemViewService.loadData();
       };
@@ -107,6 +122,8 @@ angular.module('prindleApp')
     // it seems like angular actions in the cell template are not working
     $scope.removeFromCatalog = function() {
 //      console.log('clicked');
-    }
+    };
+
+
 
   }]);

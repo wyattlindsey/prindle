@@ -91,12 +91,15 @@ angular.module('prindleApp')
     this.update = function(listName, editedEntries) {
       var deferred = $q.defer();
 
+      var entries = [];
+
       if (!Array.isArray(editedEntries)) {
         editedEntries = [editedEntries];
       }
 
       async.each(editedEntries, function(entry, callback) {
         crud.update(listName, entry._id, entry).then(function() {
+          entries.push(entry);
           callback();
         });
       }, function(err) {
@@ -104,6 +107,7 @@ angular.module('prindleApp')
           console.log('error editing entry');
           deferred.reject('error updating record in listUtil: ' + err);
         } else {
+          $rootScope.$broadcast('updated-' + listName, entries);
           deferred.resolve();
         }
       });

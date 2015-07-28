@@ -1,0 +1,10 @@
+.item-grid-category-dropdown.btn-group(dropdown, dropdown-append-to-body)
+  a(href, dropdown-toggle) hello
+  ul.dropdown-menu(role='menu')
+    li(ng-repeat='category in categories')
+      a(href='#', ng-click='selectCategory(category.name)') {{category.name}}
+    li.divider
+    li
+      a(href='#', ng-click='addNewCategory()') Add new category
+    li
+      a(href='#', ng-click='manageCategories()') Manage categories
