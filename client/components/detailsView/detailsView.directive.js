@@ -8,16 +8,16 @@ angular.module('prindleApp')
       controller: 'detailsViewCtrl',
       link: function (scope, element, attrs, ctrl) {
 
+        scope.currentItem = null;
+
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
-          scope.getCategories();
-//          scope.manageCategories();
+          ctrl.getCategories();
           unregisterCategoriesLoaded();
         });
 
-        scope.currentItem = null;
 
         scope.$on('items-selection-changed', function () {
-          scope.updateDetailsView();
+          ctrl.updateDetailsView();
         });
 
       }
@@ -26,42 +26,35 @@ angular.module('prindleApp')
   .controller('detailsViewCtrl', ['$scope', '$timeout', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
     function ($scope, $timeout, guiState, appData, listUtil, Upload, Modal, categoryService) {
 
+      var self = this;
+
       var lastItemSelected;
 
-      $scope.updateDetailsView = function() {
-        // the goal here is to make sure that detailsView doesn't go in and out quickly when
-        // editing items in the itemView
+      this.updateDetailsView = function() {
 
-        // really just need to defer the updating of the view in general.  maybe the timeout
-        // should go in the listener, check to see if no new selection changes for
-        // so many milliseconds before then updating the view, but without it seeming slow
-        // hmm maybe selection changes themselves should happen in quick succession?
-        // or how about just leave the details view up until a new item is selected?
-        // does that violate a ui principle?
-
-        var selectedItem = $scope.getSelectedItem();
+        var selectedItem = getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
         var selectingSingle = qtyItemsSelected === 1;
 
         if (!lastItemSelected && selectingSingle) {
           lastItemSelected = selectedItem;
           $scope.currentItem = selectedItem;
-          $scope.getImage($scope.currentItem);
+          getImage($scope.currentItem);
         }
 
         if (selectingSingle) {
           if (lastItemSelected._id === selectedItem._id) {
-            // do nothing view update wise
+            return;
           } else if (selectingSingle) {
             lastItemSelected = selectedItem;
             $scope.currentItem = selectedItem;
-            $scope.getImage($scope.currentItem);
+            getImage($scope.currentItem);
           }
         }
 
       };
 
-      $scope.getSelectedItem = function () {
+      var getSelectedItem = function () {
         if (guiState.state.items.selected.length === 1) {
           return guiState.state.items.selected[0];
         } else {
@@ -70,13 +63,48 @@ angular.module('prindleApp')
       };
 
 
-      $scope.getCategories = function() {
+      this.getCategories = function() {
         $scope.categories = appData.data.categories;
       };
 
 
-      $scope.update = function () {
-        var currentItem = $scope.getSelectedItem();
+      var _uploadImage = function (file) {
+
+        Upload.upload({
+          url: '/api/images/',
+          file: file,
+          fields: {'isClipArt': false}
+        })
+          .success(function (data) {
+            $scope.currentItem.imageID = data._id;
+            listUtil.update('items', $scope.currentItem);
+            getImage($scope.currentItem);
+          });
+      };
+
+
+      var getImage = function (currentItem) {
+        listUtil.getImage(currentItem).then(function (data) {
+          if (data._id) {
+            $scope.currentItem.imageID = data._id;
+
+            if (data.isClipArt) {
+              $scope.currentImage = 'images/clipart' + data.name;
+            } else {
+              $scope.currentImage = 'images/' + data.name;
+            }
+          }
+        });
+      };
+
+
+      /**
+       * View actions
+       */
+
+
+      $scope.updateCategory = function () {
+        var currentItem = getSelectedItem();
         if (currentItem) {
           listUtil.update('items', currentItem);
         }
@@ -95,7 +123,7 @@ angular.module('prindleApp')
         Modal.singleField(function(newCategory) {
           categoryService.add(newCategory)
             .then(function() {
-              $scope.getCategories();
+              self.getCategories();
               $scope.selectCategory(newCategory);
             });
         })('Add new category');
@@ -104,7 +132,7 @@ angular.module('prindleApp')
 
       $scope.manageCategories = function () {
         Modal.category(function() {
-          $scope.getCategories();
+          self.getCategories();
         })('Manage Categories');
       };
 
@@ -120,36 +148,6 @@ angular.module('prindleApp')
         if ($rejectedFiles.length === 0 && $files && $files.length) {
           _uploadImage($files[0]);
         }
-      };
-
-
-      var _uploadImage = function (file) {
-
-        Upload.upload({
-          url: '/api/images/',
-          file: file,
-          fields: {'isClipArt': false}
-        })
-          .success(function (data) {
-            $scope.currentItem.imageID = data._id;
-            listUtil.update('items', $scope.currentItem);
-            $scope.getImage($scope.currentItem);
-          });
-      };
-
-
-      $scope.getImage = function (currentItem) {
-        listUtil.getImage(currentItem).then(function (data) {
-          if (data._id) {
-            $scope.currentItem.imageID = data._id;
-
-            if (data.isClipArt) {
-              $scope.currentImage = 'images/clipart' + data.name;
-            } else {
-              $scope.currentImage = 'images/' + data.name;
-            }
-          }
-        });
       };
 
     }]);

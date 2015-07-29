@@ -3,9 +3,9 @@
     .col-md-9
       #item-settings.well.well-lg
         div name:&nbsp
-          span(editable-text='currentItem.name', onaftersave='update()') {{currentItem.name}}
+          span(editable-text='currentItem.name', onaftersave='updateCategory()') {{currentItem.name}}
         div weight:&nbsp
-          span(editable-text='currentItem.weight', onaftersave='update()') {{currentItem.weight}}
+          span(editable-text='currentItem.weight', onaftersave='updateCategory()') {{currentItem.weight}}
         div category:&nbsp
           span.btn-group.dropup(dropdown, dropdown-append-to-body)
             a(href, dropdown-toggle) {{currentItem.category || 'none'}}
