@@ -14,21 +14,52 @@ angular.module('prindleApp')
           unregisterCategoriesLoaded();
         });
 
-
+        scope.currentItem = null;
 
         scope.$on('items-selection-changed', function () {
-          scope.currentItem = {};
-          scope.currentItem = scope.getSelectedItem();
-          if (scope.currentItem) {
-            scope.getImage(scope.currentItem);
-          }
+          scope.updateDetailsView();
         });
 
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
-    function ($scope, guiState, appData, listUtil, Upload, Modal, categoryService) {
+  .controller('detailsViewCtrl', ['$scope', '$timeout', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
+    function ($scope, $timeout, guiState, appData, listUtil, Upload, Modal, categoryService) {
+
+      var lastItemSelected;
+
+      $scope.updateDetailsView = function() {
+        // the goal here is to make sure that detailsView doesn't go in and out quickly when
+        // editing items in the itemView
+
+        // really just need to defer the updating of the view in general.  maybe the timeout
+        // should go in the listener, check to see if no new selection changes for
+        // so many milliseconds before then updating the view, but without it seeming slow
+        // hmm maybe selection changes themselves should happen in quick succession?
+        // or how about just leave the details view up until a new item is selected?
+        // does that violate a ui principle?
+
+        var selectedItem = $scope.getSelectedItem();
+        var qtyItemsSelected = guiState.state.items.selected.length;
+        var selectingSingle = qtyItemsSelected === 1;
+
+        if (!lastItemSelected && selectingSingle) {
+          lastItemSelected = selectedItem;
+          $scope.currentItem = selectedItem;
+          $scope.getImage($scope.currentItem);
+        }
+
+        if (selectingSingle) {
+          if (lastItemSelected._id === selectedItem._id) {
+            // do nothing view update wise
+          } else if (selectingSingle) {
+            lastItemSelected = selectedItem;
+            $scope.currentItem = selectedItem;
+            $scope.getImage($scope.currentItem);
+          }
+        }
+
+      };
 
       $scope.getSelectedItem = function () {
         if (guiState.state.items.selected.length === 1) {

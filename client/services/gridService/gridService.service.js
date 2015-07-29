@@ -105,9 +105,7 @@ angular.module('prindleApp')
 
     /**
      * The below is jQuery to deal with the shift and delete keys.
-     * To do: use ui-grid as much as possible for this and move out into a `controller-
-     * independent service. << that's in progress now
-     */
+     **/
 
     this.registerKeyEvents = function(listView) {
 
