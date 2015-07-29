@@ -8,15 +8,15 @@ angular.module('prindleApp')
         listName: '='
       },
       controller: 'listToolbarCtrl',
-      link: function (scope, element, attrs) {
-        scope.initToolbar(attrs);
+      link: function (scope, element, attrs, ctrl) {
+        ctrl.initToolbar(attrs);
       }
     };
   }])
   .controller('listToolbarCtrl', ['$scope', 'Modal', 'listUtil', 'guiState', 'appData',
       function($scope, Modal, listUtil, guiState, appData) {
 
-    $scope.initToolbar = function(attrs) {
+    this.initToolbar = function(attrs) {
       $scope.listName = attrs.listName;
     };
 
@@ -55,6 +55,7 @@ angular.module('prindleApp')
         listUtil.copy($scope.listName, guiState.state[$scope.listName].selected);
       }
     };
+
 
     this.delete = function() {
 

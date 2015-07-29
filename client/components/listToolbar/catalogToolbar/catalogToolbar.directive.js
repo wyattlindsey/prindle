@@ -6,9 +6,14 @@ angular.module('prindleApp')
       templateUrl: 'components/listToolbar/catalogToolbar/catalogToolbar.html',
       restrict: 'E',
       require: '^listToolbar',
-      controller: 'catalogToolbarCtrl',
       link: function (scope, element, attrs, listToolbarCtrl) {
-        scope.initCatalogToolbar();
+
+        var _initCatalogToolbar = function() {
+          scope.nothingSelected = true;
+          scope.selectionDeletable = true;
+        };
+
+        _initCatalogToolbar();
 
         scope.$on('catalogs-selection-changed', function() {
           scope.noCatalogSelected = listToolbarCtrl.nothingSelected();
@@ -33,10 +38,4 @@ angular.module('prindleApp')
         };
       }
     };
-  })
-  .controller('catalogToolbarCtrl', ['$scope', function($scope) {
-    $scope.initCatalogToolbar = function() {
-      $scope.nothingSelected = true;
-      $scope.selectionDeletable = true;
-    };
-  }]);
+  });

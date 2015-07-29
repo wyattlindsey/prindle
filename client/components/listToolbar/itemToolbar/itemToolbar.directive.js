@@ -6,40 +6,39 @@ angular.module('prindleApp')
       templateUrl: 'components/listToolbar/itemToolbar/itemToolbar.html',
       restrict: 'E',
       require: '^listToolbar',
-      controller: 'itemToolbarCtrl',
-      link: function (scope, element, attrs, listToolbar) {
-        scope.initItemToolbar();
+      link: function (scope, element, attrs, listToolbarCtrl) {
+
+        var _initItemToolbar = function() {
+          scope.nothingSelected = true;
+          scope.noCatalogSelected = true;
+          scope.selectionDeletable = true;
+        };
+
+        _initItemToolbar();
 
         scope.$on('items-selection-changed', function() {
-          scope.noItemSelected = listToolbar.nothingSelected();
-          scope.noCatalogSelected = listToolbar.noCatalogSelected();
-          scope.itemDeletable = listToolbar.selectionDeletable();
+          scope.noItemSelected = listToolbarCtrl.nothingSelected();
+          scope.noCatalogSelected = listToolbarCtrl.noCatalogSelected();
+          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
         });
 
         scope.$on('items-selection-cleared', function() {
-          scope.noItemSelected = listToolbar.nothingSelected();
-          scope.noCatalogSelected = listToolbar.noCatalogSelected();
-          scope.itemDeletable = listToolbar.selectionDeletable();
+          scope.noItemSelected = listToolbarCtrl.nothingSelected();
+          scope.noCatalogSelected = listToolbarCtrl.noCatalogSelected();
+          scope.itemDeletable = listToolbarCtrl.selectionDeletable();
         });
 
         scope.addItemsAction = function() {
-          listToolbar.add();
+          listToolbarCtrl.add();
         };
 
         scope.copyItemsAction = function() {
-          listToolbar.copy();
+          listToolbarCtrl.copy();
         };
 
         scope.deleteItemsAction = function() {
-          listToolbar.delete();
+          listToolbarCtrl.delete();
         };
       }
     };
-  })
-  .controller('itemToolbarCtrl', ['$scope', function($scope) {
-    $scope.initItemToolbar = function() {
-      $scope.nothingSelected = true;
-      $scope.noCatalogSelected = true;
-      $scope.selectionDeletable = true;
-    };
-  }]);
+  });
