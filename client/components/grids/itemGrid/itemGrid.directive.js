@@ -5,15 +5,15 @@ angular.module('prindleApp')
     return {
       restrict: 'E',
       controller: 'itemGridCtrl',
-      link: function (scope) {
-        scope.initGrid();
+      link: function (scope, element, attrs, ctrl) {
+        ctrl.initGrid();
       }
     };
   })
   .controller('itemGridCtrl', ['$scope', 'gridService', 'itemViewService',
     function($scope, gridService, itemViewService) {
 
-      $scope.initGrid = function() {
+      this.initGrid = function() {
 
         $scope.displayItems = [];
         $scope.masterListSelected = {};
@@ -68,7 +68,6 @@ angular.module('prindleApp')
               editDropdownOptionsArray: $scope.displayCategories,
               editDropdownIdLabel: 'name',
               editDropdownValueLabel: 'name'
-//              cellTemplate: 'components/grids/itemGrid/categoryCell.html'
             }
 //            ,{ field: 'null',
 //              displayName: '',
@@ -107,11 +106,11 @@ angular.module('prindleApp')
 
 
         $scope.$on('categories-loaded', function() {
-          $scope.refreshCategoryMenu();
+          _refreshCategoryMenu();
         });
 
 
-        $scope.refreshCategoryMenu = function() {
+        var _refreshCategoryMenu = function() {
           var categoryColumn = _.find($scope.itemView.columnDefs, {displayName: 'Category'});
           categoryColumn.editDropdownOptionsArray = itemViewService.getCategories();
         };
@@ -120,6 +119,7 @@ angular.module('prindleApp')
       };
 
     // it seems like angular actions in the cell template are not working
+    // think I need to use that special ui-grid appScope thing
     $scope.removeFromCatalog = function() {
 //      console.log('clicked');
     };

@@ -32,14 +32,14 @@ angular.module('prindleApp')
 
       this.updateDetailsView = function() {
 
-        var selectedItem = getSelectedItem();
+        var selectedItem = _getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
         var selectingSingle = qtyItemsSelected === 1;
 
         if (!lastItemSelected && selectingSingle) {
           lastItemSelected = selectedItem;
           $scope.currentItem = selectedItem;
-          getImage($scope.currentItem);
+          _getImage($scope.currentItem);
         }
 
         if (selectingSingle) {
@@ -48,18 +48,10 @@ angular.module('prindleApp')
           } else if (selectingSingle) {
             lastItemSelected = selectedItem;
             $scope.currentItem = selectedItem;
-            getImage($scope.currentItem);
+            _getImage($scope.currentItem);
           }
         }
 
-      };
-
-      var getSelectedItem = function () {
-        if (guiState.state.items.selected.length === 1) {
-          return guiState.state.items.selected[0];
-        } else {
-          return false;
-        }
       };
 
 
@@ -78,12 +70,12 @@ angular.module('prindleApp')
           .success(function (data) {
             $scope.currentItem.imageID = data._id;
             listUtil.update('items', $scope.currentItem);
-            getImage($scope.currentItem);
+            _getImage($scope.currentItem);
           });
       };
 
 
-      var getImage = function (currentItem) {
+      var _getImage = function (currentItem) {
         listUtil.getImage(currentItem).then(function (data) {
           if (data._id) {
             $scope.currentItem.imageID = data._id;
@@ -98,13 +90,22 @@ angular.module('prindleApp')
       };
 
 
+      var _getSelectedItem = function () {
+        if (guiState.state.items.selected.length === 1) {
+          return guiState.state.items.selected[0];
+        } else {
+          return false;
+        }
+      };
+
+
       /**
        * View actions
        */
 
 
       $scope.updateCategory = function () {
-        var currentItem = getSelectedItem();
+        var currentItem = _getSelectedItem();
         if (currentItem) {
           listUtil.update('items', currentItem);
         }

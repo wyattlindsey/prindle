@@ -5,8 +5,8 @@ angular.module('prindleApp')
     return {
       restrict: 'E',
       controller: 'catalogGridCtrl',
-      link: function (scope) {
-        scope.initGrid();
+      link: function (scope, element, attrs, ctrl) {
+        ctrl.initGrid();
       }
     };
   })
@@ -15,7 +15,7 @@ angular.module('prindleApp')
 
     $scope.displayCatalogs = [];
 
-    $scope.initGrid = function() {
+    this.initGrid = function() {
       $scope.catalogView = {
         data: 'displayCatalogs',
         enableFiltering: true,
