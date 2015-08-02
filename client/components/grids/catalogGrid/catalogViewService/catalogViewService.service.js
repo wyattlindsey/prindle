@@ -4,6 +4,8 @@ angular.module('prindleApp')
   .service('catalogViewService', ['$rootScope', 'appData', 'listUtil', 'guiState',
   function($rootScope, appData, listUtil, guiState) {
 
+    var self = this;
+
     this.refresh = function() {
       return appData.data.catalogs;
     };
@@ -28,7 +30,12 @@ angular.module('prindleApp')
                 isMaster: true,
                 items: allItemIDs // master list contains IDs of all items
               }
-            ]);
+            ])
+              .then(function() {
+
+              }, function(err) {
+                throw new Error(err);
+              });
           } else {
             $rootScope.$broadcast('refresh-catalogs', catalogs);
           }
@@ -100,6 +107,8 @@ angular.module('prindleApp')
           listUtil.update('catalogs', destCatalog)
             .then(function() {
               $rootScope.$broadcast('refresh-items');
+            }, function(err) {
+              throw new Error(err);
             });
         } else {
           destCatalog.items = originalItems;

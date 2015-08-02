@@ -10,6 +10,8 @@ angular.module('prindleApp')
             appData.data.categories = categories;
             $rootScope.$broadcast('categories-loaded');
             unregisterLoadCategories();
+          }, function(err) {
+            throw new Error(err);
           });
       });
 
@@ -25,6 +27,8 @@ angular.module('prindleApp')
                     appData.data.categories = categories;
                     $rootScope.$broadcast('categories-loaded');
                   });
+              }, function(err) {
+                throw new Error(err);
               });
           }
         });
@@ -48,6 +52,8 @@ angular.module('prindleApp')
                   appData.data.categories = categories;
                   deferred.resolve();   // need reject for error
                 });
+            }, function(err) {
+              throw new Error(err);
             });
         } else {
           deferred.resolve();
@@ -63,7 +69,7 @@ angular.module('prindleApp')
         var deferred = $q.defer();
 
         listUtil.update('categories', category)
-          .then(function () {
+          .then(function() {
             _.forEach(appData.data.items, function (item) {
               if (item.category === oldName) {
                 item.category = category.name;
@@ -71,7 +77,9 @@ angular.module('prindleApp')
               }
             });
             deferred.resolve();
-          })
+          }, function(err) {
+            throw new Error(err);
+          });
       };
 
 
@@ -86,6 +94,8 @@ angular.module('prindleApp')
                 item.category = '';
                 listUtil.update('items', item);
               }
+            }, function(err) {
+              throw new Error(err);
             });
             deferred.resolve();
           });

@@ -22,7 +22,7 @@ angular.module('prindleApp')
     this.get = function (endpoint) {
       var deferred = $q.defer();
 
-      _checkData([endpoint]);
+      _checkData([endpoint], deferred);
 
       $http.get('/api/' + endpoint).success(function (data) {
         deferred.resolve(data);
@@ -101,7 +101,7 @@ angular.module('prindleApp')
     this.update = function (endpoint, id, updatedItemData) {
       var deferred = $q.defer();
 
-      _checkData([endpoint, id, updatedItemData]);
+      _checkData([endpoint, id, updatedItemData], deferred);
 
       if (updatedItemData === '' || id === '') {
         deferred.reject('Invalid data');

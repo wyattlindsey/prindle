@@ -10,8 +10,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('catalogGridCtrl', ['$scope', 'gridService', 'listUtil', 'catalogViewService',
-      function($scope, gridService, listUtil, catalogViewService) {
+  .controller('catalogGridCtrl', ['$scope', 'gridService', 'catalogViewService',
+      function($scope, gridService, catalogViewService) {
 
     $scope.displayCatalogs = [];
 
@@ -45,6 +45,10 @@ angular.module('prindleApp')
       // event listeners
 
       $scope.$on('refresh-catalogs', function() {
+        $scope.displayCatalogs = catalogViewService.refresh();
+      });
+
+      $scope.$on('added-to-catalogs', function() {
         $scope.displayCatalogs = catalogViewService.refresh();
       });
 

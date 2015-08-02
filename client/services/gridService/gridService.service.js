@@ -77,10 +77,17 @@ angular.module('prindleApp')
 
       listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
 
+        // need to check for duplicates here
+
         guiState.state[listName].editInProgress = false;
         if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {
 
-          listUtil.update(listName, rowEntity);
+          listUtil.update(listName, rowEntity)
+            .then(function() {
+
+            }, function(err) {
+              throw new Error(err);
+            });
           selectSingleRow(listName, rowEntity, listView);
           scope.$parent.$broadcast('updated-' + listName, { 'oldValue': oldValue, 'newValue': newValue });
 

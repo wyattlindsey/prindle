@@ -86,6 +86,8 @@ angular.module('prindleApp')
               $scope.currentImage = 'images/' + data.name;
             }
           }
+        }, function(err) {
+          throw new Error(err);
         });
       };
 
@@ -107,7 +109,12 @@ angular.module('prindleApp')
       $scope.updateCategory = function () {
         var currentItem = _getSelectedItem();
         if (currentItem) {
-          listUtil.update('items', currentItem);
+          listUtil.update('items', currentItem)
+            .then(function() {
+
+            }, function(err) {
+              throw new Error(err);
+            });
         }
       };
 
@@ -115,7 +122,12 @@ angular.module('prindleApp')
       $scope.selectCategory = function(name) {
         if ($scope.currentItem.category !== name) {
           $scope.currentItem.category = name;
-          listUtil.update('items', $scope.currentItem);
+          listUtil.update('items', $scope.currentItem)
+            .then(function() {
+
+            }, function(err) {
+              throw new Error(err);
+            });
         }
       };
 
@@ -125,7 +137,10 @@ angular.module('prindleApp')
           categoryService.add(newCategory)
             .then(function() {
               self.getCategories();
+//              $scope.$parent.broadcast('added-to-categories', newCategory);
               $scope.selectCategory(newCategory);
+            }, function(err) {
+              throw new Error(err);
             });
         })('Add new category');
       };

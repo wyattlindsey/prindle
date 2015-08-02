@@ -14,6 +14,8 @@ angular.module('prindleApp')
           .then(function (items) {
             appData.data.items = items;
             $rootScope.$broadcast('items-loaded');
+          }, function(err) {
+            throw new Error(err);
           });
       };
 
@@ -36,7 +38,12 @@ angular.module('prindleApp')
 
 
       this.updateItems = function(items) {
-        listUtil.update('items', items);
+        listUtil.update('items', items)
+          .then(function(){
+          }, function(err) {
+            throw new Error(err);
+          });
+
       };
 
 

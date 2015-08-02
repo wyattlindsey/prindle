@@ -110,6 +110,11 @@ angular.module('prindleApp')
         });
 
 
+        $scope.$on('added-to-categories', function() {
+          _refreshCategoryMenu();
+        });
+
+
         var _refreshCategoryMenu = function() {
           var categoryColumn = _.find($scope.itemView.columnDefs, {displayName: 'Category'});
           categoryColumn.editDropdownOptionsArray = itemViewService.getCategories();

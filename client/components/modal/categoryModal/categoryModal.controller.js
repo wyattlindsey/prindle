@@ -99,7 +99,11 @@ angular.module('prindleApp')
 
         _.forEach(sourceItems, function(item) {
           item.category = destCategory.name;
-          listUtil.update('items', item);
+          listUtil.update('items', item)
+            .then(function() {
+            }, function(err) {
+              throw new Error(err);
+            });
         });
 
         $scope.$parent.$broadcast('refresh-itemsInCategory');

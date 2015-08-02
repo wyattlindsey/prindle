@@ -44,7 +44,11 @@ angular.module('prindleApp')
             imageID: '',
             category: ''
           }
-        );
+        )
+          .then(function() {
+          }, function(err) {
+            throw new Error(err);
+          });
 
       }
 
@@ -56,7 +60,12 @@ angular.module('prindleApp')
         guiState.state[$scope.listName].selected.length === 0) {
         return;
       } else {
-        listUtil.copy($scope.listName, guiState.state[$scope.listName].selected);
+        listUtil.copy($scope.listName, guiState.state[$scope.listName].selected)
+          .then(function() {
+
+          }, function(err) {
+            throw new Error(err);
+          });
       }
     };
 
