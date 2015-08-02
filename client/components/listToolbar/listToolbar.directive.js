@@ -29,7 +29,11 @@ angular.module('prindleApp')
             isMaster: false,
             items: []
           }]
-        );
+        )
+          .then(function() {
+          }, function(err) {
+            throw new Error(err);
+          });
       } else if ($scope.listName === 'items') {
 
         listUtil.add($scope.listName,
@@ -79,7 +83,12 @@ angular.module('prindleApp')
           guiState.state[$scope.listName].selected.length === 0) {
           return;
         } else {
-          listUtil.delete($scope.listName, guiState.state[$scope.listName].selected);
+          listUtil.delete($scope.listName, guiState.state[$scope.listName].selected)
+            .then(function() {
+
+            }, function(err) {
+              throw new Error(err); // why don't you work??
+            });
         }
       });
 

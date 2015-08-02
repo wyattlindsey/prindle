@@ -3,11 +3,12 @@
 angular.module('prindleApp')
   .controller('categoryModalCtrl', ['$scope', 'appData', 'guiState', 'listUtil', 'categoryService', 'gridService',
     function ($scope, appData, guiState, listUtil, categoryService, gridService) {
+
       $scope.categories = appData.data.categories;
       $scope.displayCategories = appData.data.categories;
       $scope.displayItemsInCategory = [];
 
-      $scope.removeCategory = function (category) {
+      $scope.removeCategory = function(category) {
         categoryService.delete(category)
           .then(function () {
             $scope.categories = appData.data.categories;
@@ -28,6 +29,8 @@ angular.module('prindleApp')
       /**
        * Category grid
        */
+
+      // need to add an uncategorized ... category :)
 
       var toolCellTemplate = '<div class="toolCell">' +
         '<a href="#" ng-click="grid.appScope.removeCategory(row.entity)" ' +
@@ -150,20 +153,20 @@ angular.module('prindleApp')
 
       $scope.$on('refresh-itemsInCategory', function() {
         var selectedCategoryName = guiState.state.categories.selected[0].name;
-        $scope.displayItemsInCategory = $scope.getItemsForCategory(selectedCategoryName);
+        $scope.displayItemsInCategory = _getItemsForCategory(selectedCategoryName);
       });
 
 
       $scope.$on('categories-selection-changed', function(event, rows) {
         if (guiState.state.categories.selected.length === 1) {
-          $scope.displayItemsInCategory = $scope.getItemsForCategory(guiState.state.categories.selected[0].name);
+          $scope.displayItemsInCategory = _getItemsForCategory(guiState.state.categories.selected[0].name);
         } else {
           $scope.displayItemsInCategory = [];
         }
       });
 
 
-      $scope.getItemsForCategory = function(categoryName) {
+      var _getItemsForCategory = function(categoryName) {
         var items = [];
         _.forEach(appData.data.items, function(item) {
           if (item.category === categoryName) {

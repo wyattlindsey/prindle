@@ -74,7 +74,10 @@ angular.module('prindleApp')
         },
 
 
-      /* open categories editor */
+      /**
+       * open categories editor
+      */
+
       category: function(cb) {
         cb = cb || angular.noop;
 
@@ -83,8 +86,6 @@ angular.module('prindleApp')
           var args = Array.prototype.slice.call(arguments);
           var modalTitle = args.shift();
 
-
-          // need to find how to redirect return key to Create button
 
           categoryModal = openModal({
             modal: {

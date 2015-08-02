@@ -9,25 +9,26 @@
 angular.module('prindleApp')
   .service('crud', function ($http, $q) {
 
-      /**
-       *
-       * get() - pull all records from API endpoint
-       *
-       * @param localData
-       * @param endpoint
-       * @returns {*}
-       */
+    /**
+     *
+     * get() - pull all records from API endpoint
+     *
+     * @param localData
+     * @param endpoint
+     * @returns {*}
+     */
 
       // to-do: add optional functionality for getting just one item
-    this.get = function(endpoint) {
+    this.get = function (endpoint) {
       var deferred = $q.defer();
 
-      $http.get('/api/' + endpoint).success(function(data) {
+      _checkData([endpoint]);
+
+      $http.get('/api/' + endpoint).success(function (data) {
         deferred.resolve(data);
-      }).
-        error(function(err) {
-          console.log(err);
-          deferred.reject();
+      })
+        .error(function (data) {
+          deferred.reject(data);
         });
 
       return deferred.promise;
@@ -41,96 +42,117 @@ angular.module('prindleApp')
      * @returns {*}
      */
 
-    this.show = function(endpoint, id) {
+    this.show = function (endpoint, id) {
       var deferred = $q.defer();
 
-      $http.get('/api/' + endpoint + '/' + id).success(function(data) {
+      _checkData([endpoint, id]);
+
+      $http.get('/api/' + endpoint + '/' + id).success(function (data) {
         deferred.resolve(data);
-      }).
-        error(function(err) {
-          console.log(err);
+      })
+        .error(function (err) {
           deferred.reject(err);
         });
 
       return deferred.promise;
     };
 
-      /**
-       *
-       * add() - creates new single record
-       *
-       * @param localData
-       * @param endpoint
-       * @param newItemData
-       * @returns {*}
-       */
+    /**
+     *
+     * add() - creates new single record
+     *
+     * @param localData
+     * @param endpoint
+     * @param newItemData
+     * @returns {*}
+     */
 
-    this.add = function(endpoint, newItemData) {
+    this.add = function (endpoint, newItemData) {
       var deferred = $q.defer();
+
+      _checkData(endpoint, newItemData);
 
       if (typeof newItemData === 'undefined') {
-          deferred.reject('no data');
+        deferred.reject('no data');
       } else {
         $http.post(('/api/' + endpoint), JSON.stringify(newItemData))
-        .success(function(data) {
-          deferred.resolve(data);
-        }).error(function(err) {
-          deferred.reject(err);
-        });
+          .success(function (data) {
+            deferred.resolve(data);
+          })
+          .error(function (err) {
+            deferred.reject(err);
+          });
       }
-        return deferred.promise;
+
+      return deferred.promise;
     };
 
-      /**
-       *
-       * update() - modify one record
-       *
-       * @param localData
-       * @param endpoint
-       * @param id
-       * @param updatedItemData
-       * @returns {*}
-       */
+    /**
+     *
+     * update() - modify one record
+     *
+     * @param localData
+     * @param endpoint
+     * @param id
+     * @param updatedItemData
+     * @returns {*}
+     */
 
-    this.update = function(endpoint, id, updatedItemData) {
-
+    this.update = function (endpoint, id, updatedItemData) {
       var deferred = $q.defer();
+
+      _checkData([endpoint, id, updatedItemData]);
+
       if (updatedItemData === '' || id === '') {
         deferred.reject('Invalid data');
       } else {
         $http.put('/api/' + endpoint + '/' + id, JSON.stringify(updatedItemData))
           .success(function (data) {
             deferred.resolve(data);
-          }).error(function (data) {
+          })
+          .error(function (data) {
             deferred.reject('Update failed: ' + data);
           });
       }
+
       return deferred.promise;
     };
 
-      /**
-       *
-       * delete() - remove one record
-       *
-       * @param localData
-       * @param endpoint
-       * @param id
-       * @returns {*}
-       */
+    /**
+     *
+     * delete() - remove one record
+     *
+     * @param localData
+     * @param endpoint
+     * @param id
+     * @returns {*}
+     */
 
-    this.remove = function(endpoint, id) {
+    this.delete = function (endpoint, id) {   // I like the word detete for consistency here
       var deferred = $q.defer();
-      if (id === '') {
-        deferred.reject('no ID provided');
-      } else {
-        $http.delete('/api/' + endpoint + '/' + id).success(function(data) {
+
+      _checkData([endpoint, id], deferred);
+
+      $http.delete('/api/' + endpoint + '/' + id)
+        .success(function () {
           deferred.resolve();
-        }).
-        error(function(err) {
-          console.log(err);
-        });
-      }
+        })
+        .error(function (err) {
+          deferred.reject(err);
+      });
+
       return deferred.promise;
+    };
+
+
+    var _checkData = function(data, promise) {
+      _.forEach(data, function(d) {
+        if (typeof d == 'undefined') {
+          var err = new TypeError('bad data to crud function');
+          promise.reject(err);
+        }
+      });
+
     };
 
   });

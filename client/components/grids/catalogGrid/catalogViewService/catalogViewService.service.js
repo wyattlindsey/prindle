@@ -30,13 +30,10 @@ angular.module('prindleApp')
               }
             ]);
           } else {
-            listUtil.get('catalogs')
-              .then(function(catalogs) {
-                $rootScope.$broadcast('refresh-catalogs', catalogs);
-              });
-
+            $rootScope.$broadcast('refresh-catalogs', catalogs);
           }
-
+        }, function(err) {
+          throw new Error(err);
         });
     };
 

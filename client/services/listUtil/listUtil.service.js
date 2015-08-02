@@ -11,11 +11,15 @@ angular.module('prindleApp')
     this.get = function(listName) {
       var deferred = $q.defer();
 
+
+
       crud.get(listName)
         .then(function(data) {
           appData.data[listName] = data;
           $rootScope.$broadcast(('refresh-' + listName), data);
           deferred.resolve(data);
+        }, function(err) {
+          deferred.reject(err);
         });
 
       return deferred.promise;
@@ -27,12 +31,14 @@ angular.module('prindleApp')
 
       var addedItems = [];
 
+      var foo;
+
       if (!Array.isArray(newEntryData)) {
         newEntryData = [newEntryData];
       }
 
       async.each(newEntryData, function(entry, callback) {
-        crud.add(listName, entry)
+        crud.add(foo, entry)
           .then(function(data) {
             addedItems.push(data);
             callback();
@@ -79,8 +85,8 @@ angular.module('prindleApp')
         } else {
           appData.data[listName] = appData.data[listName].concat(copiedItems);
           $rootScope.$broadcast(('added-to-' + listName), copiedItems);
-          $rootScope.$broadcast(('refresh-' + listName));
-          deferred.resolve();
+          $rootScope.$broadcast(('refresh-' + listName)); // this shouldn't be here
+          deferred.resolve(copiedItems);
         }
       });
 
@@ -125,19 +131,20 @@ angular.module('prindleApp')
       }
 
       async.each(entries, function(entry, callback) {
-        crud.remove(listName, entry._id).then(function() {
+        crud.delete(listName, entry._id).then(function() {
           appData.data[listName] = _.filter(appData.data[listName], function(listMember) {
             return listMember._id !== entry._id;
           });
           $rootScope.$broadcast(('deleted-from-' + listName), [entry]);
-          $rootScope.$broadcast(('refresh-' + listName));
+          $rootScope.$broadcast(('refresh-' + listName));   // shouldn't be hered
           callback();
+        }, function(err) {
+          deferred.reject('error deleting item(s) in listUtil: ' + err);
         });
       }, function(err) {
         if(err) {
           deferred.reject('error deleting item(s) in listUtil: ' + err);
         } else {
-
           deferred.resolve();
           $rootScope.$broadcast(('refresh-' + listName));
         }
