@@ -58,6 +58,7 @@ angular.module('prindleApp')
       });
 
       $scope.$on('deleted-from-catalogs', function() {
+        $scope.displayCatalogs = catalogViewService.refresh();
         catalogViewService.clearSelection();
       });
 

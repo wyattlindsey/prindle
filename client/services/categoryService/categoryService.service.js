@@ -45,7 +45,7 @@ angular.module('prindleApp')
 
         if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined'
           && name !== '') {
-          listUtil.add('categories', {name: name})
+          listUtil.add('categories', {name: name, readOnly: false})
             .then(function () {
               listUtil.get('categories')
                 .then(function (categories) {

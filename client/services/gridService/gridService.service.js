@@ -62,7 +62,6 @@ angular.module('prindleApp')
 
       // cell editing - keeps track of editing status and keeps rows selected at the
       // appropriate times
-
       listView.api.edit.on.beginCellEdit(scope, function(rowEntity) {
         guiState.state[listName].editInProgress = true;
         selectSingleRow(listName, rowEntity, listView);
@@ -99,12 +98,7 @@ angular.module('prindleApp')
       });
     };
 
-    // used throughout the above to keep the row in question selected at the appropriate times
 
-    /**
-     *
-     *  not working right now after an edit completes
-     */
     var selectSingleRow = function(listName, rowEntity, listView) {
       listView.api.selection.selectRow(rowEntity);
     };

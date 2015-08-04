@@ -13,6 +13,7 @@ angular.module('prindleApp')
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           ctrl.getCategories();
           unregisterCategoriesLoaded();
+          scope.manageCategories();
         });
 
 

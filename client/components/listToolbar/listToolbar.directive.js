@@ -41,8 +41,7 @@ angular.module('prindleApp')
             name: 'my new thing',
             weight: Math.round(Math.random() * 100),
             readOnly: false,
-            imageID: '',
-            category: ''
+            imageID: ''
           }
         )
           .then(function() {

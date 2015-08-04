@@ -5,7 +5,7 @@ angular.module('prindleApp')
     function ($scope, appData, guiState, listUtil, categoryService, gridService) {
 
       $scope.categories = appData.data.categories;
-      $scope.displayCategories = appData.data.categories;
+      $scope.displayCategories = [];
       $scope.displayItemsInCategory = [];
 
       $scope.removeCategory = function(category) {
@@ -13,6 +13,17 @@ angular.module('prindleApp')
           .then(function () {
             $scope.categories = appData.data.categories;
           });
+      };
+
+      var _getDisplayCategories = function() {
+        var displayCategories = [];
+
+        displayCategories.push({name: 'All items', readOnly: true});
+        displayCategories.push({name: 'Uncategorized', readOnly: true});
+
+        Array.prototype.push.apply(displayCategories, appData.data.categories);
+
+        return displayCategories;
       };
 
 
@@ -65,6 +76,8 @@ angular.module('prindleApp')
 
       $scope.categoryView.onRegisterApi = function (categoryViewApi) {
 
+        $scope.displayCategories = _getDisplayCategories();
+
         $scope.categoryView.api = categoryViewApi;
 
         // set up event handlers for editing and selection
@@ -77,7 +90,8 @@ angular.module('prindleApp')
 
 
       $scope.$on('refresh-categories', function() {
-        $scope.displayCategories = appData.data.categories;
+        console.log('refreshing');
+        $scope.displayCategories = _getDisplayCategories();
       });
 
 
@@ -91,22 +105,32 @@ angular.module('prindleApp')
         sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
         var destEntity = angular.element(data.dest).scope().$parent.row.entity;
 
-        _addItemsToCategory(sourceItems, destEntity);
+
+        _addItemsToCategory(sourceItems, destEntity.name);
+
       });
 
 
       var _addItemsToCategory = function(sourceItems, destCategory) {
 
-        _.forEach(sourceItems, function(item) {
-          item.category = destCategory.name;
-          listUtil.update('items', item)
-            .then(function() {
-            }, function(err) {
-              throw new Error(err);
-            });
-        });
+        if (destCategory === 'Uncategorized') {
+          _.forEach(sourceItems, function(item) {
+            item.category = '';
+          });
+        } else if (destCategory === 'All items') {
+          // do nothing
+        } else {
+          _.forEach(sourceItems, function(item) {
+            item.category = destCategory;
+            listUtil.update('items', item)
+              .then(function() {
+              }, function(err) {
+                throw new Error(err);
+              });
+          });
+        }
 
-        $scope.$parent.$broadcast('refresh-itemsInCategory');
+        _refreshItemsInCategory();
 
       };
 
@@ -155,11 +179,6 @@ angular.module('prindleApp')
       };
 
 
-      $scope.$on('refresh-itemsInCategory', function() {
-        var selectedCategoryName = guiState.state.categories.selected[0].name;
-        $scope.displayItemsInCategory = _getItemsForCategory(selectedCategoryName);
-      });
-
 
       $scope.$on('categories-selection-changed', function(event, rows) {
         if (guiState.state.categories.selected.length === 1) {
@@ -170,13 +189,32 @@ angular.module('prindleApp')
       });
 
 
+      var _refreshItemsInCategory = function() {
+        var selectedCategoryName = guiState.state.categories.selected[0].name;
+        $scope.displayItemsInCategory = _getItemsForCategory(selectedCategoryName);
+      };
+
+
       var _getItemsForCategory = function(categoryName) {
         var items = [];
-        _.forEach(appData.data.items, function(item) {
-          if (item.category === categoryName) {
-            items.push(item);
-          }
-        });
+
+        if (categoryName === 'All items') {
+          items = appData.data.items;
+        } else if (categoryName === 'Uncategorized') {
+          _.forEach(appData.data.items, function(item) {
+            if (typeof item.category == 'undefined' || item.category === '') {
+              items.push(item);
+            }
+          });
+        } else {
+          _.forEach(appData.data.items, function(item) {
+            console.log(item.category);   // something going wrong here
+            if (item.category === categoryName) {
+              items.push(item);
+            }
+          });
+        }
+
         return items;
       };
 

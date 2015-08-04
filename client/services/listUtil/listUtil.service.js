@@ -135,7 +135,6 @@ angular.module('prindleApp')
             return listMember._id !== entry._id;
           });
           $rootScope.$broadcast(('deleted-from-' + listName), [entry]);
-          $rootScope.$broadcast(('refresh-' + listName));   // shouldn't be here
           callback();
         }, function(err) {
           deferred.reject('error deleting item(s) in listUtil: ' + err);

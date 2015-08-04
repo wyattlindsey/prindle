@@ -96,6 +96,11 @@ angular.module('prindleApp')
         });
 
 
+        $scope.$on('deleted-from-items', function() {
+          $scope.displayItems = itemViewService.refresh();
+        });
+
+
         $scope.$on('catalogs-selection-changed', function() {
           // noticed that there's a new GET for image with every selection change when
           // there's no image to load
