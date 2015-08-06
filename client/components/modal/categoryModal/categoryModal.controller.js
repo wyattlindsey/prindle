@@ -12,6 +12,7 @@ angular.module('prindleApp')
         categoryService.delete(category)
           .then(function () {
             $scope.categories = appData.data.categories;
+            $scope.displayCategories = _getDisplayCategories();
           });
       };
 
@@ -43,7 +44,7 @@ angular.module('prindleApp')
 
       // need to add an uncategorized ... category :)
 
-      var toolCellTemplate = '<div class="toolCell">' +
+      var toolCellTemplate = '<div class="toolCell" ng-hide={{row.entity.readOnly}}>' +
         '<a href="#" ng-click="grid.appScope.removeCategory(row.entity)" ' +
         '<i class="fa fa-remove item-list-delete-tool">' +
         '</i></div>';
@@ -70,7 +71,7 @@ angular.module('prindleApp')
             }
           ],
           enableRowHeaderSelection: false,
-          rowTemplate: '<div x-lvl-drop-target="true" x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
+          rowTemplate: '<div x-lvl-drop-target="jerk" x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
             'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
         };
 
@@ -98,9 +99,9 @@ angular.module('prindleApp')
       $scope.$on('item-dropped', function(event, data) {
         var sourceItems = [];
 
-        if (guiState.state.items.selected.length > 0) {
-          sourceItems = guiState.state.items.selected;
-        }
+//        if (guiState.state.items.selected.length > 0) {
+//          sourceItems = guiState.state.items.selected;
+//        }
 
         sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
         var destEntity = angular.element(data.dest).scope().$parent.row.entity;
@@ -113,22 +114,27 @@ angular.module('prindleApp')
 
       var _addItemsToCategory = function(sourceItems, destCategory) {
 
+        var updated = [];
+
         if (destCategory === 'Uncategorized') {
           _.forEach(sourceItems, function(item) {
             item.category = '';
+            updated.push(item);
           });
         } else if (destCategory === 'All items') {
           // do nothing
         } else {
           _.forEach(sourceItems, function(item) {
             item.category = destCategory;
-            listUtil.update('items', item)
-              .then(function() {
-              }, function(err) {
-                throw new Error(err);
-              });
+            updated.push(item);
           });
         }
+
+        listUtil.update('items', updated)
+          .then(function() {
+          }, function(err) {
+            throw new Error(err);
+          });
 
         _refreshItemsInCategory();
 
@@ -208,7 +214,6 @@ angular.module('prindleApp')
           });
         } else {
           _.forEach(appData.data.items, function(item) {
-            console.log(item.category);   // something going wrong here
             if (item.category === categoryName) {
               items.push(item);
             }
@@ -219,3 +224,7 @@ angular.module('prindleApp')
       };
 
     }]);
+
+// something seriously wrong with selection maybe - drop one item from uncat. to another and watch
+// them all disappear, only happens sometimes rrrr.  Maybe list of selections isn't being updated
+// where it should
