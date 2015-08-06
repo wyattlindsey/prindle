@@ -4,6 +4,8 @@
 .modal-body
   .row
     .col-md-6
+      list-toolbar.row(list-name='categories')
+        category-toolbar.category-toolbar.row.list-toolbar
       .row.category-grid-style(ui-grid='categoryView', ui-grid-selection, ui-grid-edit)
     .col-md-6
       .row.itemsInCategory-grid-style(ui-grid='itemsInCategoryView', ui-grid-selection, ui-grid-edit)

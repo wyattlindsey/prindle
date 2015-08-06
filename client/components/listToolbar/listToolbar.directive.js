@@ -49,6 +49,17 @@ angular.module('prindleApp')
             throw new Error(err);
           });
 
+      } else if ($scope.listName === 'categories') {
+        listUtil.add($scope.listName,
+          {
+            name: 'test category',
+            readOnly: false
+          }
+        )
+          .then(function() {
+          }, function(err) {
+            throw new Error(err);
+          });
       }
 
     };
@@ -95,7 +106,7 @@ angular.module('prindleApp')
             .then(function() {
 
             }, function(err) {
-              throw new Error(err); // why don't you work??
+              throw new Error(err);
             });
         }
       });
@@ -108,6 +119,7 @@ angular.module('prindleApp')
       var readOnlyItems = _.filter(guiState.state[$scope.listName].selected, function(selectedItem) {
         return selectedItem.readOnly;
       });
+
       if (guiState.state[$scope.listName].selected.length > 0 && readOnlyItems.length === 0) {
         return true;
       } else {
@@ -117,6 +129,8 @@ angular.module('prindleApp')
 
 
     this.nothingSelected = function() {
+      // blowing up here
+      console.log(guiState.state[$scope.listName].selected);
       if (guiState.state[$scope.listName].selected.length > 0) {
         return false;
       } else {

@@ -11,7 +11,7 @@ angular.module('prindleApp')
     };
 
 
-    this.clearSelection = function() {
+    this.clearSelection = function() {    // what is the point of this function and is it a hack?
       guiState.state.catalogs.selected = [];
       $rootScope.$broadcast('catalogs-selection-cleared');
     };

@@ -20,7 +20,7 @@ angular.module('prindleApp')
           var category = item.category;
           var found = _.findWhere(appData.data.categories, {name: category});
           if (!found && category !== '' && typeof(category) !== 'undefined') {
-            listUtil.add('categories', {name: category})
+            listUtil.add('categories', {name: category, readOnly: false})
               .then(function () {
                 listUtil.get('categories')
                   .then(function (categories) {
@@ -45,7 +45,7 @@ angular.module('prindleApp')
 
         if (typeof(_.find(appData.data.categories, {'name': name})) === 'undefined'
           && name !== '') {
-          listUtil.add('categories', {name: name, readOnly: false})
+          listUtil.add('categories', {'name': name, 'readOnly': false})
             .then(function () {
               listUtil.get('categories')
                 .then(function (categories) {

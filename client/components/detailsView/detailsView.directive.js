@@ -138,7 +138,6 @@ angular.module('prindleApp')
           categoryService.add(newCategory)
             .then(function() {
               self.getCategories();
-//              $scope.$parent.broadcast('added-to-categories', newCategory);
               $scope.selectCategory(newCategory);
             }, function(err) {
               throw new Error(err);

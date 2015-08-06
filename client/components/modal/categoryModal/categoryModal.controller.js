@@ -16,7 +16,9 @@ angular.module('prindleApp')
           });
       };
 
-      var _getDisplayCategories = function() {
+      var _getDisplayCategories = function() {    // there should probably be a _refreshCategories
+                                                  // function that calls this instead of being called
+                                                  // a bunch of times everywhere
         var displayCategories = [];
 
         displayCategories.push({name: 'All items', readOnly: true});
@@ -91,9 +93,21 @@ angular.module('prindleApp')
 
 
       $scope.$on('refresh-categories', function() {
-        console.log('refreshing');
         $scope.displayCategories = _getDisplayCategories();
       });
+
+
+      $scope.$on('added-to-categories', function() {
+        $scope.displayCategories = _getDisplayCategories();
+      });
+
+
+      $scope.$on('deleted-from-categories', function() {
+        guiState.state.categories.selected = [];
+        $scope.$parent.$broadcast('categories-selection-cleared');
+        $scope.displayCategories = _getDisplayCategories();
+      });
+
 
 
       $scope.$on('item-dropped', function(event, data) {

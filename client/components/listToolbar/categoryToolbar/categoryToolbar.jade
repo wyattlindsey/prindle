@@ -1,0 +1,9 @@
+.row.category-toolbar
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyCategoryAction()',
+  ng-disabled='noCategorySelected')
+    i.fa.fa-copy
+  button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='deleteCategoryAction()',
+  ng-disabled='noCategorySelected || !categoryDeletable')
+    i.fa.fa-trash
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addCategoryAction()')
+    i.fa.fa-plus
