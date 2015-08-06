@@ -31,6 +31,12 @@ module.directive('lvlDropTarget', ['$rootScope', 'uuid', function ($rootScope, u
       onDrop: '&'
     },
     link: function (scope, el, attrs, controller) {
+      console.log(JSON.stringify(attrs.lvlDropTarget));
+
+      if (attrs.lvlDropTarget === "false") {
+        return;
+      }
+
       var id = angular.element(el).attr("id");
       if (!id) {
         id = uuid.new();

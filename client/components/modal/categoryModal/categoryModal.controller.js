@@ -71,7 +71,7 @@ angular.module('prindleApp')
             }
           ],
           enableRowHeaderSelection: false,
-          rowTemplate: '<div x-lvl-drop-target="jerk" x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
+          rowTemplate: '<div x-lvl-drop-target="{{row.entity.name !== \'All items\'}}" x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
             'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
         };
 
