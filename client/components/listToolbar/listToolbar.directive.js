@@ -116,6 +116,11 @@ angular.module('prindleApp')
 
 
     this.selectionDeletable = function() {
+
+      if (typeof guiState.state[$scope.listName] == 'undefined') {
+        return;
+      }
+
       var readOnlyItems = _.filter(guiState.state[$scope.listName].selected, function(selectedItem) {
         return selectedItem.readOnly;
       });
@@ -129,8 +134,11 @@ angular.module('prindleApp')
 
 
     this.nothingSelected = function() {
-      // blowing up here
-      console.log(guiState.state[$scope.listName].selected);
+
+      if (typeof guiState.state[$scope.listName] == 'undefined') {
+        return;
+      }
+
       if (guiState.state[$scope.listName].selected.length > 0) {
         return false;
       } else {
