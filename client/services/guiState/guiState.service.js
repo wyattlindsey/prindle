@@ -22,7 +22,7 @@ angular.module('prindleApp')
         editInProgress: false,
         multipleItemsSelected: false
       },
-      itemsInCategoryView: {
+      itemsInCategory: {
         selected: [],
         selectionDeletable: false,
         editInProgress: false,

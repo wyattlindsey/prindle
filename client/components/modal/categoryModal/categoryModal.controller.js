@@ -51,6 +51,11 @@ angular.module('prindleApp')
         '<i class="fa fa-remove item-list-delete-tool">' +
         '</i></div>';
 
+//      var dropTargetTemplate = '<div x-lvl-drop-target="{{row.entity.name !== \'All items\'}}" ' +
+//        'x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
+//        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" ' +
+//        'class="ui-grid-cell" ui-grid-cell></div>';
+
 
         $scope.categoryView = {
           data: 'displayCategories',
@@ -69,12 +74,14 @@ angular.module('prindleApp')
               width: 50
             },
             {
-              field: 'name', displayName: 'Categories'
+              field: 'name',
+              displayName: 'Categories',
+              cellTemplate: '<div x-lvl-drop-target="{{row.entity.name !== \'All items\'}}" ' +
+                'x-on-drop="droppedOnCategory(dragEl, dropEl)"' +
+                'class="ui-grid-cell-contents">{{row.entity.name}}</div>'
             }
           ],
-          enableRowHeaderSelection: false,
-          rowTemplate: '<div x-lvl-drop-target="{{row.entity.name !== \'All items\'}}" x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
-            'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>'
+          enableRowHeaderSelection: false
         };
 
       $scope.categoryView.onRegisterApi = function (categoryViewApi) {
