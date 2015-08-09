@@ -91,7 +91,7 @@ angular.module('prindleApp')
           categoryModal = openModal({
             modal: {
               dismissable: true,
-              keyboard: false,
+              keyboard: true,
               title: modalTitle,
               size: 'lg',
               controller: 'categoryModalCtrl',

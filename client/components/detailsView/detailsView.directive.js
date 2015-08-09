@@ -13,7 +13,6 @@ angular.module('prindleApp')
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           ctrl.getCategories();
           unregisterCategoriesLoaded();
-          scope.manageCategories();
         });
 
 
@@ -24,8 +23,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', '$timeout', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
-    function ($scope, $timeout, guiState, appData, listUtil, Upload, Modal, categoryService) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
+    function ($scope, guiState, appData, listUtil, Upload, Modal, categoryService) {
 
       var self = this;
 
@@ -165,5 +164,22 @@ angular.module('prindleApp')
           _uploadImage($files[0]);
         }
       };
+
+      /**
+       * event listeners
+       */
+
+      $scope.$on('added-to-categories', function() {
+        self.getCategories();
+      });
+
+      $scope.$on('deleted-from-categories', function() {
+        self.getCategories();
+      });
+
+
+      $scope.$on('updated-categories', function() {
+        self.getCategories();
+      });
 
     }]);
