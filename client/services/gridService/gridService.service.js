@@ -10,7 +10,7 @@ angular.module('prindleApp')
 
     // selection behavior while editing
 
-    this.registerSelectionEditEvents = function(scope, listView, listName) {
+    this.registerSelectionEditEvents = function(scope, listView, listName, editable) {
 
       // selection
 
@@ -30,6 +30,8 @@ angular.module('prindleApp')
       });
 
       var processSelectionChange = function(rows) {
+
+
         // load in new selections on selection change
         var selectedRows = listView.api.selection.getSelectedRows();
         guiState.state[listName].selected = selectedRows;
@@ -62,40 +64,43 @@ angular.module('prindleApp')
 
       // cell editing - keeps track of editing status and keeps rows selected at the
       // appropriate times
-      listView.api.edit.on.beginCellEdit(scope, function(rowEntity) {
-        guiState.state[listName].editInProgress = true;
-        selectSingleRow(listName, rowEntity, listView);
-        scope.$apply();
-      });
+      if (editable || typeof editable == 'undefined') {
 
-      listView.api.edit.on.cancelCellEdit(scope, function(rowEntity) {
-        guiState.state[listName].editInProgress = false;
-        selectSingleRow(listName, rowEntity, listView);
-        scope.$apply();
-      });
-
-      listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
-
-        // need to check for duplicates here
-
-        guiState.state[listName].editInProgress = false;
-        if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {
-
-          listUtil.update(listName, rowEntity)
-            .then(function() {
-
-            }, function(err) {
-              throw new Error(err);
-            });
+        listView.api.edit.on.beginCellEdit(scope, function(rowEntity) {
+          guiState.state[listName].editInProgress = true;
           selectSingleRow(listName, rowEntity, listView);
-          scope.$parent.$broadcast('updated-' + listName, { 'oldValue': oldValue, 'newValue': newValue });
+          scope.$apply();
+        });
 
-        } else { // don't change readOnly records or update if value is blank
-
-          rowEntity[colDef.field] = oldValue;
+        listView.api.edit.on.cancelCellEdit(scope, function(rowEntity) {
+          guiState.state[listName].editInProgress = false;
           selectSingleRow(listName, rowEntity, listView);
-        }
-      });
+          scope.$apply();
+        });
+
+        listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
+
+          // need to check for duplicates here
+
+          guiState.state[listName].editInProgress = false;
+          if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {
+
+            listUtil.update(listName, rowEntity)
+              .then(function() {
+
+              }, function(err) {
+                throw new Error(err);
+              });
+            selectSingleRow(listName, rowEntity, listView);
+            scope.$parent.$broadcast('updated-' + listName, { 'oldValue': oldValue, 'newValue': newValue });
+
+          } else { // don't change readOnly records or update if value is blank
+
+            rowEntity[colDef.field] = oldValue;
+            selectSingleRow(listName, rowEntity, listView);
+          }
+        });
+      }
     };
 
 

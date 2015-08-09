@@ -1,15 +1,16 @@
-.modal-header
-  button.close(ng-if='modal.dismissable', type='button', ng-click='$dismiss()') &times;
-  h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
-.modal-body
-  .row
-    .col-md-6
-      list-toolbar.row(list-name='categories')
-        category-toolbar.category-toolbar.row.list-toolbar
-      .row.category-grid-style(ui-grid='categoryView', ui-grid-selection, ui-grid-edit)
-    .col-md-6
-      .row.itemsInCategory-grid-style(ui-grid='itemsInCategoryView', ui-grid-selection, ui-grid-edit)
+#category-modal
+  .modal-header
+    button.close(ng-if='modal.dismissable', type='button', ng-click='$dismiss()') &times;
+    h4.modal-title(ng-if='modal.title', ng-bind='modal.title')
+  .modal-body
+    .row
+      .col-md-6
+        list-toolbar.row(list-name='categories')
+          category-toolbar.category-toolbar.list-toolbar
+        .row.category-grid-style(ui-grid='categoryView', ui-grid-selection, ui-grid-edit)
+      .col-md-6
+        .row.itemsInCategory-grid-style(ui-grid='itemsInCategoryView', ui-grid-selection)
 
-.modal-footer
-  button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',
-  ng-click='button.click($event); modal.submitResults(results)', ng-bind='button.text')
+  .modal-footer
+    button.btn(ng-repeat='button in modal.buttons', ng-class='button.classes',
+    ng-click='button.click($event); modal.submitResults(results)', ng-bind='button.text')

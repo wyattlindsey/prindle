@@ -4,14 +4,12 @@ angular.module('prindleApp')
   .controller('categoryModalCtrl', ['$scope', 'appData', 'guiState', 'listUtil', 'categoryService', 'gridService',
     function ($scope, appData, guiState, listUtil, categoryService, gridService) {
 
-      $scope.categories = appData.data.categories;
       $scope.displayCategories = [];
       $scope.displayItemsInCategory = [];
 
       $scope.removeCategory = function(category) {
         categoryService.delete(category)
           .then(function () {
-            $scope.categories = appData.data.categories;
             $scope.displayCategories = _getDisplayCategories();
           });
       };
@@ -44,17 +42,10 @@ angular.module('prindleApp')
        * Category grid
        */
 
-      // need to add an uncategorized ... category :)
-
       var toolCellTemplate = '<div class="toolCell" ng-hide={{row.entity.readOnly}}>' +
         '<a href="#" ng-click="grid.appScope.removeCategory(row.entity)" ' +
         '<i class="fa fa-remove item-list-delete-tool">' +
         '</i></div>';
-
-//      var dropTargetTemplate = '<div x-lvl-drop-target="{{row.entity.name !== \'All items\'}}" ' +
-//        'x-on-drop="droppedOnCategory(dragEl, dropEl)" ng-click="grid.appScope.fnOne(row)" ' +
-//        'ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" ' +
-//        'class="ui-grid-cell" ui-grid-cell></div>';
 
 
         $scope.categoryView = {
@@ -120,13 +111,13 @@ angular.module('prindleApp')
       $scope.$on('item-dropped', function(event, data) {
         var sourceItems = [];
 
-//        if (guiState.state.items.selected.length > 0) {
-//          sourceItems = guiState.state.items.selected;
-//        }
+        if (guiState.state.itemsInCategory.selected.length > 0) {
+          sourceItems = guiState.state.itemsInCategory.selected;
+        } else {  // when nothing is selected but you drag by the handle
+          sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
+        }
 
-        sourceItems.push(angular.element(data.src).scope().$parent.row.entity);
         var destEntity = angular.element(data.dest).scope().$parent.row.entity;
-
 
         _addItemsToCategory(sourceItems, destEntity.name);
 
@@ -198,7 +189,7 @@ angular.module('prindleApp')
         $scope.itemsInCategoryView.api = itemsInCategoryView;
 
         // set up event handlers for editing and selection
-        gridService.registerSelectionEditEvents($scope, $scope.itemsInCategoryView, 'items');
+        gridService.registerSelectionEditEvents($scope, $scope.itemsInCategoryView, 'itemsInCategory', false);
 
         // set up keyboard events for this particular list
         gridService.registerKeyEvents($scope.itemsInCategoryView);

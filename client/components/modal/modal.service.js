@@ -41,6 +41,7 @@ angular.module('prindleApp')
           var singleFieldModal = openModal({
             modal: {
               dismissable: true,
+              keyboard: true,
               title: modalTitle,
               size: 'sm',
               template: 'components/modal/singleField.html',
@@ -138,6 +139,7 @@ angular.module('prindleApp')
             deleteModal = openModal({
               modal: {
                 dismissable: true,
+                keyboard: true,
                 title: 'Confirm Delete',
                 template: 'components/modal/modal.html',
                 html: '<p>Are you sure you want to delete <strong>' + name + '</strong> ?</p>',
