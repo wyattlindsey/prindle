@@ -5,7 +5,8 @@ angular.module('prindleApp')
     this.data = {
       catalogs: [],
       items: [],
-      categories: []
+      categories: [],
+      images: []    // not sure if this is necessary
     };
     Object.seal(this);
   });

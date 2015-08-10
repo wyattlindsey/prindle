@@ -7,6 +7,13 @@
     font-size: 1.75rem !important;
   }
 
+  .image-menu {
+    min-width: 1000px !important;
+    img {
+      max-width: 100px;
+    }
+  }
+
   #item-image {
     min-height: 4em;
     min-width: 4em;

@@ -9,15 +9,22 @@ angular.module('prindleApp')
       link: function (scope, element, attrs, ctrl) {
 
         scope.currentItem = null;
+        scope.images = [];
 
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           ctrl.getCategories();
+          ctrl.refreshImages();
           unregisterCategoriesLoaded();
         });
 
 
         scope.$on('items-selection-changed', function () {
           ctrl.updateDetailsView();
+        });
+
+
+        scope.$on('added-to-images', function() {
+          ctrl.refreshImages();
         });
 
       }
@@ -27,6 +34,9 @@ angular.module('prindleApp')
     function ($scope, $position, guiState, appData, listUtil, Upload, Modal, categoryService) {
 
       var self = this;
+
+      $scope.popover = {};
+      $scope.popover.imageMenuTemplateUrl = 'components/detailsView/imageMenu.html';
 
       var lastItemSelected;
 
@@ -60,30 +70,68 @@ angular.module('prindleApp')
       };
 
 
-      var _uploadImage = function (file) {
+      /**
+       * This should be more modular, maybe an image service.  Shouldn't be GETing everything on updates.
+       */
 
+      this.refreshImages = function() {
+        listUtil.get('images')
+          .then(function(images) {
+            if (images.length === 0) {
+              return;
+            } else {
+              console.log('images: ' + JSON.stringify(images));
+              $scope.images = appData.data.images = images; // really need to load this into appData?
+            }
+          }, function(err) {
+            throw new Error(err);
+          });
+      };
+
+
+      var _getImages = function() {
+
+      };
+
+
+      var _uploadImage = function (file) {
+        var filePath = 'images/' + file.name;
         Upload.upload({
           url: '/api/images/',
           file: file,
-          fields: {'isClipArt': false}
+          fields: {
+            'isClipArt': false,
+            'filePath': filePath
+          }
         })
           .success(function (data) {
+            listUtil.show('images', data._id)
+              .then(function(image) {
+                image.filePath = 'images/' + data.name;
+                listUtil.update('images', image);   // need error catching here
+              });
+
+            appData.data.images.push(data);
             $scope.currentItem.imageID = data._id;
-            listUtil.update('items', $scope.currentItem);
+            listUtil.update('items', $scope.currentItem);   // need error catching here
             _getImage($scope.currentItem);
           });
       };
 
 
       var _getImage = function (currentItem) {
-        listUtil.getImage(currentItem).then(function (data) {
-          if (data._id) {
-            $scope.currentItem.imageID = data._id;
+        listUtil.getImage(currentItem).then(function (image) {
+          if (image._id) {
+            $scope.currentItem.imageID = image._id;
 
-            if (data.isClipArt) {
-              $scope.currentImage = 'images/clipart' + data.name;
+            /**
+             * why is the path being determine here instead of read from the object?
+             */
+
+            if (image.isClipArt) {
+              $scope.currentImagePath = 'images/clipart' + image.name;
             } else {
-              $scope.currentImage = 'images/' + data.name;
+              $scope.currentImagePath = 'images/' + image.name;
             }
           }
         }, function (err) {

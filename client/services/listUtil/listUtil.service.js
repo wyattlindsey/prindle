@@ -23,6 +23,21 @@ angular.module('prindleApp')
     };
 
 
+    this.show = function(listName, id) {
+      var deferred = $q.defer();
+
+      crud.show(listName, id)
+        .then(function(data) {
+          // find and update??
+          deferred.resolve(data);
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+      return deferred.promise;
+    };
+
+
     this.add = function(listName, newEntryData) {
       var deferred = $q.defer();
 
