@@ -1,5 +1,6 @@
 .list-toolbar
-  button.btn.btn-large.btn-primary.pull-left(type='button', ng-click='manageCategories()') Categories
+  button.btn.btn-large.btn-primary.pull-left(type='button', ng-click='manageCategoriesAction()')
+    i.fa.fa-folder-open &nbsp Categories
   button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemsAction()',
   ng-disabled='noItemSelected || noCatalogSelected')
     i.fa.fa-copy

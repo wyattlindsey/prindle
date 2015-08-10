@@ -115,6 +115,11 @@ angular.module('prindleApp')
     };
 
 
+    this.openManageCategoriesModal = function() {
+      Modal.category()('Manage Categories');
+    };
+
+
     this.selectionDeletable = function() {
 
       if (typeof guiState.state[$scope.listName] == 'undefined') {

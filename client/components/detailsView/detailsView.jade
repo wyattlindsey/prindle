@@ -19,17 +19,21 @@
                 a(href='#', ng-click='manageCategories()') Manage categories
     .col-md-3.pull-right
       #item-image.well.well-lg
-          div(ng-hide='currentItem.imageID === ""')
-            .row
-              img(ng-src='{{currentImage}}')
-            .row
-              button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
-                accept='image/*') Upload image
-          #image-upload(ng-hide='currentItem.imageID !== ""')
-            .row
-              button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
-                accept='image/*') Upload image
-            .row
-              .drop-box(ngf-drop, ng-model='files', ngf-drag-over-class='dragover',
-                ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'
-                ) Drop image file
+        .row.image-menu
+          button.btn.btn-primary.pull-left(type='button', popover-template='test',
+          popover-placement='bottom', popover-title='Select image')
+            i.fa.fa-angle-down
+        div(ng-hide='currentItem.imageID === ""')
+          .row
+            img(ng-src='{{currentImage}}')
+          .row
+            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+              accept='image/*') Upload image
+        #image-upload(ng-hide='currentItem.imageID !== ""')
+          .row
+            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+              accept='image/*') Upload image
+          .row
+            .drop-box(ngf-drop, ng-model='files', ngf-drag-over-class='dragover',
+              ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'
+              ) Drop image file

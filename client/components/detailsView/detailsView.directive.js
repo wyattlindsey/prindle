@@ -23,14 +23,14 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
-    function ($scope, guiState, appData, listUtil, Upload, Modal, categoryService) {
+  .controller('detailsViewCtrl', ['$scope', '$position', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
+    function ($scope, $position, guiState, appData, listUtil, Upload, Modal, categoryService) {
 
       var self = this;
 
       var lastItemSelected;
 
-      this.updateDetailsView = function() {
+      this.updateDetailsView = function () {
 
         var selectedItem = _getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
@@ -55,7 +55,7 @@ angular.module('prindleApp')
       };
 
 
-      this.getCategories = function() {
+      this.getCategories = function () {
         $scope.categories = appData.data.categories;
       };
 
@@ -86,7 +86,7 @@ angular.module('prindleApp')
               $scope.currentImage = 'images/' + data.name;
             }
           }
-        }, function(err) {
+        }, function (err) {
           throw new Error(err);
         });
       };
@@ -110,35 +110,35 @@ angular.module('prindleApp')
         var currentItem = _getSelectedItem();
         if (currentItem) {
           listUtil.update('items', currentItem)
-            .then(function() {
+            .then(function () {
 
-            }, function(err) {
+            }, function (err) {
               throw new Error(err);
             });
         }
       };
 
 
-      $scope.selectCategory = function(name) {
+      $scope.selectCategory = function (name) {
         if ($scope.currentItem.category !== name) {
           $scope.currentItem.category = name;
           listUtil.update('items', $scope.currentItem)
-            .then(function() {
+            .then(function () {
 
-            }, function(err) {
+            }, function (err) {
               throw new Error(err);
             });
         }
       };
 
 
-      $scope.addNewCategory = function() {
-        Modal.singleField(function(newCategory) {
+      $scope.addNewCategory = function () {
+        Modal.singleField(function (newCategory) {
           categoryService.add(newCategory)
-            .then(function() {
+            .then(function () {
               self.getCategories();
               $scope.selectCategory(newCategory);
-            }, function(err) {
+            }, function (err) {
               throw new Error(err);
             });
         })('Add new category');
@@ -146,9 +146,7 @@ angular.module('prindleApp')
 
 
       $scope.manageCategories = function () {
-        Modal.category(function() {
-          self.getCategories();
-        })('Manage Categories');
+        Modal.category()('Manage Categories');
       };
 
 
@@ -169,16 +167,16 @@ angular.module('prindleApp')
        * event listeners
        */
 
-      $scope.$on('added-to-categories', function() {
+      $scope.$on('added-to-categories', function () {
         self.getCategories();
       });
 
-      $scope.$on('deleted-from-categories', function() {
+      $scope.$on('deleted-from-categories', function () {
         self.getCategories();
       });
 
 
-      $scope.$on('updated-categories', function() {
+      $scope.$on('updated-categories', function () {
         self.getCategories();
       });
 

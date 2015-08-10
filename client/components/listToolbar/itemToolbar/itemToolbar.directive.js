@@ -28,6 +28,10 @@ angular.module('prindleApp')
           scope.itemDeletable = listToolbarCtrl.selectionDeletable();
         });
 
+        scope.manageCategoriesAction = function() {
+          listToolbarCtrl.openManageCategoriesModal();
+        };
+
         scope.addItemsAction = function() {
           listToolbarCtrl.add();
         };

@@ -9,7 +9,7 @@ angular.module('prindleApp')
       link: function (scope, element, attrs, listToolbarCtrl) {
 
         var _initCategoryToolbar = function() {
-          scope.nothingSelected = true;
+          scope.noCategorySelected = true;
           scope.selectionDeletable = true;
         };
 
@@ -19,12 +19,6 @@ angular.module('prindleApp')
           scope.noCategorySelected = listToolbarCtrl.nothingSelected();
           scope.categoryDeletable = listToolbarCtrl.selectionDeletable();
         });
-//
-//        scope.$on('categories-selection-cleared', function() {
-//          console.log('clearing');
-//          scope.noCategorySelected = listToolbarCtrl.nothingSelected();
-//          scope.categoryDeletable = listToolbarCtrl.selectionDeletable();
-//        });
 
         scope.addCategoryAction = function() {
           listToolbarCtrl.add();
