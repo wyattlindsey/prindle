@@ -128,7 +128,13 @@ angular.module('prindleApp')
             deferred.reject('error updating record in listUtil: ' + err);
           } else {
             $rootScope.$broadcast('updated-' + listName, entries);
-            deferred.resolve();
+            if (entries.length === 1 ) {
+              deferred.resolve(entries[0]);
+            } else if (entries.length > 1) {
+              deferred.resolve(entries)
+            } else {
+              deferred.resolve(false);    // hmm
+            }
           }
         });
 

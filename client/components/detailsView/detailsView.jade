@@ -1,12 +1,9 @@
 #details-view.well
-  button.btn.btn-primary.pull-left(type='button', popover-template='popover.imageMenuTemplateUrl',
-  popover-placement='right', popover-title='Select image')
-    i.fa.fa-angle-right
   .row(ng-show='currentItem')
     .col-md-9
       #item-settings.well.well-lg
         div name:&nbsp
-          span(editable-text='currentItem.name', onaftersave='updateCategory()') {{currentItem.name}}
+          span(editable-text='currentItem.name') {{currentItem.name}}
         div weight:&nbsp
           span(editable-text='currentItem.weight', onaftersave='updateCategory()') {{currentItem.weight}}
         div category:&nbsp
@@ -28,15 +25,15 @@
             i.fa.fa-angle-down
         div(ng-hide='currentItem.imageID === ""')
           .row
-            img(ng-src='{{currentImagePath}}')
+            img(ng-src='{{currentItem.imagePath}}')
           .row
-            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',
               accept='image/*') Upload image
         #image-upload(ng-hide='currentItem.imageID !== ""')
           .row
-            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onFileSelect($files)',
+            button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',
               accept='image/*') Upload image
           .row
             .drop-box(ngf-drop, ng-model='files', ngf-drag-over-class='dragover',
-              ngf-accept="'image/*'", ngf-change='fileDropped($files, $event, $rejectedFiles)'
+              ngf-accept="'image/*'", ngf-change='imageFileDropped($files, $event, $rejectedFiles)'
               ) Drop image file

@@ -1,12 +1,12 @@
 .list-toolbar
-  button.btn.btn-large.btn-primary.pull-left(type='button', ng-click='manageCategoriesAction()')
+  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='manageCategoriesAction()')
     i.fa.fa-folder-open &nbsp Categories
-  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='copyItemsAction()',
+  button.btn.btn-large.btn-primary.pull-left(type='button', ng-click='copyItemsAction()',
   ng-disabled='noItemSelected || noCatalogSelected')
     i.fa.fa-copy
-  button.btn.btn-large.btn-warning.pull-right(type='button', ng-click='deleteItemsAction()',
+  button.btn.btn-large.btn-warning.pull-left(type='button', ng-click='deleteItemsAction()',
   ng-disabled='noItemSelected || !itemDeletable')
     i.fa.fa-trash
-  button.btn.btn-large.btn-primary.pull-right(type='button', ng-click='addItemsAction()',
+  button.btn.btn-large.btn-primary.pull-left(type='button', ng-click='addItemsAction()',
   ng-disabled='noCatalogSelected')
     i.fa.fa-plus

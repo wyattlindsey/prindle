@@ -9,11 +9,12 @@ angular.module('prindleApp')
       link: function (scope, element, attrs, ctrl) {
 
         scope.currentItem = null;
+        scope.currentItemImagePath = '';
         scope.images = [];
 
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
-          ctrl.getCategories();
-          ctrl.refreshImages();
+          ctrl.updateCategoriesMenu();
+          ctrl.loadImages();
           unregisterCategoriesLoaded();
         });
 
@@ -30,8 +31,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', '$position', 'guiState', 'appData', 'listUtil', 'Upload', 'Modal', 'categoryService',
-    function ($scope, $position, guiState, appData, listUtil, Upload, Modal, categoryService) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'imageService', 'listUtil', 'Modal', 'categoryService',
+    function ($scope, guiState, imageService, listUtil, Modal, categoryService) {
 
       var self = this;
 
@@ -42,6 +43,9 @@ angular.module('prindleApp')
 
       this.updateDetailsView = function () {
 
+        // this function prevents the details view from going blank when something is deselected
+        // it shows details for the last item selected
+
         var selectedItem = _getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
         var selectingSingle = qtyItemsSelected === 1;
@@ -49,7 +53,7 @@ angular.module('prindleApp')
         if (!lastItemSelected && selectingSingle) {
           lastItemSelected = selectedItem;
           $scope.currentItem = selectedItem;
-          _getImage($scope.currentItem);
+          $scope.currentItemImagePath =_getImagePath($scope.currentItem);
         }
 
         if (selectingSingle) {
@@ -58,85 +62,10 @@ angular.module('prindleApp')
           } else if (selectingSingle) {
             lastItemSelected = selectedItem;
             $scope.currentItem = selectedItem;
-            _getImage($scope.currentItem);
+            $scope.currentItemImagePath = _getImagePath($scope.currentItem);
           }
         }
 
-      };
-
-
-      this.getCategories = function () {
-        $scope.categories = appData.data.categories;
-      };
-
-
-      /**
-       * This should be more modular, maybe an image service.  Shouldn't be GETing everything on updates.
-       */
-
-      this.refreshImages = function() {
-        listUtil.get('images')
-          .then(function(images) {
-            if (images.length === 0) {
-              return;
-            } else {
-              console.log('images: ' + JSON.stringify(images));
-              $scope.images = appData.data.images = images; // really need to load this into appData?
-            }
-          }, function(err) {
-            throw new Error(err);
-          });
-      };
-
-
-      var _getImages = function() {
-
-      };
-
-
-      var _uploadImage = function (file) {
-        var filePath = 'images/' + file.name;
-        Upload.upload({
-          url: '/api/images/',
-          file: file,
-          fields: {
-            'isClipArt': false,
-            'filePath': filePath
-          }
-        })
-          .success(function (data) {
-            listUtil.show('images', data._id)
-              .then(function(image) {
-                image.filePath = 'images/' + data.name;
-                listUtil.update('images', image);   // need error catching here
-              });
-
-            appData.data.images.push(data);
-            $scope.currentItem.imageID = data._id;
-            listUtil.update('items', $scope.currentItem);   // need error catching here
-            _getImage($scope.currentItem);
-          });
-      };
-
-
-      var _getImage = function (currentItem) {
-        listUtil.getImage(currentItem).then(function (image) {
-          if (image._id) {
-            $scope.currentItem.imageID = image._id;
-
-            /**
-             * why is the path being determine here instead of read from the object?
-             */
-
-            if (image.isClipArt) {
-              $scope.currentImagePath = 'images/clipart' + image.name;
-            } else {
-              $scope.currentImagePath = 'images/' + image.name;
-            }
-          }
-        }, function (err) {
-          throw new Error(err);
-        });
       };
 
 
@@ -149,23 +78,73 @@ angular.module('prindleApp')
       };
 
 
+
+
+
       /**
-       * View actions
+       * Image handling
        */
 
 
-      $scope.updateCategory = function () {
-        var currentItem = _getSelectedItem();
-        if (currentItem) {
-          listUtil.update('items', currentItem)
-            .then(function () {
-
-            }, function (err) {
-              throw new Error(err);
+      $scope.onImageFileSelect = function ($files) {
+        if ($files && $files.length) {
+          imageService.uploadImage($files[0])
+            .then(function(image) {
+              imageService.setItemImage($scope.currentItem, image);
+              self.updateDetailsView();
             });
         }
       };
 
+
+      $scope.imageFileDropped = function ($files, $event, $rejectedFiles) {
+        if ($rejectedFiles.length === 0 && $files && $files.length) {
+          imageService.uploadImage($files[0])
+            .then(function(image) {
+              imageService.setItemImage($scope.currentItem, image);
+              self.updateDetailsView();
+            });
+        }
+      };
+
+
+      this.loadImages = function() {
+        imageService.loadImages()
+          .then(function(images) {
+            $scope.images = images;
+          }, function(err) {
+            throw new Error(err);
+          });
+      };
+
+
+      this.refreshImages = function() {
+        $scope.images = imageService.get();
+      };
+
+
+      var _getImagePath = function (currentItem) {
+        if (currentItem.imageID) {
+          var image = imageService.getItemImage(currentItem);
+          return image.filePath;
+        } else {
+          return false;
+        }
+      };
+
+
+      /**
+       * Categories
+       */
+
+
+
+      /**
+       *
+       * @param name
+       *
+       * Assigns a category to an item
+       */
 
       $scope.selectCategory = function (name) {
         if ($scope.currentItem.category !== name) {
@@ -193,39 +172,35 @@ angular.module('prindleApp')
       };
 
 
+      /**
+       * choice in category menu
+       */
+
       $scope.manageCategories = function () {
         Modal.category()('Manage Categories');
       };
 
 
-      $scope.onFileSelect = function ($files) {
-        if ($files && $files.length) {
-          _uploadImage($files[0]);
-        }
+      this.updateCategoriesMenu = function () {
+        $scope.categories = categoryService.get();
       };
 
-
-      $scope.fileDropped = function ($files, $event, $rejectedFiles) {
-        if ($rejectedFiles.length === 0 && $files && $files.length) {
-          _uploadImage($files[0]);
-        }
-      };
 
       /**
        * event listeners
        */
 
       $scope.$on('added-to-categories', function () {
-        self.getCategories();
+        self.updateCategoriesMenu();
       });
 
       $scope.$on('deleted-from-categories', function () {
-        self.getCategories();
+        self.updateCategoriesMenu();
       });
 
 
       $scope.$on('updated-categories', function () {
-        self.getCategories();
+        self.updateCategoriesMenu();
       });
 
     }]);

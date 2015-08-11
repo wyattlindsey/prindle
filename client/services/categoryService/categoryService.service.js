@@ -34,9 +34,10 @@ angular.module('prindleApp')
         });
       });
 
-      $rootScope.$on('updated-categories', function (event, categories) {
 
-      });
+      this.get = function() {
+        return appData.data.categories;
+      };
 
 
       this.add = function (name) {
