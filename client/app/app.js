@@ -13,7 +13,8 @@ angular.module('prindleApp', [
   'ui.grid.edit',
   'lvl.directives.dragdrop',
   'xeditable',
-  'ngFileUpload'
+  'ngFileUpload',
+  'popoverToggle'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

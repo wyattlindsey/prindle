@@ -11,6 +11,7 @@ angular.module('prindleApp')
         scope.currentItem = null;
         scope.currentItemImagePath = '';
         scope.images = [];
+        scope.imageMenuOpen = false;
 
         var unregisterCategoriesLoaded = scope.$on('categories-loaded', function () {
           ctrl.updateCategoriesMenu();
@@ -78,9 +79,6 @@ angular.module('prindleApp')
       };
 
 
-
-
-
       /**
        * Image handling
        */
@@ -90,8 +88,12 @@ angular.module('prindleApp')
         if ($files && $files.length) {
           imageService.uploadImage($files[0])
             .then(function(image) {
-              imageService.setItemImage($scope.currentItem, image);
-              self.updateDetailsView();
+              imageService.setItemImage($scope.currentItem, image)
+                .then(function() {
+                  self.updateDetailsView();
+                }, function(err) {
+                  throw new Error(err);
+                });
             });
         }
       };
@@ -101,9 +103,49 @@ angular.module('prindleApp')
         if ($rejectedFiles.length === 0 && $files && $files.length) {
           imageService.uploadImage($files[0])
             .then(function(image) {
-              imageService.setItemImage($scope.currentItem, image);
-              self.updateDetailsView();
+              imageService.setItemImage($scope.currentItem, image)
+                .then(function() {
+                  self.updateDetailsView();
+                }, function(err) {
+                  throw new Error(err);
+                });
             });
+        }
+      };
+
+
+      $scope.selectItemImage = function(image) {
+        imageService.setItemImage($scope.currentItem, image)
+          .then(function() {
+            self.closeImageMenu();
+          }, function(err) {
+            throw new Error(err);
+          });
+      };
+
+
+      $scope.deleteImage = function(image, event) {
+        imageService.deleteImage(image)
+          .then(function() {
+            self.openImageMenu();   // not the greatest but stopPropagation is bombing out so have to
+                                    // reopen the popover since the blur event is fired, closing the
+                                    // popover
+          }, function(err) {
+            throw new Error(err);
+          });
+      };
+
+
+      var _getImagePath = function (currentItem) {
+        if (currentItem.imageID) {
+          var image = imageService.getItemImage(currentItem);
+          if (image) {
+            return image.filePath;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
         }
       };
 
@@ -123,13 +165,27 @@ angular.module('prindleApp')
       };
 
 
-      var _getImagePath = function (currentItem) {
-        if (currentItem.imageID) {
-          var image = imageService.getItemImage(currentItem);
-          return image.filePath;
-        } else {
-          return false;
-        }
+      $scope.$on('added-to-images', function() {
+        self.refreshImages();
+      });
+
+
+      $scope.$on('deleted-from-images', function() {
+        self.refreshImages();
+      });
+
+
+      $scope.$on('updated-images', function() {
+        self.refreshImages();
+      });
+
+
+      this.closeImageMenu = function() {
+        $scope.imageMenuOpen = false;
+      };
+
+      this.openImageMenu = function() {
+        $scope.imageMenuOpen = true;
       };
 
 
@@ -197,7 +253,6 @@ angular.module('prindleApp')
       $scope.$on('deleted-from-categories', function () {
         self.updateCategoriesMenu();
       });
-
 
       $scope.$on('updated-categories', function () {
         self.updateCategoriesMenu();

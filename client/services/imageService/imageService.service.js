@@ -5,10 +5,6 @@ angular.module('prindleApp')
 
     var self = this;
 
-    this.addImage = function() {
-
-    };
-
 
     this.get = function() {
       if (appData.data.images) {
@@ -67,13 +63,17 @@ angular.module('prindleApp')
     };
 
 
-    this.deleteImage = function() {
+    this.deleteImage = function(image) {
+      var deferred = $q.defer();
 
-    };
+      listUtil.delete('images', image)
+        .then(function() {
+          deferred.resolve();
+        }, function(err) {
+          deferred.reject(err);
+        });
 
-
-    this.updateImage = function() {
-
+      return deferred.promise;
     };
 
 
@@ -83,20 +83,33 @@ angular.module('prindleApp')
 
 
     this.setItemImage = function(item, image) {
-      console.log('image: ' + image._id);
+      var deferred = $q.defer();
+
       item.imageID = image._id;
       item.imagePath = image.filePath;
       listUtil.update('items', item)
         .then(function() {
-
+          deferred.resolve();
         }, function(err) {
-          throw new Error(err);
+          deferred.reject(err);
         });
+
+      return deferred.promise;
     };
 
 
-    this.removeItemImage = function() {
+    this.removeItemImage = function(item) {
+      var deferred = $q.defer();
 
+      item.imageID = '';
+      listUtil.update('items', item)
+        .then(function() {
+          deferred.resolve();
+        }, function(err) {
+          deferred.reject(err);
+        });
+
+      return deferred.promise;
     };
 
 

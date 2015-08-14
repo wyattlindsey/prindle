@@ -21,7 +21,8 @@
       #item-image.well.well-lg
         .row.image-menu
           button.btn.btn-primary.pull-left(type='button', popover-template='popover.imageMenuTemplateUrl',
-          popover-placement='bottom', popover-title='Select image')
+          popover-placement='bottom', popover-title='Select image', popover-toggle='imageMenuOpen',
+          ng-click='imageMenuOpen = !imageMenuOpen', ng-blur='imageMenuOpen = false')
             i.fa.fa-angle-down
         div(ng-hide='currentItem.imageID === ""')
           .row

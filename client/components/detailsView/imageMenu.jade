@@ -1,5 +1,8 @@
-.image-menu
+.container-fluid.image-menu
   .row
-    .image-in-menu(ng-repeat='image in images')
-      .col-md-4
-        img(src='{{image.filePath}}')
+    .col-md-4.image-in-menu(ng-repeat='image in images')
+      a(href='#')
+        img(src='{{image.filePath}}', ng-click='selectItemImage(image)')
+        span
+          button.btn.btn-primary.btn-xs.delete-image(ng-click='deleteImage(image)')
+            i.fa.fa-remove
