@@ -46,7 +46,6 @@ angular.module('prindleApp')
 
         // this function prevents the details view from going blank when something is deselected
         // it shows details for the last item selected
-        // ** need to make sure this view is cleared after item is deleted **
 
         var selectedItem = _getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
@@ -68,6 +67,11 @@ angular.module('prindleApp')
           }
         }
 
+      };
+
+
+      this.clearDetailsView = function() {
+        $scope.currentItem = null;
       };
 
 
@@ -110,6 +114,8 @@ angular.module('prindleApp')
                 }, function(err) {
                   throw new Error(err);
                 });
+            }, function(err) {
+              throw new Error(err);
             });
         }
       };
@@ -122,6 +128,18 @@ angular.module('prindleApp')
           }, function(err) {
             throw new Error(err);
           });
+      };
+
+
+      $scope.removeItemImage = function(item) {
+        if (!item) {
+          return;
+        } else {
+          imageService.removeItemImage(item)
+            .then(function() {
+
+            });
+        }
       };
 
 
@@ -257,6 +275,10 @@ angular.module('prindleApp')
 
       $scope.$on('updated-categories', function () {
         self.updateCategoriesMenu();
+      });
+
+      $scope.$on('deleted-from-items', function () {
+        self.clearDetailsView();
       });
 
     }]);

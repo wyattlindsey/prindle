@@ -27,6 +27,9 @@
         div(ng-hide='currentItem.imageID === ""')
           .row
             img(ng-src='{{currentItem.imagePath}}')
+            span
+              button.btn.btn-primary.btn-xs.remove-item-image(ng-click='removeItemImage(currentItem)')
+                i.fa.fa-remove
           .row
             button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',
               accept='image/*') Upload image
