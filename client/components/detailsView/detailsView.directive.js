@@ -46,6 +46,7 @@ angular.module('prindleApp')
 
         // this function prevents the details view from going blank when something is deselected
         // it shows details for the last item selected
+        // ** need to make sure this view is cleared after item is deleted **
 
         var selectedItem = _getSelectedItem();
         var qtyItemsSelected = guiState.state.items.selected.length;
@@ -127,7 +128,7 @@ angular.module('prindleApp')
       $scope.deleteImage = function(image, event) {
         imageService.deleteImage(image)
           .then(function() {
-            self.openImageMenu();   // not the greatest but stopPropagation is bombing out so have to
+            self.openImageMenu();   // not the greatest, but stopPropagation is bombing out so have to
                                     // reopen the popover since the blur event is fired, closing the
                                     // popover
           }, function(err) {

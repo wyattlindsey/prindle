@@ -68,6 +68,16 @@ angular.module('prindleApp')
 
       listUtil.delete('images', image)
         .then(function() {
+          var foundItems = _.filter(appData.data.items, {'imageID': image._id});
+          _.forEach(foundItems, function(item) {
+            item.imageID = '';
+            listUtil.update('items', item)
+              .then(function() {
+
+              }, function(err) {
+                deferred.reject(err);
+              });
+          });
           deferred.resolve();
         }, function(err) {
           deferred.reject(err);
