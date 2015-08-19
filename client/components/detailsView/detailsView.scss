@@ -7,7 +7,7 @@
     font-size: 1.75rem !important;
   }
 
-  .image-menu {
+  #image-menu {
     font-size: 1.5rem;
     .popover {
       max-width: 450px;
@@ -37,9 +37,15 @@
       max-width: 280px;
     }
 
-    .remove-item-image {
+    #image-menu-button {
       position: absolute;
-      top: 85px;
+      top: 50px;
+      left: 30px;
+    }
+
+    #remove-item-image {
+      position: absolute;
+      top: 50px;
       right: 30px;
     }
 

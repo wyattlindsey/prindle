@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('prindleApp')
-  .service('gridService', ['guiState', 'listUtil', function (guiState, listUtil) {
+  .service('gridService', ['guiState', 'listUtil', 'weight', function (guiState, listUtil, weight) {
 
     /**
      * The following event handlers ensure that clicks registered by a row during edits
@@ -81,6 +81,15 @@ angular.module('prindleApp')
         listView.api.edit.on.afterCellEdit(scope, function(rowEntity, colDef, newValue, oldValue) {
 
           // need to check for duplicates here
+
+          if (colDef.field === 'weight') {
+            var itemWeight = weight.validate(newValue);
+            if (itemWeight) {
+
+            } else {
+              rowEntity.weight = oldValue;
+            }
+          }
 
           guiState.state[listName].editInProgress = false;
           if (newValue !== oldValue && !rowEntity.readOnly && newValue !== '') {

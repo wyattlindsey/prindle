@@ -238,7 +238,6 @@ angular.module('prindleApp')
         Modal.singleField(function (newCategory) {
           categoryService.add(newCategory)
             .then(function () {
-              self.getCategories();
               $scope.selectCategory(newCategory);
             }, function (err) {
               throw new Error(err);

@@ -19,16 +19,18 @@
                 a(href='#', ng-click='manageCategories()') Manage categories
     .col-md-3.pull-right
       #item-image.well.well-lg
-        .row.image-menu
-          button.btn.btn-primary.pull-left(type='button', popover-template='popover.imageMenuTemplateUrl',
-          popover-placement='bottom', popover-title='Select image', popover-toggle='imageMenuOpen',
-          ng-click='imageMenuOpen = !imageMenuOpen', ng-blur='imageMenuOpen = false')
-            i.fa.fa-angle-down
         div(ng-hide='currentItem.imageID === ""')
           .row
             img(ng-src='{{currentItem.imagePath}}')
             span
-              button.btn.btn-primary.btn-xs.remove-item-image(ng-click='removeItemImage(currentItem)')
+              #image-menu
+                button.btn.btn-success.pull-left#image-menu-button(type='button',
+                  popover-template='popover.imageMenuTemplateUrl',
+                  popover-placement='bottom', popover-title='Select image', popover-toggle='imageMenuOpen',
+                  ng-click='imageMenuOpen = !imageMenuOpen', ng-blur='imageMenuOpen = false')
+                    i.fa.fa-angle-down
+            span
+              button.btn.btn-danger.btn-xs#remove-item-image(ng-click='removeItemImage(currentItem)')
                 i.fa.fa-remove
           .row
             button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',
