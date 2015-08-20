@@ -87,17 +87,21 @@ angular.module('prindleApp')
     };
 
 
-    this.getItemImage = function(item) {
-      return _.find(appData.data.images, {'_id': item.imageID});
+    this.getImage = function(entity) {
+      return _.find(appData.data.images, {'_id': entity.imageID});
     };
 
 
-    this.setItemImage = function(item, image) {
+    this.setImage = function(listName, entity, image) {
       var deferred = $q.defer();
 
-      item.imageID = image._id;
-      item.imagePath = image.filePath;
-      listUtil.update('items', item)
+      if (!listName || !entity || !image) {
+        deferred.reject('incorrect arguments to setImage'); // should this go everywhere?
+      }                                                     // maybe just where http requests
+                                                            // are going to be made?
+      entity.imageID = image._id;
+      entity.imagePath = image.filePath;
+      listUtil.update(listName, entity)
         .then(function() {
           deferred.resolve();
         }, function(err) {
@@ -108,11 +112,11 @@ angular.module('prindleApp')
     };
 
 
-    this.removeItemImage = function(item) {
+    this.removeImage = function(listName, entity) {
       var deferred = $q.defer();
 
-      item.imageID = '';
-      listUtil.update('items', item)
+      entity.imageID = '';
+      listUtil.update(listName, entity)
         .then(function() {
           deferred.resolve();
         }, function(err) {

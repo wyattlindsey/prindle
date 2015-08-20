@@ -9,7 +9,7 @@ angular.module('prindleApp')
       link: function (scope, element, attrs, ctrl) {
 
         scope.currentItem = null;
-        scope.currentItemImagePath = '';
+        scope.currentItemImagePath = {};
         scope.images = [];
         scope.imageMenuOpen = false;
 
@@ -43,6 +43,7 @@ angular.module('prindleApp')
       var lastItemSelected;
 
       this.updateDetailsView = function () {
+        console.log('updating');
 
         // this function prevents the details view from going blank when something is deselected
         // it shows details for the last item selected
@@ -52,18 +53,20 @@ angular.module('prindleApp')
         var selectingSingle = qtyItemsSelected === 1;
 
         if (!lastItemSelected && selectingSingle) {
+          console.log('hello');
           lastItemSelected = selectedItem;
           $scope.currentItem = selectedItem;
-          $scope.currentItemImagePath =_getImagePath($scope.currentItem);
+          $scope.currentItemImagePath.path =_getImagePath($scope.currentItem);
         }
 
         if (selectingSingle) {
           if (lastItemSelected._id === selectedItem._id) {
             return;
           } else if (selectingSingle) {
+            console.log('hello');
             lastItemSelected = selectedItem;
             $scope.currentItem = selectedItem;
-            $scope.currentItemImagePath = _getImagePath($scope.currentItem);
+            $scope.currentItemImagePath.path = _getImagePath($scope.currentItem);
           }
         }
 
@@ -88,12 +91,25 @@ angular.module('prindleApp')
        * Image handling
        */
 
+      var _getImagePath = function (currentItem) {
+        if (currentItem.imageID) {
+          var image = imageService.getImage(currentItem);
+          if (image) {
+            return image.filePath;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      };
+
 
       $scope.onImageFileSelect = function ($files) {
         if ($files && $files.length) {
           imageService.uploadImage($files[0])
             .then(function(image) {
-              imageService.setItemImage($scope.currentItem, image)
+              imageService.setImage('items', $scope.currentItem, image)
                 .then(function() {
                   self.updateDetailsView();
                 }, function(err) {
@@ -108,7 +124,7 @@ angular.module('prindleApp')
         if ($rejectedFiles.length === 0 && $files && $files.length) {
           imageService.uploadImage($files[0])
             .then(function(image) {
-              imageService.setItemImage($scope.currentItem, image)
+              imageService.setImage('items', $scope.currentItem, image)
                 .then(function() {
                   self.updateDetailsView();
                 }, function(err) {
@@ -122,9 +138,10 @@ angular.module('prindleApp')
 
 
       $scope.selectItemImage = function(image) {
-        imageService.setItemImage($scope.currentItem, image)
+        imageService.setImage('items', $scope.currentItem, image)
           .then(function() {
             self.closeImageMenu();
+            self.updateDetailsView(); // why aren't you working?  conditionals in updateDetailsView aren't being entered
           }, function(err) {
             throw new Error(err);
           });
@@ -152,20 +169,6 @@ angular.module('prindleApp')
           }, function(err) {
             throw new Error(err);
           });
-      };
-
-
-      var _getImagePath = function (currentItem) {
-        if (currentItem.imageID) {
-          var image = imageService.getItemImage(currentItem);
-          if (image) {
-            return image.filePath;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
       };
 
 

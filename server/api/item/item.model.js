@@ -7,7 +7,6 @@ var ItemSchema = new Schema({
   name: String,
   weight: String,
   category: String,
-  imagePath: String,
   imageID: String,
   readOnly: Boolean
 });

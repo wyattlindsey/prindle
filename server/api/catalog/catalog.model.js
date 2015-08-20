@@ -7,7 +7,8 @@ var CatalogSchema = new Schema({
   name: String,
   readOnly: Boolean,
   isMaster: Boolean,
-  items: []
+  items: [],
+  imageID: String
 });
 
 CatalogSchema.set('versionKey', false);

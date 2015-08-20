@@ -7,7 +7,8 @@ var CategorySchema = new Schema({
   name: String,
   info: String,
   active: Boolean,
-  readOnly: Boolean
+  readOnly: Boolean,
+  imageID: String
 });
 
 module.exports = mongoose.model('Category', CategorySchema);
