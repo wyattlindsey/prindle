@@ -35,6 +35,7 @@
 
     img {
       max-width: 280px;
+      width: 100%;
     }
 
     #image-menu-button {
@@ -52,6 +53,7 @@
     #image-upload {
       font-size: 2rem;
       text-align: center;
+      margin-top: 75px;
       .drop-box {
         font-size: 2rem;
         background: #F8F8F8;

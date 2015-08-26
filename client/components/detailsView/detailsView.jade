@@ -23,18 +23,17 @@
           .row
             img(ng-src='{{currentItemImagePath.path}}')
             span
-              #image-menu
-                button.btn.btn-success.pull-left#image-menu-button(type='button',
-                  popover-template='popover.imageMenuTemplateUrl',
-                  popover-placement='bottom', popover-title='Select image', popover-toggle='imageMenuOpen',
-                  ng-click='imageMenuOpen = !imageMenuOpen', ng-blur='imageMenuOpen = false')
-                    i.fa.fa-angle-down
-            span
               button.btn.btn-danger.btn-xs#remove-item-image(ng-click='removeItemImage(currentItem)')
                 i.fa.fa-remove
           .row
             button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',
-              accept='image/*') Upload image
+            accept='image/*') Upload image
+        #image-menu
+          button.btn.btn-success.pull-left#image-menu-button(type='button',
+            popover-template='popover.imageMenuTemplateUrl',
+            popover-placement='bottom', popover-title='Select image', popover-toggle='imageMenuOpen',
+            ng-click='imageMenuOpen = !imageMenuOpen', ng-blur='imageMenuOpen = false')
+              i.fa.fa-angle-down
         #image-upload(ng-hide='currentItem.imageID !== ""')
           .row
             button.btn.btn-primary(ngf-select, ng-model='imageFile', ngf-change='onImageFileSelect($files)',

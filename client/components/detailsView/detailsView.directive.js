@@ -26,7 +26,7 @@ angular.module('prindleApp')
 
 
         scope.$on('added-to-images', function() {
-          ctrl.refreshImages();
+          ctrl.loadImages();
         });
 
       }
@@ -43,7 +43,6 @@ angular.module('prindleApp')
       var lastItemSelected;
 
       this.updateDetailsView = function () {
-        console.log('updating');
 
         // this function prevents the details view from going blank when something is deselected
         // it shows details for the last item selected
@@ -53,20 +52,18 @@ angular.module('prindleApp')
         var selectingSingle = qtyItemsSelected === 1;
 
         if (!lastItemSelected && selectingSingle) {
-          console.log('hello');
           lastItemSelected = selectedItem;
           $scope.currentItem = selectedItem;
-          $scope.currentItemImagePath.path =_getImagePath($scope.currentItem);
+          self.refreshImage();
         }
 
         if (selectingSingle) {
           if (lastItemSelected._id === selectedItem._id) {
             return;
           } else if (selectingSingle) {
-            console.log('hello');
             lastItemSelected = selectedItem;
             $scope.currentItem = selectedItem;
-            $scope.currentItemImagePath.path = _getImagePath($scope.currentItem);
+            self.refreshImage();
           }
         }
 
@@ -111,7 +108,7 @@ angular.module('prindleApp')
             .then(function(image) {
               imageService.setImage('items', $scope.currentItem, image)
                 .then(function() {
-                  self.updateDetailsView();
+                  self.refreshImage();
                 }, function(err) {
                   throw new Error(err);
                 });
@@ -126,7 +123,7 @@ angular.module('prindleApp')
             .then(function(image) {
               imageService.setImage('items', $scope.currentItem, image)
                 .then(function() {
-                  self.updateDetailsView();
+                  self.refreshImage();
                 }, function(err) {
                   throw new Error(err);
                 });
@@ -141,7 +138,7 @@ angular.module('prindleApp')
         imageService.setImage('items', $scope.currentItem, image)
           .then(function() {
             self.closeImageMenu();
-            self.updateDetailsView(); // why aren't you working?  conditionals in updateDetailsView aren't being entered
+            self.refreshImage(); // why aren't you working?  conditionals in updateDetailsView aren't being entered
           }, function(err) {
             throw new Error(err);
           });
@@ -152,9 +149,13 @@ angular.module('prindleApp')
         if (!item) {
           return;
         } else {
-          imageService.removeItemImage(item)
+          imageService.removeImage('items', item)
             .then(function() {
 
+            }, function(err) {
+              if (err) {
+                throw new Error(err);
+              }
             });
         }
       };
@@ -182,23 +183,23 @@ angular.module('prindleApp')
       };
 
 
-      this.refreshImages = function() {
-        $scope.images = imageService.get();
+      this.refreshImage = function() {
+        $scope.currentItemImagePath.path = _getImagePath($scope.currentItem);
       };
 
 
       $scope.$on('added-to-images', function() {
-        self.refreshImages();
+        self.loadImages();
       });
 
 
       $scope.$on('deleted-from-images', function() {
-        self.refreshImages();
+        self.loadImages();
       });
 
 
       $scope.$on('updated-images', function() {
-        self.refreshImages();
+        self.loadImages();
       });
 
 

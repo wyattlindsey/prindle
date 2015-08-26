@@ -99,14 +99,20 @@ angular.module('prindleApp')
         deferred.reject('incorrect arguments to setImage'); // should this go everywhere?
       }                                                     // maybe just where http requests
                                                             // are going to be made?
-      entity.imageID = image._id;
-      entity.imagePath = image.filePath;
-      listUtil.update(listName, entity)
-        .then(function() {
-          deferred.resolve();
-        }, function(err) {
-          deferred.reject(err);
-        });
+
+      //check for duplicates
+      if (entity.imageID === image._id) {
+        deferred.resolve();
+      } else {
+        entity.imageID = image._id;
+        entity.imagePath = image.filePath;
+        listUtil.update(listName, entity)
+          .then(function() {
+            deferred.resolve();
+          }, function(err) {
+            deferred.reject(err);
+          });
+      }
 
       return deferred.promise;
     };
