@@ -3,22 +3,40 @@
 angular.module('prindleApp')
   .service('weight', function () {
 
+    // put units in order of matching specificity, e.g. 'kg' before 'g' so more specific one gets match
+
+    var units = [
+      {
+        name: 'pounds',
+        pattern: /pound|pounds|lb|lbs/i,
+        abbrev: 'lb',
+        conversion: 453.59
+      },
+      {
+        name: 'ounces',
+        pattern: /ounce|ounces|oz|ozs/i,
+        abbrev: 'oz',
+        conversion: 28.35
+      },
+      {
+        name: 'kilograms',
+        pattern: /kilogram|kilograms|kilo|kilos|kg/i,
+        abbrev: 'kg',
+        conversion: 1000
+      },
+      {
+        name: 'grams',
+        pattern: /gram|grams|gr|g/i,
+        abbrev: 'g',
+        conversion: 1
+      }
+    ];
+
     this.validate = function(weight) {
 
-      var unitPatterns = {
-        pounds: /pound|pounds|lb|lbs/i,
-        ounces: /ounce|ounces|oz|ozs/i,
-        kilograms: /kilogram|kilograms|kilo|kilos|kg/i,
-        grams: /gram|grams|gr|g/i
-      };
-
-      var validatedWeight = [];   // array of JSON objects to return
-      var suppliedWeights = [];    // scratch array for the caller supplied values
-
-//      var pounds = /pound|pounds|lb|lbs/i;
-//      var ounces = /ounce|ounces|oz|ozs/i;
-//      var kilograms = /kilogram|kilograms|kilo|kilos|kg/i;
-//      var grams = /gram|grams|gr|g/i;
+      var suppliedWeights = [];   // scratch array for the caller supplied values contained in 'weight'
+      var validatedWeight = {};   // object to return, including cleaned up custom weight string and
+                                  // actual value in grams
 
       // need to break up the weight parameter into multiple strings
       // first a number then a string for the units
@@ -59,42 +77,52 @@ angular.module('prindleApp')
 
 
       // split off each weight group's unit and number and store it in the temp array
-      var numeric = /[0-9]/;
+      var numeric = /[0-9]+/;
       var alpha = /\D+/;
       _.forEach(weightGroups, function(weightGroup) {
         var amount = numeric.exec(weightGroup);
         var units = alpha.exec(weightGroup);
         suppliedWeights.push({
-          weight: amount,
+          weight: Number(amount),
           units: units
         });
       });
 
-      // check which unit is being used
+      // match unit names and create formatted weight object
+      var weightInGrams = 0;
+
       _.forEach(suppliedWeights, function(suppliedWeight) {
-        _.forEach(unitPatterns, function(unitPattern) {
-          if (unitPattern.test(suppliedWeight.units)) {
-            validatedWeight.push(suppliedWeight);
+
+        for (var i = 0; i < units.length; i++) {
+
+          if (units[i].pattern.test(suppliedWeight.units)) {
+            if (!validatedWeight.displayWeight) {
+              validatedWeight.displayWeight = '';
+              validatedWeight.displayWeight += suppliedWeight.weight + units[i].abbrev;
+            } else {
+              validatedWeight.displayWeight += ' ' + suppliedWeight.weight + units[i].abbrev;
+            }
+
+            weightInGrams += convertToGrams(units[i].name, suppliedWeight.weight);
+
+            break;  // don't want multiple matches
           }
-        });
+        }
       });
 
+      validatedWeight.grams = weightInGrams;
 
+      return validatedWeight;
 
-      // any number followed by characters is now in the array weightGroups
-
-//      var weightPattern = /\d+\D+/;
-//      var regex = /(\d+)/g;   // the /g option means 'global', so find all matches, not necessary?
-//      var number = /[0-9]/;
-//      if (number.test(weight)) {
-//        console.log('number');
-//      } else {
-//        console.log('not a number');
-//      }
-//      if (weightPattern.test(weight)) {
-//        console.log('good')
-//      } else {
-//        console.log('bad');
-//      }
     };
+
+    var convertToGrams = function(unit, value) {
+      var unitObject = _.find(units, {name: unit});
+      if (unitObject) {
+        return value * unitObject.conversion;
+      } else {
+        return 0;   // maybe good??
+      }
+    };
+
   });

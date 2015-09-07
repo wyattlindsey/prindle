@@ -85,7 +85,7 @@ angular.module('prindleApp')
           if (colDef.field === 'weight') {
             var itemWeight = weight.validate(newValue);
             if (itemWeight) {
-
+              rowEntity.weight = itemWeight.displayWeight;
             } else {
               rowEntity.weight = oldValue;
             }

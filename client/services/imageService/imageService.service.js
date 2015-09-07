@@ -112,11 +112,6 @@ angular.module('prindleApp')
     this.setImage = function(listName, entity, image) {
       var deferred = $q.defer();
 
-      if (!listName || !entity || !image) {
-        deferred.reject('incorrect arguments to setImage'); // should this go everywhere?
-      }                                                     // maybe just where http requests
-                                                            // are going to be made?
-
       //check for duplicates
       if (entity.imageID === image._id) {
         deferred.resolve();
