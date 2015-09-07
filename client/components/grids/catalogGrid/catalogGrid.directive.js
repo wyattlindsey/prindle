@@ -15,6 +15,10 @@ angular.module('prindleApp')
 
     $scope.displayCatalogs = [];
 
+        /**
+         * for some reason item IDs aren't being removed properly from catalogs when the items are deleted
+         */
+
     this.initGrid = function() {
       $scope.catalogView = {
         data: 'displayCatalogs',

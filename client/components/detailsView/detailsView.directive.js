@@ -35,6 +35,7 @@ angular.module('prindleApp')
   .controller('detailsViewCtrl', ['$scope', 'guiState', 'imageService', 'listUtil', 'Modal', 'categoryService',
     function ($scope, guiState, imageService, listUtil, Modal, categoryService) {
 
+
       var self = this;
 
       $scope.popover = {};
@@ -161,7 +162,8 @@ angular.module('prindleApp')
       };
 
 
-      $scope.deleteImage = function(image, event) {
+      $scope.deleteImage = function(image) {
+
         imageService.deleteImage(image)
           .then(function() {
             self.openImageMenu();   // not the greatest, but stopPropagation is bombing out so have to

@@ -62,21 +62,38 @@ angular.module('prindleApp')
       return deferred.promise;
     };
 
+    /**
+     *
+     * imageService.deleteImage()
+     *
+     * @param image
+     * @returns promise
+     *
+     * Completely removes an image from the database, then goes through every item in appData
+     * that might have an imageID parameter and clears it out
+     *
+     */
+
 
     this.deleteImage = function(image) {
       var deferred = $q.defer();
 
       listUtil.delete('images', image)
         .then(function() {
-          var foundItems = _.filter(appData.data.items, {'imageID': image._id});
-          _.forEach(foundItems, function(item) {
-            item.imageID = '';
-            listUtil.update('items', item)
-              .then(function() {
+          var lists = Object.keys(appData.data);
 
-              }, function(err) {
-                deferred.reject(err);
-              });
+          // go through each collection in appData.data to remove associated image
+          _.forEach(lists, function(listName) {
+            var foundEntities = _.filter(appData.data[listName], {'imageID': image._id});
+            _.forEach(foundEntities, function(entity) {
+              entity.imageID = '';
+              listUtil.update(listName, entity)
+                .then(function() {
+
+                }, function(err) {
+                  deferred.reject(err);
+                });
+            });
           });
           deferred.resolve();
         }, function(err) {
@@ -116,6 +133,18 @@ angular.module('prindleApp')
 
       return deferred.promise;
     };
+
+    /**
+     *
+     * imageService.removeImage()
+     *
+     * @param listName - name of list, such as 'items' or 'catalogs'
+     * @param entity - thing that has an image associated with it
+     * @returns promise
+     *
+     * disassociates an image with a particular thing like a catalog
+     *
+     */
 
 
     this.removeImage = function(listName, entity) {
