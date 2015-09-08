@@ -82,12 +82,12 @@ angular.module('prindleApp')
 
           // need to check for duplicates here
 
-          if (colDef.field === 'weight') {
+          if (colDef.field === 'weight.display') {
             var itemWeight = weight.validate(newValue);
             if (itemWeight) {
-              rowEntity.weight = itemWeight.displayWeight;
+              rowEntity.weight = itemWeight;
             } else {
-              rowEntity.weight = oldValue;
+              rowEntity.weight.display = oldValue;
             }
           }
 

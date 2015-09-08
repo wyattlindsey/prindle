@@ -32,8 +32,8 @@ angular.module('prindleApp')
       }
     };
   })
-  .controller('detailsViewCtrl', ['$scope', 'guiState', 'imageService', 'listUtil', 'Modal', 'categoryService',
-    function ($scope, guiState, imageService, listUtil, Modal, categoryService) {
+  .controller('detailsViewCtrl', ['$scope', 'guiState', 'imageService', 'weight', 'listUtil', 'Modal', 'categoryService',
+    function ($scope, guiState, imageService, weight, listUtil, Modal, categoryService) {
 
 
       var self = this;
@@ -81,6 +81,21 @@ angular.module('prindleApp')
           return guiState.state.items.selected[0];
         } else {
           return false;
+        }
+      };
+
+      /**
+       * x-editable
+       */
+
+      $scope.updateWeight = function(newValue) {
+        var oldValue = $scope.currentItem.weight;
+        var validatedWeight = weight.validate(newValue);
+        if (!validatedWeight) {
+          return 'invalid weight';
+        } else {
+          $scope.currentItem.weight = validatedWeight;
+          listUtil.update('items', $scope.currentItem);
         }
       };
 

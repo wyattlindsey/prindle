@@ -4,6 +4,8 @@ angular.module('prindleApp')
   .service('itemViewService', ['$rootScope', 'appData', 'guiState', 'listUtil', 'categoryService',
     function ($rootScope, appData, guiState, listUtil, categoryService) {
 
+      // create self variable to stop this madness
+
       this.refresh = function () {
         return _refresh();
       };

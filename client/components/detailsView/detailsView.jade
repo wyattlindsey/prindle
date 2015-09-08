@@ -5,7 +5,8 @@
         div name:&nbsp
           span(editable-text='currentItem.name') {{currentItem.name}}
         div weight:&nbsp
-          span(editable-text='currentItem.weight', onaftersave='updateCategory()') {{currentItem.weight}}
+          span(editable-text='currentItem.weight.display', onbeforesave='updateWeight($data)')
+            | {{currentItem.weight.display}}
         div category:&nbsp
           span.btn-group.dropup(dropdown, dropdown-append-to-body)
             a(href, dropdown-toggle) {{currentItem.category || 'none'}}

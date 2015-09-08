@@ -58,7 +58,7 @@ angular.module('prindleApp')
               field: 'name', displayName: 'Name'
             },
             {
-              field: 'weight', displayName: 'Weight'
+              field: 'weight.display', displayName: 'Weight'
             },
             {
               field: 'category',

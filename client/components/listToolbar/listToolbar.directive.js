@@ -39,7 +39,10 @@ angular.module('prindleApp')
         listUtil.add($scope.listName,
           {
             name: 'my new thing',
-            weight: Math.round(Math.random() * 100),
+            weight: {
+              display: '1g',
+              grams: 1
+            },
             readOnly: false,
             imageID: ''
           }

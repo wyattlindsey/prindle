@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var ItemSchema = new Schema({
   name: String,
-  weight: String,
+  weight: {},
   category: String,
   imageID: String,
   readOnly: Boolean
