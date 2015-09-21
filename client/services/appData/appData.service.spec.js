@@ -3,7 +3,7 @@
 describe('Service: appData', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var appData;
@@ -11,8 +11,8 @@ describe('Service: appData', function () {
     appData = _appData_;
   }));
 
-  it('should do something', function () {
-    expect(!!appData).toBe(true);
-  });
+//  it('should do something', function () {
+//    expect(!!appData).toBe(true);
+//  });
 
 });

@@ -3,7 +3,7 @@
 describe('Controller: ListyCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   var ListyCtrl, scope;
 

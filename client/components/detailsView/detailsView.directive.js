@@ -88,13 +88,18 @@ angular.module('prindleApp')
        * x-editable
        */
 
+      $scope.validateWeight = function(newValue) {
+        if (!weight.validate(newValue)) {
+          return 'invalid weight';
+        }
+      };
+
       $scope.updateWeight = function(newValue) {
-        var oldValue = $scope.currentItem.weight;
         var validatedWeight = weight.validate(newValue);
         if (!validatedWeight) {
           return 'invalid weight';
         } else {
-          $scope.currentItem.weight = validatedWeight;
+          $scope.currentItem.weight.display = validatedWeight.display;
           listUtil.update('items', $scope.currentItem);
         }
       };

@@ -3,7 +3,7 @@
 describe('Service: gridService', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var gridService;
@@ -11,8 +11,8 @@ describe('Service: gridService', function () {
     gridService = _gridService_;
   }));
 
-  it('should do something', function () {
-    expect(!!gridService).toBe(true);
-  });
+//  it('should do something', function () {
+//    expect(!!gridService).toBe(true);
+//  });
 
 });

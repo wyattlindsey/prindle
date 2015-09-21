@@ -3,7 +3,7 @@
 describe('Service: listUtil', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var listUtil;
@@ -11,8 +11,8 @@ describe('Service: listUtil', function () {
     listUtil = _listUtil_;
   }));
 
-  it('should do something', function () {
-    expect(!!listUtil).toBe(true);
-  });
+//  it('should do something', function () {
+//    expect(!!listUtil).toBe(true);
+//  });
 
 });

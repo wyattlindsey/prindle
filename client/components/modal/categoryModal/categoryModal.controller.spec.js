@@ -3,7 +3,7 @@
 describe('Controller: categoryModalCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   var categoryModalCtrl, scope;
 
@@ -15,7 +15,7 @@ describe('Controller: categoryModalCtrl', function () {
     });
   }));
 
-  it('should ...', function () {
-    expect(1).toEqual(1);
-  });
+//  it('should ...', function () {
+//    expect(1).toEqual(1);
+//  });
 });

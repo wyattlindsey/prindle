@@ -8,7 +8,7 @@ var assert = chai.assert;
 describe('Service: crud', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var crud;
@@ -25,26 +25,26 @@ describe('Service: crud', function () {
   var scopeData = {};
   scopeData.items = [];
 
-  it('should add an item', function() {
-    var newItem = {
-      name: 'test item',
-      weight: '100lb',
-      category: 'default'
-    };
-
-    $httpBackend.expectPOST('/api/items', newItem).respond(200, '');
-    var promise = crud.add(scopeData, 'items', newItem);
-
-
-    $rootScope.$apply();
-
-
-
-//    crud.add(scopeData, 'items', newItem).should
-
-
-
-
-  });
+//  it('should add an item', function() {
+//    var newItem = {
+//      name: 'test item',
+//      weight: '100lb',
+//      category: 'default'
+//    };
+//
+//    $httpBackend.expectPOST('/api/items', newItem).respond(200, '');
+//    var promise = crud.add(scopeData, 'items', newItem);
+//
+//
+//    $rootScope.$apply();
+//
+//
+//
+////    crud.add(scopeData, 'items', newItem).should
+//
+//
+//
+//
+//  });
 
 });

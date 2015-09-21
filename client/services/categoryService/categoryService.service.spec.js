@@ -3,7 +3,7 @@
 describe('Service: categoryService', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var categoryService;
@@ -11,8 +11,8 @@ describe('Service: categoryService', function () {
     categoryService = _categoryService_;
   }));
 
-  it('should do something', function () {
-    expect(!!categoryService).toBe(true);
-  });
+//  it('should do something', function () {
+//    expect(!!categoryService).toBe(true);
+//  });
 
 });

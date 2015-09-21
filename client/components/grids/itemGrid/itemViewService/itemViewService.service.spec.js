@@ -3,7 +3,7 @@
 describe('Service: itemViewService', function () {
 
   // load the service's module
-  beforeEach(module('prindleApp'));
+  beforeEach(angular.mock.module('prindleApp'));
 
   // instantiate service
   var itemViewService;
@@ -11,8 +11,8 @@ describe('Service: itemViewService', function () {
     itemViewService = _itemViewService_;
   }));
 
-  it('should do something', function () {
-    expect(!!itemViewService).toBe(true);
-  });
+//  it('should do something', function () {
+//    expect(!!itemViewService).toBe(true);
+//  });
 
 });
