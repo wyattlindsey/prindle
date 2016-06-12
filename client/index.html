@@ -52,6 +52,7 @@
       <script src="bower_components/angular/angular.js"></script>
       <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+      <script src="bower_components/angular-popover-toggle/popover-toggle.js"></script>
       <script src="bower_components/angular-resource/angular-resource.js"></script>
       <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
       <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
@@ -69,8 +70,6 @@
         <!-- build:js({.tmp,client}) app/app.js -->
         <script src="app/app.js"></script>
           <!-- injector:js -->
-          <script src="app/listy/listy.controller.js"></script>
-          <script src="app/listy/listy.js"></script>
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
           <script src="components/detailsView/detailsView.directive.js"></script>
@@ -88,19 +87,15 @@
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
-          <!-- endinjector -->
-        <!-- endbuild -->
-
-          <script src="services/crud/crud.service.js"></script>
-          <script src="services/listUtil/listUtil.service.js"></script>
-          <script src="services/gridService/gridService.service.js"></script>
-          <script src="services/guiState/guiState.service.js"></script>
           <script src="services/appData/appData.service.js"></script>
           <script src="services/categoryService/categoryService.service.js"></script>
+          <script src="services/crud/crud.service.js"></script>
+          <script src="services/gridService/gridService.service.js"></script>
+          <script src="services/guiState/guiState.service.js"></script>
           <script src="services/imageService/imageService.service.js"></script>
+          <script src="services/listUtil/listUtil.service.js"></script>
           <script src="services/weight/weight.service.js"></script>
-          <script src="bower_components/chai/chai.js"></script>
-          <script src="bower_components/chai-as-promised/lib/chai-as-promised.js"></script>
-          <script src="bower_components/angular-popover-toggle/popover-toggle.js"></script>
+          <!-- endinjector -->
+        <!-- endbuild -->
 </body>
 </html>
