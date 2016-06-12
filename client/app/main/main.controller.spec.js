@@ -5,30 +5,17 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(angular.mock.module('prindleApp'));
 
-  var MainCtrl,
-      scope,
-      $httpBackend;
+  var ListyCtrl, scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/things')
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
-
+  beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
+    ListyCtrl = $controller('MainCtrl', {
       $scope: scope
     });
   }));
 
-//  it('should return -1 when the value is not present', function(){
-//    chai.assert.equal(-1, [1,2,3].indexOf(5));
-//    chai.assert.equal(-1, [1,2,3].indexOf(0));
-//  });
-
-
-//  it('should attach a list of things to the scope', function () {
-//    $httpBackend.flush();
-//    chai.expect(scope.awesomeThings.length).to.be(4);
-//  });
+  it('should ...', function () {
+    chai.expect(1).to.equal(1);
+  });
 });

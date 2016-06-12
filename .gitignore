@@ -6,4 +6,7 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
+/client/components/lib/lvlDragDrop
 data
+/.gitignore
+

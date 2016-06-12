@@ -1,30 +1,44 @@
-.thing-form {
-    margin: 20px 0;
+.list-toolbar {
+  margin-right: 16px;
+  margin-bottom: 16px;
+  .btn {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }
 
-#banner {
-    border-bottom: none;
-    margin-top: -20px;
+#catalog-grid {
+  padding-left: 16px !important;
 }
 
-#banner h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
+// lvlDragDrop
+
+.lvl-over {
+  border: 2px dashed black !important;
 }
 
-.hero-unit {
-    position: relative;
-    padding: 30px 15px;
-    color: #F5F5F5;
-    text-align: center;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-    background: #4393B9;
+.lvl-target {
+  background-color: #ddd;
+  opacity: .5;
 }
 
-.footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 70px;
-    border-top: 1px solid #E5E5E5;
+[draggable] {
+  cursor: move;
+}
+
+.item-list-drag-arrow {
+  padding-left: 18px;
+  padding-top: 8px;
+}
+
+#details-view {
+  margin: 40px !important;
+  border-width: 1px;
+  border-color: $gray-lighter;
+
+  #item-image {
+    border-width: 1px;
+    border-color: $gray-lighter;
+
+  }
 }

@@ -11,8 +11,8 @@ describe('Service: categoryService', function () {
     categoryService = _categoryService_;
   }));
 
-//  it('should do something', function () {
-//    expect(!!categoryService).toBe(true);
-//  });
+  it('should have the add function', function () {
+    categoryService.add('test');
+  });
 
 });

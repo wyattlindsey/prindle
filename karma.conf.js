@@ -22,7 +22,7 @@ module.exports = function(config) {
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/angular-xeditable/dist/js/xeditable.js',
-      'client/lib/lvlDragDrop/script/**.js',
+      'client/components/lib/lvlDragDrop/script/**.js',
       'client/bower_components/ng-file-upload/ng-file-upload.js',
       'client/bower_components/angular-popover-toggle/popover-toggle.js',
       'client/app/app.js',
@@ -39,7 +39,7 @@ module.exports = function(config) {
     preprocessors: {
       '**/*.jade': 'ng-jade2js',
       '**/*.html': 'html2js',
-      '**/*.coffee': 'coffee',
+      '**/*.coffee': 'coffee'
     },
 
     ngHtml2JsPreprocessor: {
